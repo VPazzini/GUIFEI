@@ -31,4 +31,38 @@ public class Group {
         return s;
     }
 
+    public float getStartF() {
+        return startF;
+    }
+
+    public float getEndF() {
+        return endF;
+    }
+
+    public float getDfF() {
+        return dfF;
+    }
+
+    public String getMet() {
+        return met;
+    }
+
+    public void setStartF(float startF) {
+        this.startF = startF;
+    }
+
+    public void setEndF(float endF) {
+        this.endF = endF;
+    }
+
+    public void setDfF(float dfF) {
+        this.dfF = dfF;
+    }
+
+    public void setMet(String met) {
+        this.met = met;
+    }
+    
+    
+    
 }

@@ -1,5 +1,6 @@
 package windows;
 
+import elements.Group;
 import gui2.DrawInterface;
 import gui2.Model;
 import javax.swing.DefaultListModel;
@@ -7,15 +8,16 @@ import javax.swing.DefaultListModel;
 public class Turbulence extends javax.swing.JFrame {
 
     DefaultListModel resultList;
-    
+
     public Turbulence() {
         initComponents();
         visible();
         this.setLocationRelativeTo(null);
+
         this.setVisible(true);
-        
+
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
         resultList = new DefaultListModel();
         groupsList.setModel(resultList);
         attList();
@@ -41,16 +43,23 @@ public class Turbulence extends javax.swing.JFrame {
         okButton = new javax.swing.JButton();
         newGroupButton = new javax.swing.JButton();
         removeGroupButton = new javax.swing.JButton();
+        infoLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Frequency Input"));
 
         jLabel1.setText("Start");
 
+        startFreqField.setText("1");
+
         jLabel2.setText("End");
 
+        endFreqField.setText("10");
+
         jLabel3.setText("DF");
+
+        dFreqField.setText("0.1");
 
         jLabel4.setText("Turbulence Met");
 
@@ -104,7 +113,7 @@ public class Turbulence extends javax.swing.JFrame {
                     .addComponent(turbMetCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        elementOrGroupComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Element by Element", "Group Elements" }));
+        elementOrGroupComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Group Elements", "Element by Element" }));
         elementOrGroupComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 elementOrGroupComboBoxItemStateChanged(evt);
@@ -119,6 +128,11 @@ public class Turbulence extends javax.swing.JFrame {
         groupsListScrollPane.setViewportView(groupsList);
 
         okButton.setText("OK");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
 
         newGroupButton.setText("New Group");
         newGroupButton.addActionListener(new java.awt.event.ActionListener() {
@@ -128,6 +142,11 @@ public class Turbulence extends javax.swing.JFrame {
         });
 
         removeGroupButton.setText("Remove");
+        removeGroupButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeGroupButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -136,6 +155,7 @@ public class Turbulence extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(groupsListScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -163,6 +183,8 @@ public class Turbulence extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(okButton))
                     .addComponent(groupsListScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -189,22 +211,65 @@ public class Turbulence extends javax.swing.JFrame {
     }//GEN-LAST:event_elementOrGroupComboBoxItemStateChanged
 
     private void newGroupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGroupButtonActionPerformed
-        DrawInterface drawInterf = DrawInterface.getInstance();
-        drawInterf.setSelectionEdgeMode(true);
-        drawInterf.setSelectionNodeMode(false);
+        if (newGroupButton.getText().equals("New Group")) {
+            DrawInterface drawInterf = DrawInterface.getInstance();
+            drawInterf.setSelectionEdgeMode(true);
+            drawInterf.setSelectionNodeMode(false);
+            this.infoLabel.setText("Select Elements");
+        } else {
+            Group g = (Group) groupsList.getSelectedValue();
+            g.setStartF(getStartFreq());
+            g.setEndF(getEndFreq());
+            g.setDfF(getDFreq());
+            g.setMet(getMethod());
+        }
     }//GEN-LAST:event_newGroupButtonActionPerformed
 
+    int previousInd = -2;
+
     private void groupsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_groupsListValueChanged
-        //System.out.println(groupsList.getSelectedValue());
+        if (groupsList.getSelectedIndex() != -1) {
+            Group g = (Group) groupsList.getSelectedValue();
+            startFreqField.setText(g.getStartF() + "");
+            endFreqField.setText(g.getEndF() + "");
+            dFreqField.setText(g.getDfF() + "");
+            turbMetCombo.setSelectedItem(g.getMet());
+            newGroupButton.setText("Save");
+            removeGroupButton.setVisible(true);
+            this.okButton.setText("Groups");
+        }
     }//GEN-LAST:event_groupsListValueChanged
 
-    public void attList() {
-        resultList = new DefaultListModel();
+    private void removeGroupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeGroupButtonActionPerformed
+        if (groupsList.getSelectedIndex() != -1) {
+            Group g = (Group) groupsList.getSelectedValue();
+            Model.getInstance().removeGroup(g);
+            this.attList();
+        }
+    }//GEN-LAST:event_removeGroupButtonActionPerformed
 
-        for (String s : Model.getInstance().printGroups()) {
-            resultList.addElement(s);
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        if (okButton.getText().equals("OK")) {
+            this.dispose();
+        } else {
+            this.newGroupButton.setText("New Group");
+            this.okButton.setText("OK");
+            this.removeGroupButton.setVisible(false);
+            this.groupsList.clearSelection();
+        }
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    public void attList() {
+        if(!this.hasFocus()){
+            this.infoLabel.setText("");
+            this.toFront();
+        }
+        resultList = new DefaultListModel();
+        for (Group g : Model.getInstance().getGroups()) {
+            resultList.addElement(g);
         }
         groupsList.setModel(resultList);
+
     }
 
     private void visible() {
@@ -218,45 +283,45 @@ public class Turbulence extends javax.swing.JFrame {
         } else {
             groupsList.setVisible(true);
             newGroupButton.setVisible(true);
-            removeGroupButton.setVisible(true);
+            removeGroupButton.setVisible(false);
             groupsListScrollPane.setVisible(true);
         }
     }
-    
-    public float getStartFreq(){
+
+    public float getStartFreq() {
         float startf;
-        try{
+        try {
             startf = Float.parseFloat(startFreqField.getText());
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             startf = 0;
             System.out.println(e);
         }
         return startf;
     }
-    
-    public float getEndFreq(){
+
+    public float getEndFreq() {
         float endf;
-        try{
+        try {
             endf = Float.parseFloat(endFreqField.getText());
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             endf = 0;
             System.out.println(e);
         }
         return endf;
     }
-    
-    public float getDFreq(){
+
+    public float getDFreq() {
         float df;
-        try{
+        try {
             df = Float.parseFloat(dFreqField.getText());
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             df = 0;
             System.out.println(e);
         }
         return df;
     }
-    
-    public String getMethod(){
+
+    public String getMethod() {
         String s = (String) turbMetCombo.getSelectedItem();
         return s;
     }
@@ -267,6 +332,7 @@ public class Turbulence extends javax.swing.JFrame {
     private javax.swing.JTextField endFreqField;
     private javax.swing.JList groupsList;
     private javax.swing.JScrollPane groupsListScrollPane;
+    private javax.swing.JLabel infoLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -42,10 +42,8 @@ public class Model {
         newEdge(n1, n2);
         nodes.add(n1);
         nodes.add(n2);
-        ArrayList<Point> splitPoints = new ArrayList<>();
         for (int i = 0; i < numNodes - 2; i++) {
             double x = (ix + (i + 1) * elem);
-
             Point p = new Point((int) x, iy);
             this.splitEdge(p);
         }
@@ -83,6 +81,9 @@ public class Model {
         double totalLength = edge.getLength();
         double elem = totalLength / (numNodes - 1);
         double distance = 0;
+
+        int j = 1;
+
         for (int i = 0; i < edge.getPoints().size() - 1; i++) {
             Point p1 = edge.getPoints().get(i);
             Point p2 = edge.getPoints().get(i + 1);
@@ -93,7 +94,6 @@ public class Model {
                 Point split = interpolationByDistance(p1, p2, dist);
                 distance = distance - elem;
                 splitPoints.add(split);
-
             }
 
         }
@@ -127,6 +127,13 @@ public class Model {
         }
     }
 
+    /**
+     * Returns a Node which contains the given point on the screen. Or null if
+     * there is none.
+     *
+     * @param p is the point used to find a Node
+     * @return Closest Node to the given point, considering a limit boundary
+     */
     private Node getNode(Point p) {
         for (Node n : nodes) {
             if (isInside(n, p)) {
@@ -341,11 +348,27 @@ public class Model {
 
     public void addGroup(float startF, float endF, float df, String met) {
 
+        ArrayList<Group> toRemove = new ArrayList<>();
         for (Group g : groups) {
             g.getGroup().removeAll(selectedEdges);
+            if (g.getGroup().isEmpty()) {
+                toRemove.add(g);
+            }
         }
+        for (Group g : toRemove) {
+            groups.remove(g);
+        }
+
         groups.add(new Group(selectedEdges, startF, endF, df, met));
         selectedEdges = new ArrayList<>();
+    }
+
+    public void removeGroup(Group g) {
+        this.groups.remove(g);
+    }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
     }
 
     public ArrayList<String> printGroups() {
@@ -354,5 +377,39 @@ public class Model {
             printList.add(g.toString());
         }
         return printList;
+    }
+
+    public void newNode(Point p) {
+        Node n = getNode(p);
+        if (n == null) {
+            this.nodes.add(new Node(p, nodeNumber++));
+        } else {
+            if (selectedNodes.isEmpty()) {
+                this.selectedNodes.add(n);
+            } else {
+                if(!selectedNodes.remove(n)){
+                    this.selectedNodes.add(n);
+                }
+            }
+        }
+    }
+    
+    public void newEdge(Point p) {
+        Node n = getNode(p);
+        if (n != null) {
+            if (selectedNodes.isEmpty()) {
+                this.selectedNodes.add(n);
+            } else {
+                if(!selectedNodes.remove(n)){
+                    this.selectedNodes.add(n);
+                }
+            }
+            if(selectedNodes.size() == 2){
+                this.newEdge(selectedNodes.get(0)
+                        , selectedNodes.get(1));
+                this.selectedNodes = new ArrayList<>();
+            }
+            
+        }
     }
 }

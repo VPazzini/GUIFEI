@@ -66,13 +66,20 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jScrollPane1" max="32767" attributes="0"/>
+                      <Component id="infoLabel" max="32767" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="jScrollPane1" pref="359" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="infoLabel" min="-2" max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -87,7 +94,7 @@
             <Component class="javax.swing.JTree" name="optionsTree">
               <Properties>
                 <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-                  <TreeModel code="Options&#xa; Pre-Processor&#xa;  Element&#xa;   Geometry&#xa;   Material&#xa; Tube Configuration&#xa;  Library&#xa;   U bend&#xa;   Straight&#xa;  Free&#xa; Solution&#xa;  Apply&#xa;   Constraint&#xa;   Force&#xa;   Pressure&#xa;   Spring&#xa;  Fluid Flow&#xa;   Add Group&#xa;  Flow Excitation&#xa;   Geometry&#xa;   Turbulence&#xa;   FEI&#xa;  Solution Typo"/>
+                  <TreeModel code="Options&#xa; Pre-Processor&#xa;  Element&#xa;   Geometry&#xa;   Material&#xa; Tube Configuration&#xa;  Library&#xa;   U bend&#xa;   Straight&#xa;  Free&#xa;   Node&#xa;   Element&#xa; Solution&#xa;  Apply&#xa;   Constraint&#xa;   Force&#xa;   Pressure&#xa;   Spring&#xa;  Fluid Flow&#xa;   Add Group&#xa;  Flow Excitation&#xa;   Geometry&#xa;   Turbulence&#xa;   FEI&#xa;  Solution Typo"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>
@@ -98,6 +105,11 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="infoLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value=" "/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

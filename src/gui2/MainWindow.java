@@ -51,6 +51,7 @@ public class MainWindow extends javax.swing.JFrame {
         treePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         optionsTree = new javax.swing.JTree();
+        infoLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -76,6 +77,10 @@ public class MainWindow extends javax.swing.JFrame {
         treeNode3.add(treeNode4);
         treeNode2.add(treeNode3);
         treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Free");
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Node");
+        treeNode3.add(treeNode4);
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Element");
+        treeNode3.add(treeNode4);
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Solution");
@@ -118,17 +123,24 @@ public class MainWindow extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(optionsTree);
 
+        infoLabel.setText(" ");
+
         javax.swing.GroupLayout treePanelLayout = new javax.swing.GroupLayout(treePanel);
         treePanel.setLayout(treePanelLayout);
         treePanelLayout.setHorizontalGroup(
             treePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, treePanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(treePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         treePanelLayout.setVerticalGroup(
             treePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(treePanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(infoLabel))
         );
 
         jMenu1.setText("File");
@@ -174,54 +186,63 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         String name = node.toString();
-
+        drawInterf.setNewNode(false);
+        drawInterf.setNewEdge(false);
+        repaint();
         switch (name) {
             case ("Geometry"):
+                this.infoLabel.setText("");
                 if (node.getParent().toString().equals("Element")) {
                     drawInterf.setSelectionNodeMode(false);
                     drawInterf.setSelectionEdgeMode(false);
                     new Geometry();
-
                 }
                 if (node.getParent().toString().equals("Flow Excitation")) {
                     drawInterf.setSelectionNodeMode(false);
                     drawInterf.setSelectionEdgeMode(false);
                     new FlowGeometry(new JFrame(), true);
-
                 }
                 break;
             case ("Material"):
+                this.infoLabel.setText("");
                 drawInterf.setSelectionNodeMode(false);
                 drawInterf.setSelectionEdgeMode(false);
                 new Material();
                 break;
             case ("U bend"):
+                this.infoLabel.setText("");
                 drawInterf.setSelectionNodeMode(false);
                 drawInterf.setSelectionEdgeMode(false);
                 new UBend();
                 break;
             case ("Straight"):
+                this.infoLabel.setText("");
                 drawInterf.setSelectionNodeMode(false);
                 drawInterf.setSelectionEdgeMode(false);
                 new StraightLine();
                 break;
             case ("Constraint"):
+                this.infoLabel.setText("Select Nodes");
                 drawInterf.setSelectionNodeMode(true);
                 drawInterf.setSelectionEdgeMode(false);
                 break;
             case ("Force"):
+                this.infoLabel.setText("Select Nodes");
                 drawInterf.setSelectionNodeMode(true);
                 drawInterf.setSelectionEdgeMode(false);
                 break;
             case ("Pressure"):
+                this.infoLabel.setText("Select Nodes");
                 drawInterf.setSelectionNodeMode(true);
                 drawInterf.setSelectionEdgeMode(false);
                 break;
             case ("Spring"):
+                this.infoLabel.setText("Select Elements");
                 drawInterf.setSelectionEdgeMode(true);
                 drawInterf.setSelectionNodeMode(false);
                 break;
             case ("Add Group"):
+                this.infoLabel.setText("Select Elements");
                 drawInterf.setSelectionEdgeMode(true);
                 drawInterf.setSelectionNodeMode(false);
                 break;
@@ -234,6 +255,16 @@ public class MainWindow extends javax.swing.JFrame {
                 drawInterf.setSelectionNodeMode(false);
                 drawInterf.setSelectionEdgeMode(false);
                 turb = new Turbulence();
+                break;
+            case ("Node"):
+                drawInterf.setSelectionNodeMode(false);
+                drawInterf.setSelectionEdgeMode(false);
+                drawInterf.setNewNode(true);
+                break;
+            case ("Element"):
+                drawInterf.setSelectionNodeMode(false);
+                drawInterf.setSelectionEdgeMode(false);
+                drawInterf.setNewEdge(true);
                 break;
             default:
                 break;
@@ -272,13 +303,17 @@ public class MainWindow extends javax.swing.JFrame {
                 break;
             case ("Turbulence"):
                 model.addGroup(turb.getStartFreq(), turb.getEndFreq(),
-                        turb.getDFreq(), turb.getMethod() );
+                        turb.getDFreq(), turb.getMethod());
                 turb.attList();
+                drawInterf.setSelectionNodeMode(false);
+                drawInterf.setSelectionEdgeMode(false);
+                this.infoLabel.setText("");
                 break;
             default:
                 System.out.println(name);
                 break;
         }
+
         model.setSelectedNodes(new ArrayList<>());
         model.setSelectedEdges(new ArrayList<>());
     }
@@ -322,6 +357,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel drawPanel;
+    private javax.swing.JLabel infoLabel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

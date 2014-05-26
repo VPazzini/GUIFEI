@@ -31,7 +31,7 @@ public class Geometry extends javax.swing.JFrame {
         innerDiameter = new javax.swing.JFormattedTextField();
         outterDiameter = new javax.swing.JFormattedTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Geometry");
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

@@ -31,7 +31,12 @@ public class DrawInterface extends JPanel implements ActionListener {
     private Point selectP1 = null;
     private Point selectP2 = null;
     //Selection variables
-
+    
+    //Free drawing variables
+    private boolean newNode = false;
+    private boolean newEdge = false;
+    //Free drawing variables
+    
     public DrawInterface() {
         model = Model.getInstance();
         this.addMouseListener(
@@ -41,6 +46,14 @@ public class DrawInterface extends JPanel implements ActionListener {
                         if (selectNodeMode || selectEdgeMode) {
                             selectP1 = new Point(evt.getPoint());
                             selectP2 = new Point(evt.getPoint());
+                        }
+                        if(newNode){
+                            model.newNode(evt.getPoint());
+                            repaint();
+                        }
+                        if(newEdge){
+                            model.newEdge(evt.getPoint());
+                            repaint();
                         }
                     }
 
@@ -78,6 +91,10 @@ public class DrawInterface extends JPanel implements ActionListener {
                     public void mouseDragged(MouseEvent evt) {
                         if (selectNodeMode || selectEdgeMode) {
                             selectP2.setLocation(evt.getPoint());
+                            repaint();
+                        }
+                        if(newNode && !model.getSelectedNodes().isEmpty()){
+                            model.getSelectedNodes().get(0).setPos(evt.getPoint());
                             repaint();
                         }
                     }
@@ -131,6 +148,7 @@ public class DrawInterface extends JPanel implements ActionListener {
                     g2d.setColor(Color.red);
                 }
             }
+            //g2d.drawString(e.getEdgeNumber()+"", e.getPoints().get(0).x, e.getPoints().get(0).y);
             for (int i = 0; i < e.getPoints().size() - 1; i++) {
 
                 Point p1 = e.getPoints().get(i);
@@ -176,7 +194,17 @@ public class DrawInterface extends JPanel implements ActionListener {
         }
         this.selectEdgeMode = mode;
     }
-
+    
+    public void setNewNode(boolean newNode){
+        this.newNode = newNode;
+        model.setSelectedNodes(new ArrayList<>());
+    }
+    
+    public void setNewEdge(boolean newEdge){
+        this.newEdge = newEdge;
+        model.setSelectedEdges(new ArrayList<>());
+    }
+    
     public void holdControl() {
         control = true;
     }
