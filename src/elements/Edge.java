@@ -15,6 +15,11 @@ public class Edge {
     private float springValue = 0;
     //Spring
 
+    //Pressure
+    private int[] pressureUnitVector = new int[3];
+    private float pressureValue = 0;
+    //Pressure
+    
     //Fluid Flow
     private float flowVelocity;
     private float fluidDensity;
@@ -178,6 +183,30 @@ public class Edge {
         this.flowUnitVector = flowUnitVector;
     }
 
+    public void setNode1(Node node1) {
+        this.node1 = node1;
+    }
+
+    public void setNode2(Node node2) {
+        this.node2 = node2;
+    }
+
+    public int[] getPressureUnitVector() {
+        return pressureUnitVector;
+    }
+
+    public void setPressureUnitVector(int[] pressureUnitVector) {
+        this.pressureUnitVector = pressureUnitVector;
+    }
+
+    public float getPressureValue() {
+        return pressureValue;
+    }
+
+    public void setPressureValue(float pressureValue) {
+        this.pressureValue = pressureValue;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

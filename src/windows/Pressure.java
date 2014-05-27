@@ -3,33 +3,33 @@ package windows;
 import java.awt.Color;
 import javax.swing.JDialog;
 
-public class Spring extends javax.swing.JPanel {
+public class Pressure extends javax.swing.JPanel {
 
     private JDialog jDialog;
     private int[] unitvector = new int[3];
-    private float valueSpring;
+    private float pressureValue;
 
-    public Spring(JDialog jDialog) {
+    public Pressure(JDialog jDialog) {
         initComponents();
         this.jDialog = jDialog;
     }
 
-    public Spring(JDialog jDialog, float springValue, int[] unitVector) {
+    public Pressure(JDialog jDialog, float pressureValue, int[] unitVector) {
         initComponents();
         this.jDialog = jDialog;
-        this.valueField.setText(((Float) springValue).toString());
+        this.valueField.setText(((Float) pressureValue).toString());
         x.setText(((Integer) unitVector[0]).toString());
         y.setText(((Integer) unitVector[1]).toString());
         z.setText(((Integer) unitVector[2]).toString());
 
     }
 
-    public int[] getUnitvector() {
+    public int[] getUnitVector() {
         return unitvector;
     }
 
-    public float getValueSpring() {
-        return valueSpring;
+    public float getPressureValue() {
+        return pressureValue;
     }
 
     @SuppressWarnings("unchecked")
@@ -158,7 +158,7 @@ public class Spring extends javax.swing.JPanel {
         }
         try {
             valueLabel.setForeground(Color.black);
-            valueSpring = Float.parseFloat(valueField.getText());
+            pressureValue = Float.parseFloat(valueField.getText());
         } catch (NumberFormatException e) {
             valueLabel.setForeground(Color.red);
             error = true;

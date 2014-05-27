@@ -1,5 +1,7 @@
 package gui2;
 
+import elements.Edge;
+import elements.Node;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -31,14 +33,32 @@ public class MainWindow extends javax.swing.JFrame {
                 new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent evt) {
-                        drawInterf.holdControl();
+                        if (evt.getKeyCode() == KeyEvent.VK_CONTROL) {
+                            drawInterf.holdControl();
+                        }
                     }
 
                     @Override
                     public void keyReleased(KeyEvent evt) {
-                        drawInterf.releaseControl();
-                    }
+                        if (evt.getKeyCode() == KeyEvent.VK_CONTROL) {
+                            drawInterf.releaseControl();
+                        }
+                        //System.out.println(evt.getKeyCode());
+                        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
 
+                            DefaultMutableTreeNode node
+                            = (DefaultMutableTreeNode) optionsTree.getLastSelectedPathComponent();
+                            String name = node.toString();
+                            switch (name) {
+                                case ("Node"):
+                                    model.deleteNode();
+                                    break;
+                                case ("Element"):
+                                    model.deleteEdge();
+                                    break;
+                            }
+                        }
+                    }
                 });
 
     }
@@ -232,9 +252,9 @@ public class MainWindow extends javax.swing.JFrame {
                 drawInterf.setSelectionEdgeMode(false);
                 break;
             case ("Pressure"):
-                this.infoLabel.setText("Select Nodes");
-                drawInterf.setSelectionNodeMode(true);
-                drawInterf.setSelectionEdgeMode(false);
+                this.infoLabel.setText("Select Elements");
+                drawInterf.setSelectionNodeMode(false);
+                drawInterf.setSelectionEdgeMode(true);
                 break;
             case ("Spring"):
                 this.infoLabel.setText("Select Elements");
@@ -293,7 +313,7 @@ public class MainWindow extends javax.swing.JFrame {
                 model.addForce();
                 break;
             case ("Pressure"):
-                //drawInterf.setSelectionNodeMode(true);
+                model.addPressure();
                 break;
             case ("Spring"):
                 model.addSpring();
@@ -314,8 +334,8 @@ public class MainWindow extends javax.swing.JFrame {
                 break;
         }
 
-        model.setSelectedNodes(new ArrayList<>());
-        model.setSelectedEdges(new ArrayList<>());
+        model.setSelectedNodes(new ArrayList<Node>());
+        model.setSelectedEdges(new ArrayList<Edge>());
     }
 
     public static void main(String args[]) {

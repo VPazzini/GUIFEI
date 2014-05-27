@@ -183,26 +183,26 @@ public class DrawInterface extends JPanel implements ActionListener {
 
     public void setSelectionNodeMode(boolean mode) {
         if (!mode) {
-            model.setSelectedNodes(new ArrayList<>());
+            model.setSelectedNodes(new ArrayList<Node>());
         }
         this.selectNodeMode = mode;
     }
 
     public void setSelectionEdgeMode(boolean mode) {
         if (!mode) {
-            model.setSelectedEdges(new ArrayList<>());
+            model.setSelectedEdges(new ArrayList<Edge>());
         }
         this.selectEdgeMode = mode;
     }
     
     public void setNewNode(boolean newNode){
         this.newNode = newNode;
-        model.setSelectedNodes(new ArrayList<>());
+        model.setSelectedNodes(new ArrayList<Node>());
     }
     
     public void setNewEdge(boolean newEdge){
         this.newEdge = newEdge;
-        model.setSelectedEdges(new ArrayList<>());
+        model.setSelectedEdges(new ArrayList<Edge>());
     }
     
     public void holdControl() {

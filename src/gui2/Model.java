@@ -14,23 +14,24 @@ import javax.swing.JDialog;
 import windows.Constraint;
 import windows.FluidFlow;
 import windows.ForcesWindow;
+import windows.Pressure;
 import windows.Spring;
 
 public class Model {
 
-    private static Model model = new Model();
+    private static final Model model = new Model();
     private ArrayList<Node> nodes = new ArrayList<>();
     private ArrayList<Edge> edges = new ArrayList<>();
     private final int nodeSize = 20;
     private int nodeNumber = 1;
     private int edgeNumber = 1;
-    private FileManager fileManager = new FileManager();
+    private final FileManager fileManager = new FileManager();
 
     private ArrayList<Node> selectedNodes = new ArrayList<>();
     private ArrayList<Edge> selectedEdges = new ArrayList<>();
 
     //group of elements
-    private ArrayList<Group> groups = new ArrayList<>();
+    private final ArrayList<Group> groups = new ArrayList<>();
     //group of elements
 
     public void drawLine(int length, int numNodes) {
@@ -80,19 +81,23 @@ public class Model {
         ArrayList<Point> splitPoints = new ArrayList<>();
         double totalLength = edge.getLength();
         double elem = totalLength / (numNodes - 1);
+        double elem2;
         double distance = 0;
 
-        int j = 1;
+        double j = 0;
+        elem2 = elem;
 
         for (int i = 0; i < edge.getPoints().size() - 1; i++) {
             Point p1 = edge.getPoints().get(i);
             Point p2 = edge.getPoints().get(i + 1);
             distance += p1.distance(p2);
+            //j += p1.distance(p2);
 
-            while ((distance - 1) > elem) {
-                int dist = (int) (elem - (distance - p1.distance(p2)));
+            while ((distance - 1) > elem2) {
+
+                int dist = (int) (elem2 - (distance - p1.distance(p2)));
                 Point split = interpolationByDistance(p1, p2, dist);
-                distance = distance - elem;
+                distance = distance - elem2;
                 splitPoints.add(split);
             }
 
@@ -145,12 +150,7 @@ public class Model {
 
     private boolean isInside(Node n, Point p) {
         Point temp = (Point) n.getPos().clone();
-
-        if (p.distance(temp) <= (nodeSize / 1.6)) {
-            return true;
-        }
-
-        return false;
+        return p.distance(temp) <= (nodeSize / 1.6);
     }
 
     private void newEdge(Node n1, Node n2) {
@@ -207,7 +207,9 @@ public class Model {
 
         for (Node n : nodes) {
             if (rect.contains(n.getPos())) {
-                this.selectedNodes.add(n);
+                if (!selectedNodes.remove(n)) {
+                    selectedNodes.add(n);
+                }
             }
         }
     }
@@ -220,7 +222,9 @@ public class Model {
             for (int i = 0; i < points.size() - 1; i++) {
                 Line2D line = new Line2D.Double(points.get(i), points.get(i + 1));
                 if (line.intersects(rect)) {
-                    this.selectedEdges.add(e);
+                    if (!selectedEdges.remove(e)) {
+                        selectedEdges.add(e);
+                    }
                     break;
                 }
             }
@@ -315,6 +319,34 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    public void addPressure() {
+        JDialog rest = new JDialog();
+        rest.setSize(190, 240);
+        rest.setModal(true);
+        rest.setResizable(false);
+        rest.setLocationRelativeTo(null);
+
+        Edge temp;
+        Pressure r = new Pressure(rest);
+        if (selectedEdges.size() == 1) {
+            temp = selectedEdges.get(0);
+            rest.setTitle("Edge " + temp.getEdgeNumber());
+            r = new Pressure(rest, temp.getPressureValue(), temp.getPressureUnitVector());
+        }
+
+        rest.add(r);
+
+        rest.setVisible(true);
+
+        for (Edge e : selectedEdges) {
+            e.setPressureUnitVector(r.getUnitVector());
+            e.setPressureValue(r.getPressureValue());
+        }
+
+        selectedEdges = new ArrayList<>();
+        DrawInterface.getInstance().repaint();
+    }
+
     public void addFluidFlow() {
         JDialog rest = new JDialog();
         rest.setSize(190, 240);
@@ -387,29 +419,125 @@ public class Model {
             if (selectedNodes.isEmpty()) {
                 this.selectedNodes.add(n);
             } else {
-                if(!selectedNodes.remove(n)){
+                if (!selectedNodes.remove(n)) {
                     this.selectedNodes.add(n);
                 }
             }
         }
     }
-    
+
     public void newEdge(Point p) {
+
+        for (Edge e : edges) {
+            if (e.belongToEdge(p)) {
+                if (!selectedEdges.remove(e)) {
+                    selectedEdges.add(e);
+                }
+                //DrawInterface.getInstance().repaint();
+                return;
+            }
+        }
+
         Node n = getNode(p);
         if (n != null) {
             if (selectedNodes.isEmpty()) {
                 this.selectedNodes.add(n);
             } else {
-                if(!selectedNodes.remove(n)){
+                if (!selectedNodes.remove(n)) {
                     this.selectedNodes.add(n);
                 }
             }
-            if(selectedNodes.size() == 2){
-                this.newEdge(selectedNodes.get(0)
-                        , selectedNodes.get(1));
+            if (selectedNodes.size() == 2) {
+                this.newEdge(selectedNodes.get(0), selectedNodes.get(1));
                 this.selectedNodes = new ArrayList<>();
             }
-            
+
         }
     }
+
+    public void deleteNode() {
+        if (!selectedNodes.isEmpty()) {
+            for (Node n : selectedNodes) {
+                joinEdges(n);
+                nodes.remove(n);
+            }
+        }
+        selectedNodes = new ArrayList<>();
+        DrawInterface.getInstance().repaint();
+    }
+
+    private void joinEdges(Node n) {
+        ArrayList<Edge> delete = new ArrayList<>();
+        for (Edge e1 : edges) {
+            if (e1.getNode1().equals(n) || e1.getNode2().equals(n)) {
+                for (Edge e2 : edges) {
+                    if (e1 != e2) {
+                        if (e2.getNode1().equals(n) || e2.getNode2().equals(n)) {
+                            if (e2.getNode2().equals(e1.getNode1())) {
+                                e2.getPoints().addAll(e1.getPoints());
+                                e2.setNode2(e1.getNode2());
+                                delete.add(e1);
+                                break;
+                            }
+                            if (e1.getNode2().equals(e2.getNode1())) {
+                                e1.getPoints().addAll(e2.getPoints());
+                                e1.setNode2(e2.getNode2());
+                                delete.add(e2);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (Edge e : delete) {
+            edges.remove(e);
+        }
+    }
+
+    public void deleteEdge() {
+        if (!selectedEdges.isEmpty()) {
+            int con = 0;
+            int eNode = 0;
+            Edge dEdge = selectedEdges.get(0);
+
+            for (Edge e : edges) {
+                if (dEdge != e) {
+                    if (e.getNode1().equals(dEdge.getNode1())) {
+                        eNode = 1;
+                        con++;
+                    }
+                    if (e.getNode1().equals(dEdge.getNode2())) {
+                        eNode = 2;
+                        con++;
+                    }
+                    if (e.getNode2().equals(dEdge.getNode1())) {
+                        eNode = 1;
+                        con++;
+                    }
+                    if (e.getNode2().equals(dEdge.getNode2())) {
+                        eNode = 2;
+                        con++;
+                    }
+                }
+            }
+            if (con == 1) {
+                edges.remove(dEdge);
+                if (eNode == 1) {
+                    nodes.remove(dEdge.getNode2());
+                } else {
+                    nodes.remove(dEdge.getNode1());
+                }
+            } else {
+                if (edges.size() == 1) {
+                    nodes.remove(dEdge.getNode1());
+                    nodes.remove(dEdge.getNode2());
+                    edges.remove(dEdge);
+                }
+            }
+            selectedEdges.remove(0);
+        }
+        DrawInterface.getInstance().repaint();
+    }
+
 }

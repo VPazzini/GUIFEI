@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Node {
-    
+
     private Point pos;
     private Boolean x = false;
     private Boolean y = false;
@@ -24,16 +24,15 @@ public class Node {
     public ArrayList<Force> getForces() {
         return forces;
     }
-    
-     public void setForces(ArrayList<Force> forces) {
+
+    public void setForces(ArrayList<Force> forces) {
         this.forces = forces;
     }
-    
-    
-    public void addForce(String axis, int forceValue){
+
+    public void addForce(String axis, int forceValue) {
         this.forces.add(new Force(axis, forceValue));
     }
-    
+
     public Point getPos() {
         return pos;
     }
@@ -89,8 +88,8 @@ public class Node {
     public void setRz(Boolean Rz) {
         this.Rz = Rz;
     }
-    
-    public boolean[] getRest(){
+
+    public boolean[] getRest() {
         boolean[] rest = new boolean[6];
         rest[0] = x;
         rest[1] = y;
@@ -100,8 +99,8 @@ public class Node {
         rest[5] = Rz;
         return rest;
     }
-    
-    public void setRest(boolean[] rest){
+
+    public void setRest(boolean[] rest) {
         x = rest[0];
         y = rest[1];
         z = rest[2];
@@ -109,7 +108,7 @@ public class Node {
         Ry = rest[4];
         Rz = rest[5];
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -129,12 +128,7 @@ public class Node {
             return false;
         }
         final Node other = (Node) obj;
-        if (!Objects.equals(this.pos, other.pos)) {
-            return false;
-        }
-        return true;
+        return this.pos.equals(other.getPos());
     }
-    
-    
-    
+
 }
