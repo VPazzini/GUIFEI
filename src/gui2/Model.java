@@ -66,8 +66,10 @@ public class Model {
         Node n2 = new Node(new Point(100, iy + width), nodeNumber++);
         nodes.add(n1);
         nodes.add(n2);
-        Edge edge = new Edge(n1, n2, edgeNumber++);
-        edges.add(edge);
+        //Edge edge = new Edge(n1, n2, edgeNumber++);
+        //edges.add(edge);
+        Edge edge = newEdge(n1, n2);
+        
 
         float[] coords = new float[6];
         while (!f.isDone()) {
@@ -124,6 +126,10 @@ public class Model {
                 Node n = new Node(p, nodeNumber++);
                 nodes.add(n);
                 newEdge = e.splitEdge(p, n, edgeNumber++);
+                
+                n.addEdge(newEdge);
+                n.addEdge(e);
+                
                 break;
             }
         }
@@ -153,17 +159,20 @@ public class Model {
         return p.distance(temp) <= (nodeSize / 1.6);
     }
 
-    private void newEdge(Node n1, Node n2) {
+    private Edge newEdge(Node n1, Node n2) {
         Edge newEdge1 = new Edge(n1, n2, edgeNumber);
         Edge newEdge2 = new Edge(n2, n1, edgeNumber);
         for (Edge e : edges) {
             if (e.equals(newEdge1) || e.equals(newEdge2)) {
                 edges.remove(e);
-                return;
+                return null;
             }
         }
         edges.add(newEdge1);
+        n1.addEdge(newEdge1);
+        n2.addEdge(newEdge1);
         edgeNumber++;
+        return newEdge1;
     }
 
     public void deleteAll() {
@@ -414,7 +423,7 @@ public class Model {
     public void newNode(Point p) {
         Node n = getNode(p);
         if (n == null) {
-            
+
             for (Edge e : edges) {
                 if (e.belongToEdge(p)) {
                     splitEdge(p);
@@ -441,7 +450,6 @@ public class Model {
                 if (!selectedEdges.remove(e)) {
                     selectedEdges.add(e);
                 }
-                //DrawInterface.getInstance().repaint();
                 return;
             }
         }
@@ -475,31 +483,27 @@ public class Model {
     }
 
     private void joinEdges(Node n) {
-        ArrayList<Edge> delete = new ArrayList<>();
-        for (Edge e1 : edges) {
-            if (e1.getNode1().equals(n) || e1.getNode2().equals(n)) {
-                for (Edge e2 : edges) {
-                    if (e1 != e2) {
-                        if (e2.getNode1().equals(n) || e2.getNode2().equals(n)) {
-                            if (e2.getNode2().equals(e1.getNode1())) {
-                                e2.getPoints().addAll(e1.getPoints());
-                                e2.setNode2(e1.getNode2());
-                                delete.add(e1);
-                                break;
-                            }
-                            if (e1.getNode2().equals(e2.getNode1())) {
-                                e1.getPoints().addAll(e2.getPoints());
-                                e1.setNode2(e2.getNode2());
-                                delete.add(e2);
-                                break;
-                            }
-                        }
-                    }
-                }
+        if (n.edgesSize() > 1) {
+            ArrayList<Edge> delete = new ArrayList<>();
+            Edge e1 = n.getEdges().get(0);
+            Edge e2 = n.getEdges().get(1);
+            if (e2.getNode2().equals(e1.getNode1())) {
+                e2.getPoints().addAll(e1.getPoints());
+                e2.setNode2(e1.getNode2());
+                delete.add(e1);
             }
-        }
-        for (Edge e : delete) {
-            edges.remove(e);
+            if (e1.getNode2().equals(e2.getNode1())) {
+                e1.getPoints().addAll(e2.getPoints());
+                e1.setNode2(e2.getNode2());
+                delete.add(e2);
+            }
+            for (Edge e : delete) {
+                edges.remove(e);
+            }
+        } else {
+            if (n.edgesSize() == 1) {
+                edges.remove(n.getEdges().get(0));
+            }
         }
     }
 

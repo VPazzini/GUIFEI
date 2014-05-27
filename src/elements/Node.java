@@ -2,7 +2,6 @@ package elements;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Node {
 
@@ -15,12 +14,29 @@ public class Node {
     private Boolean Rz = false;
     private final int number;
     private ArrayList<Force> forces = new ArrayList<>();
+    private ArrayList<Edge> edges = new ArrayList<>();
 
     public Node(Point pos, int number) {
         this.pos = pos;
         this.number = number;
     }
 
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
+    
+    public int edgesSize(){
+        return edges.size();
+    }
+    
+    public void addEdge(Edge e){
+        edges.add(e);
+    }
+    
+    public void deleteEdge(Edge e){
+        edges.remove(e);
+    }
+    
     public ArrayList<Force> getForces() {
         return forces;
     }
