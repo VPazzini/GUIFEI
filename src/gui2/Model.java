@@ -69,7 +69,6 @@ public class Model {
         //Edge edge = new Edge(n1, n2, edgeNumber++);
         //edges.add(edge);
         Edge edge = newEdge(n1, n2);
-        
 
         float[] coords = new float[6];
         while (!f.isDone()) {
@@ -83,24 +82,40 @@ public class Model {
         ArrayList<Point> splitPoints = new ArrayList<>();
         double totalLength = edge.getLength();
         double elem = totalLength / (numNodes - 1);
-        double elem2;
+        double elem2 = elem;
         double distance = 0;
+        int j = 0;
 
-        double j = 0;
-        elem2 = elem;
+        int numLargeElem = ((numNodes - 1) / 4);
+        int numSmallElem = (numNodes - 1) - 2*numLargeElem;
+
+        double scale = 1.4;
+        double smallElem = (totalLength - 2 * numLargeElem * elem2 * scale) / numSmallElem;
+        //System.out.println(numLargeElem + " " + numSmallElem);
+
+        if (numLargeElem > 0) {
+            elem = elem2 * scale;
+        }
 
         for (int i = 0; i < edge.getPoints().size() - 1; i++) {
             Point p1 = edge.getPoints().get(i);
             Point p2 = edge.getPoints().get(i + 1);
             distance += p1.distance(p2);
-            //j += p1.distance(p2);
 
-            while ((distance - 1) > elem2) {
+            while ((distance - 1) > elem) {
 
-                int dist = (int) (elem2 - (distance - p1.distance(p2)));
+                int dist = (int) (elem - (distance - p1.distance(p2)));
                 Point split = interpolationByDistance(p1, p2, dist);
-                distance = distance - elem2;
+                distance = distance - elem;
                 splitPoints.add(split);
+                j++;
+                if (numLargeElem > 0) {
+                    if (j < numLargeElem || ((numNodes - 2) - j) < numLargeElem) {
+                        elem = elem2 * scale;
+                    } else {
+                        elem = smallElem;
+                    }
+                }
             }
 
         }
@@ -126,10 +141,10 @@ public class Model {
                 Node n = new Node(p, nodeNumber++);
                 nodes.add(n);
                 newEdge = e.splitEdge(p, n, edgeNumber++);
-                
+
                 n.addEdge(newEdge);
                 n.addEdge(e);
-                
+
                 break;
             }
         }
@@ -258,6 +273,8 @@ public class Model {
             rest.setTitle("Node " + temp.getNumber());
             r = new Constraint(rest, temp.getRest(), temp.getForces());
 
+        } else {
+            rest.setTitle(selectedNodes.size() + " Nodes");
         }
 
         rest.add(r);
