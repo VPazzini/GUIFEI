@@ -414,13 +414,21 @@ public class Model {
     public void newNode(Point p) {
         Node n = getNode(p);
         if (n == null) {
-            this.nodes.add(new Node(p, nodeNumber++));
+            
+            for (Edge e : edges) {
+                if (e.belongToEdge(p)) {
+                    splitEdge(p);
+                    return;
+                }
+            }
+
+            nodes.add(new Node(p, nodeNumber++));
         } else {
             if (selectedNodes.isEmpty()) {
-                this.selectedNodes.add(n);
+                selectedNodes.add(n);
             } else {
                 if (!selectedNodes.remove(n)) {
-                    this.selectedNodes.add(n);
+                    selectedNodes.add(n);
                 }
             }
         }

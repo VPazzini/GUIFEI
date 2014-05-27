@@ -49,7 +49,7 @@ public class Pressure extends javax.swing.JPanel {
 
         valueLabel.setText("Value");
 
-        valueField.setText("1");
+        valueField.setText("0");
 
         jLabel2.setText("Unit Vector");
 
@@ -60,7 +60,7 @@ public class Pressure extends javax.swing.JPanel {
             }
         });
 
-        x.setText("1");
+        x.setText("0");
 
         xLabel.setText("X");
 

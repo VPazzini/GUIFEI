@@ -5,8 +5,8 @@ import javax.swing.JDialog;
 
 public class FluidFlow extends javax.swing.JPanel {
 
-    private JDialog jDialog;
-    private int[] unitvector = new int[3];
+    private final JDialog jDialog;
+    private final int[] unitvector = new int[3];
     private float flowVelocity;
     private float flowDensity;
 
@@ -50,17 +50,17 @@ public class FluidFlow extends javax.swing.JPanel {
 
         flowVelocityLabel.setText("Flow Velocity");
 
-        flowVelocityField.setText("1");
+        flowVelocityField.setText("0");
 
         flowDensityLabel.setText("Flow Density");
 
-        flowDensityField.setText("1");
+        flowDensityField.setText("0");
 
         jLabel4.setText("Unit Vector");
 
         xLabel.setText("X");
 
-        x.setText("1");
+        x.setText("0");
 
         y.setText("0");
 
@@ -83,13 +83,12 @@ public class FluidFlow extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(flowVelocityLabel)
                         .addGap(18, 18, 18)
                         .addComponent(flowVelocityField, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(flowDensityLabel)
                             .addComponent(yLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -101,7 +100,8 @@ public class FluidFlow extends javax.swing.JPanel {
                             .addComponent(z, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                             .addComponent(x, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                             .addComponent(y, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                            .addComponent(flowDensityField))))
+                            .addComponent(flowDensityField)))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -121,7 +121,7 @@ public class FluidFlow extends javax.swing.JPanel {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(flowDensityLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -135,8 +135,9 @@ public class FluidFlow extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(zLabel)
                             .addComponent(z, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(6, 6, 6))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

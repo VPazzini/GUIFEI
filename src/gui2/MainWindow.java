@@ -17,17 +17,18 @@ import windows.UBend;
 
 public class MainWindow extends javax.swing.JFrame {
 
-    private static MainWindow mainWindow = new MainWindow();
+    private static final MainWindow mainWindow = new MainWindow();
     private DrawInterface drawInterf;
     private Model model;
     Turbulence turb;
 
     public MainWindow() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
         drawInterf = DrawInterface.getInstance();
         model = Model.getInstance();
         this.drawPanel.add(drawInterf);
-        this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
         this.addKeyListener(
                 new KeyAdapter() {
@@ -43,7 +44,6 @@ public class MainWindow extends javax.swing.JFrame {
                         if (evt.getKeyCode() == KeyEvent.VK_CONTROL) {
                             drawInterf.releaseControl();
                         }
-                        //System.out.println(evt.getKeyCode());
                         if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
 
                             DefaultMutableTreeNode node
@@ -158,7 +158,7 @@ public class MainWindow extends javax.swing.JFrame {
         treePanelLayout.setVerticalGroup(
             treePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(treePanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(infoLabel))
         );
@@ -178,7 +178,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(treePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -59,7 +59,7 @@ public class UBend extends javax.swing.JFrame {
 
         jLabel4.setText("Nodes");
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(22, 2, 1000, 1));
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(22, 2, 200, 1));
         jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinner1StateChanged(evt);

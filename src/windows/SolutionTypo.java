@@ -6,7 +6,7 @@ import java.awt.Color;
 
 public class SolutionTypo extends javax.swing.JDialog {
 
-    private FileManager fileM;
+    private final FileManager fileM;
 
     public SolutionTypo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -52,9 +52,14 @@ public class SolutionTypo extends javax.swing.JDialog {
             }
         });
 
+        timeField.setText("0");
+
         timeLabel.setText("Time");
+        timeLabel.setToolTipText("Total Time");
 
         timeStepLabel.setText("Time Step");
+
+        timeStepField.setText("0");
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

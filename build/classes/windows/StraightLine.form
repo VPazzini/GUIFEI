@@ -43,19 +43,21 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jButtonTry" linkSize="7" min="-2" pref="152" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jLabel2" linkSize="4" max="32767" attributes="0"/>
-                              <Component id="jLabel1" linkSize="4" pref="70" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jTextLength" linkSize="5" max="32767" attributes="0"/>
-                              <Component id="jSpinnerNodes" linkSize="5" max="32767" attributes="0"/>
+                      <Component id="jButtonDone" pref="121" max="32767" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jButtonTry" alignment="1" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLabel1" pref="48" max="32767" attributes="0"/>
+                                  <Component id="jLabel2" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jTextLength" max="32767" attributes="0"/>
+                                  <Component id="jSpinnerNodes" pref="63" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
-                      <Component id="jButtonDone" linkSize="7" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -91,7 +93,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextLength">
           <Properties>
-            <Property name="text" type="java.lang.String" value="200"/>
+            <Property name="text" type="java.lang.String" value="800"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -102,7 +104,7 @@
         <Component class="javax.swing.JSpinner" name="jSpinnerNodes">
           <Properties>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="2" maximum="100" minimum="2" numberType="java.lang.Integer" stepSize="1" type="number"/>
+              <SpinnerModel initial="10" maximum="100" minimum="2" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
           </Properties>
           <Events>

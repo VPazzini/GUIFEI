@@ -17,12 +17,12 @@ import javax.swing.JPanel;
 
 public class DrawInterface extends JPanel implements ActionListener {
 
-    private static DrawInterface drawInterf = new DrawInterface();
+    private static final DrawInterface drawInterf = new DrawInterface();
 
     private Graphics2D g2d;
     private Model model;
 
-    private int nodeSize = 5;
+    private final int nodeSize = 5;
     private boolean control = false;
 
     //Selection variables
@@ -64,13 +64,11 @@ public class DrawInterface extends JPanel implements ActionListener {
                             if (selectNodeMode) {
                                 model.selectNodes((Point) selectP1.clone(),
                                         (Point) selectP2.clone());
-                                //selectNodeMode = false;
                             }
 
                             if (selectEdgeMode) {
                                 model.selectEdges((Point) selectP1.clone(),
                                         (Point) selectP2.clone());
-                                //selectEdgeMode = false;
                             }
 
                             selectP1 = null;
@@ -183,26 +181,26 @@ public class DrawInterface extends JPanel implements ActionListener {
 
     public void setSelectionNodeMode(boolean mode) {
         if (!mode) {
-            model.setSelectedNodes(new ArrayList<Node>());
+            model.setSelectedNodes(new ArrayList<>());
         }
         this.selectNodeMode = mode;
     }
 
     public void setSelectionEdgeMode(boolean mode) {
         if (!mode) {
-            model.setSelectedEdges(new ArrayList<Edge>());
+            model.setSelectedEdges(new ArrayList<>());
         }
         this.selectEdgeMode = mode;
     }
     
     public void setNewNode(boolean newNode){
         this.newNode = newNode;
-        model.setSelectedNodes(new ArrayList<Node>());
+        model.setSelectedNodes(new ArrayList<>());
     }
     
     public void setNewEdge(boolean newEdge){
         this.newEdge = newEdge;
-        model.setSelectedEdges(new ArrayList<Edge>());
+        model.setSelectedEdges(new ArrayList<>());
     }
     
     public void holdControl() {
