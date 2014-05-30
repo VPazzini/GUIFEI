@@ -28,11 +28,13 @@ public class Material extends javax.swing.JFrame {
         jLabel1.setText("Material (Pa)");
         jLabel1.setToolTipText("");
 
-        jLabel2.setText("Modul");
+        jLabel2.setText("Modulus of Elasticity");
 
-        jTextField1.setText(" ");
+        jTextField1.setText("200E7");
 
         jLabel3.setText("Poisson's Rate");
+
+        jTextField2.setText("0.25");
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -91,16 +93,7 @@ public class Material extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

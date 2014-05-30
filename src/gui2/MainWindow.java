@@ -60,6 +60,9 @@ public class MainWindow extends javax.swing.JFrame {
                         }
                     }
                 });
+        for(int i=0;i<optionsTree.getRowCount();i++){
+            optionsTree.expandRow(i);
+        }
 
     }
 
@@ -227,6 +230,7 @@ public class MainWindow extends javax.swing.JFrame {
                 this.infoLabel.setText("");
                 drawInterf.setSelectionNodeMode(false);
                 drawInterf.setSelectionEdgeMode(false);
+                //Limit to 0.3
                 new Material();
                 break;
             case ("U bend"):

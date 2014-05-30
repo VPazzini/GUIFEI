@@ -34,9 +34,7 @@ public class Model {
     private final ArrayList<Group> groups = new ArrayList<>();
     //group of elements
 
-    public void drawLine(int length, int numNodes) {
-        int ix = 100;
-        int iy = 50;
+    public Node drawLine(int length, int numNodes, int ix, int iy) {
         double elem = (length / (numNodes - 1));
         Node n1 = new Node(new Point(ix, iy), nodeNumber++);
         Node n2 = new Node(new Point(ix + length, iy), nodeNumber++);
@@ -48,26 +46,26 @@ public class Model {
             Point p = new Point((int) x, iy);
             this.splitEdge(p);
         }
+        return n2;
+    }
+    
+    public void drawLine(int length, int numNodes){
+        drawLine(length, numNodes, 100, 50);
     }
 
-    public void drawUbend(int length, int width, int radius, int numNodes) {
+    public void drawUbend(int length, int width, int radius, int numNodesCurve, int numNodesLine) {
         Path2D.Double path = new Path2D.Double();
         int ix = 100;
         int iy = 50;
-        path.moveTo(ix, iy);
-        path.lineTo(ix + length, iy);
-        path.curveTo(ix + length + radius, iy, ix + length + radius,
+        path.moveTo(ix + length, iy);
+         path.curveTo(ix + length + radius, iy, ix + length + radius,
                 iy + width, ix + length, iy + width);
-        path.lineTo(ix, iy + width);
         FlatteningPathIterator f = new FlatteningPathIterator(
                 path.getPathIterator(new AffineTransform()), 1);
-
-        Node n1 = new Node(new Point(100, 50), nodeNumber++);
-        Node n2 = new Node(new Point(100, iy + width), nodeNumber++);
-        nodes.add(n1);
-        nodes.add(n2);
-        //Edge edge = new Edge(n1, n2, edgeNumber++);
-        //edges.add(edge);
+        
+        Node n1 = drawLine(length, numNodesLine, ix, iy);
+        Node n2 = drawLine(length, numNodesLine, ix, iy + width);
+        
         Edge edge = newEdge(n1, n2);
 
         float[] coords = new float[6];
@@ -81,13 +79,13 @@ public class Model {
 
         ArrayList<Point> splitPoints = new ArrayList<>();
         double totalLength = edge.getLength();
-        double elem = totalLength / (numNodes - 1);
+        double elem = totalLength / (numNodesCurve - 1);
         double elem2 = elem;
         double distance = 0;
         int j = 0;
 
-        int numLargeElem = ((numNodes - 1) / 4);
-        int numSmallElem = (numNodes - 1) - 2*numLargeElem;
+        int numLargeElem = ((numNodesCurve - 1) / 4);
+        int numSmallElem = (numNodesCurve - 1) - 2 * numLargeElem;
 
         double scale = 1.4;
         double smallElem = (totalLength - 2 * numLargeElem * elem2 * scale) / numSmallElem;
@@ -110,7 +108,7 @@ public class Model {
                 splitPoints.add(split);
                 j++;
                 if (numLargeElem > 0) {
-                    if (j < numLargeElem || ((numNodes - 2) - j) < numLargeElem) {
+                    if (j < numLargeElem || ((numNodesCurve - 2) - j) < numLargeElem) {
                         elem = elem2 * scale;
                     } else {
                         elem = smallElem;
