@@ -1,11 +1,9 @@
-
 package windows;
 
 import elements.Force;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
-
 
 public class ForcesWindow extends javax.swing.JPanel {
 
@@ -49,6 +47,11 @@ public class ForcesWindow extends javax.swing.JPanel {
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(54, 100));
 
+        jListForces.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListForcesValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jListForces);
 
         jTextFieldForceValue.setText("100");
@@ -135,7 +138,7 @@ public class ForcesWindow extends javax.swing.JPanel {
         int force = 0;
         try {
             force = Integer.parseInt(jTextFieldForceValue.getText());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             force = 0;
         }
         Force f = new Force(axis, force);
@@ -146,7 +149,7 @@ public class ForcesWindow extends javax.swing.JPanel {
         } else {
             f = (Force) resultList.get(ind);
             f.addForce(force);
-            if (f.getForceValue() == 0) {
+            if (f.getValue() == 0) {
                 resultList.remove(ind);
             } else {
                 resultList.set(ind, f);
@@ -165,12 +168,20 @@ public class ForcesWindow extends javax.swing.JPanel {
         this.jDialog.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jListForcesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListForcesValueChanged
+        if(jListForces.getSelectedValue() != null){
+            Force f = (Force) jListForces.getSelectedValue();
+            jComboForceAxis.setSelectedItem(f.getAxis());
+        }
+    }//GEN-LAST:event_jListForcesValueChanged
+
     public ArrayList<Force> getForces() {
         ArrayList<Force> forces = new ArrayList<>();
         for (Object o : resultList.toArray()) {
-            forces.add((Force) o);
+            Force f = (Force) o;
+            forces.add(f.clone());
         }
-        return forces;
+        return (ArrayList<Force>) forces.clone();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

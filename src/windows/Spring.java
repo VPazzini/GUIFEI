@@ -138,6 +138,9 @@ public class Spring extends javax.swing.JPanel {
         try {
             xLabel.setForeground(Color.black);
             unitvector[0] = Integer.parseInt(x.getText());
+            if (unitvector[0] != 0) {
+                unitvector[0] /= Math.abs(unitvector[0]);
+            }
         } catch (NumberFormatException e) {
             xLabel.setForeground(Color.red);
             error = true;
@@ -145,6 +148,9 @@ public class Spring extends javax.swing.JPanel {
         try {
             yLabel.setForeground(Color.black);
             unitvector[1] = Integer.parseInt(y.getText());
+            if (unitvector[1] != 0) {
+                unitvector[1] /= Math.abs(unitvector[1]);
+            }
         } catch (NumberFormatException e) {
             yLabel.setForeground(Color.red);
             error = true;
@@ -152,6 +158,9 @@ public class Spring extends javax.swing.JPanel {
         try {
             zLabel.setForeground(Color.black);
             unitvector[2] = Integer.parseInt(z.getText());
+            if (unitvector[2] != 0) {
+                unitvector[2] /= Math.abs(unitvector[2]);
+            }
         } catch (NumberFormatException e) {
             zLabel.setForeground(Color.red);
             error = true;
@@ -163,11 +172,11 @@ public class Spring extends javax.swing.JPanel {
             valueLabel.setForeground(Color.red);
             error = true;
         }
-        
-        if(!error){
+
+        if (!error) {
             jDialog.dispose();
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

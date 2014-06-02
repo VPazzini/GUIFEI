@@ -4,12 +4,16 @@ import elements.Edge;
 import elements.Node;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
+import javafx.stage.FileChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 import windows.FlowGeometry;
 import windows.Geometry;
 import windows.Material;
+import windows.MenuOptions;
 import windows.SolutionTypo;
 import windows.StraightLine;
 import windows.Turbulence;
@@ -25,7 +29,7 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+
         drawInterf = DrawInterface.getInstance();
         model = Model.getInstance();
         this.drawPanel.add(drawInterf);
@@ -60,7 +64,7 @@ public class MainWindow extends javax.swing.JFrame {
                         }
                     }
                 });
-        for(int i=0;i<optionsTree.getRowCount();i++){
+        for (int i = 0; i < optionsTree.getRowCount(); i++) {
             optionsTree.expandRow(i);
         }
 
@@ -77,6 +81,7 @@ public class MainWindow extends javax.swing.JFrame {
         infoLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -167,6 +172,15 @@ public class MainWindow extends javax.swing.JFrame {
         );
 
         jMenu1.setText("File");
+
+        jMenuItem1.setText("File");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -199,6 +213,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void optionsTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_optionsTreeMouseClicked
         optionSelection();
     }//GEN-LAST:event_optionsTreeMouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new MenuOptions();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void optionSelection() {
         DefaultMutableTreeNode node
@@ -385,6 +403,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTree optionsTree;
     private javax.swing.JPanel treePanel;

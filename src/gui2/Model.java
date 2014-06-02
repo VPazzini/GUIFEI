@@ -48,8 +48,8 @@ public class Model {
         }
         return n2;
     }
-    
-    public void drawLine(int length, int numNodes){
+
+    public void drawLine(int length, int numNodes) {
         drawLine(length, numNodes, 100, 50);
     }
 
@@ -58,14 +58,14 @@ public class Model {
         int ix = 100;
         int iy = 50;
         path.moveTo(ix + length, iy);
-         path.curveTo(ix + length + radius, iy, ix + length + radius,
+        path.curveTo(ix + length + radius, iy, ix + length + radius,
                 iy + width, ix + length, iy + width);
         FlatteningPathIterator f = new FlatteningPathIterator(
                 path.getPathIterator(new AffineTransform()), 1);
-        
+
         Node n1 = drawLine(length, numNodesLine, ix, iy);
         Node n2 = drawLine(length, numNodesLine, ix, iy + width);
-        
+
         Edge edge = newEdge(n1, n2);
 
         float[] coords = new float[6];
@@ -291,6 +291,7 @@ public class Model {
     public void addForce() {
         JDialog rest = new JDialog();
         rest.setSize(190, 240);
+        rest.setTitle("Forces");
         rest.setModal(true);
         rest.setResizable(false);
         rest.setLocationRelativeTo(null);
@@ -301,6 +302,8 @@ public class Model {
             temp = selectedNodes.get(0);
             rest.setTitle("Node " + temp.getNumber());
             r = new ForcesWindow(rest, temp.getForces());
+        } else {
+            rest.setTitle(selectedNodes.size() + " Nodes");
         }
 
         rest.add(r);
@@ -328,6 +331,8 @@ public class Model {
             temp = selectedEdges.get(0);
             rest.setTitle("Edge " + temp.getEdgeNumber());
             r = new Spring(rest, temp.getSpringValue(), temp.getSpringUnitVector());
+        } else {
+            rest.setTitle(selectedEdges.size() + " Nodes");
         }
 
         rest.add(r);
@@ -356,10 +361,12 @@ public class Model {
             temp = selectedEdges.get(0);
             rest.setTitle("Edge " + temp.getEdgeNumber());
             r = new Pressure(rest, temp.getPressureValue(), temp.getPressureUnitVector());
+        } else {
+            rest.setTitle(selectedEdges.size() + " Nodes");
         }
 
         rest.add(r);
-
+        rest.getRootPane().setDefaultButton(r.getOkButton());
         rest.setVisible(true);
 
         for (Edge e : selectedEdges) {
@@ -386,6 +393,8 @@ public class Model {
             rest.setTitle("Edge " + temp.getEdgeNumber());
             r = new FluidFlow(rest, temp.getFlowVelocity(),
                     temp.getFluidDensity(), temp.getFlowUnitVector());
+        } else {
+            rest.setTitle(selectedEdges.size() + " Nodes");
         }
 
         rest.add(r);
@@ -427,26 +436,16 @@ public class Model {
         return groups;
     }
 
-    public ArrayList<String> printGroups() {
-        ArrayList<String> printList = new ArrayList<>();
-        for (Group g : groups) {
-            printList.add(g.toString());
-        }
-        return printList;
-    }
-
-    public void newNode(Point p) {
-        Node n = getNode(p);
+    public void newNode(Point p1) {
+        Node n = getNode(p1);
         if (n == null) {
-
             for (Edge e : edges) {
-                if (e.belongToEdge(p)) {
-                    splitEdge(p);
+                if (e.belongToEdge(p1)) {
+                    splitEdge(p1);
                     return;
                 }
             }
-
-            nodes.add(new Node(p, nodeNumber++));
+            nodes.add(new Node(p1, nodeNumber++));
         } else {
             if (selectedNodes.isEmpty()) {
                 selectedNodes.add(n);

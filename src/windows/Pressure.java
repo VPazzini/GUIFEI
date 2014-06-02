@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Color;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 
 public class Pressure extends javax.swing.JPanel {
@@ -39,7 +40,7 @@ public class Pressure extends javax.swing.JPanel {
         valueLabel = new javax.swing.JLabel();
         valueField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        okButton = new javax.swing.JButton();
         x = new javax.swing.JTextField();
         xLabel = new javax.swing.JLabel();
         yLabel = new javax.swing.JLabel();
@@ -53,10 +54,10 @@ public class Pressure extends javax.swing.JPanel {
 
         jLabel2.setText("Unit Vector");
 
-        jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        okButton.setText("OK");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                okButtonActionPerformed(evt);
             }
         });
 
@@ -79,7 +80,7 @@ public class Pressure extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(valueLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
@@ -128,16 +129,19 @@ public class Pressure extends javax.swing.JPanel {
                     .addComponent(z, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(zLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(okButton)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         boolean error = false;
         try {
             xLabel.setForeground(Color.black);
             unitvector[0] = Integer.parseInt(x.getText());
+            if (unitvector[0] != 0) {
+                unitvector[0] /= Math.abs(unitvector[0]);
+            }
         } catch (NumberFormatException e) {
             xLabel.setForeground(Color.red);
             error = true;
@@ -145,6 +149,9 @@ public class Pressure extends javax.swing.JPanel {
         try {
             yLabel.setForeground(Color.black);
             unitvector[1] = Integer.parseInt(y.getText());
+            if (unitvector[1] != 0) {
+                unitvector[1] /= Math.abs(unitvector[1]);
+            }
         } catch (NumberFormatException e) {
             yLabel.setForeground(Color.red);
             error = true;
@@ -152,6 +159,9 @@ public class Pressure extends javax.swing.JPanel {
         try {
             zLabel.setForeground(Color.black);
             unitvector[2] = Integer.parseInt(z.getText());
+            if (unitvector[2] != 0) {
+                unitvector[2] /= Math.abs(unitvector[2]);
+            }
         } catch (NumberFormatException e) {
             zLabel.setForeground(Color.red);
             error = true;
@@ -159,21 +169,25 @@ public class Pressure extends javax.swing.JPanel {
         try {
             valueLabel.setForeground(Color.black);
             pressureValue = Float.parseFloat(valueField.getText());
+
         } catch (NumberFormatException e) {
             valueLabel.setForeground(Color.red);
             error = true;
         }
-        
-        if(!error){
+
+        if (!error) {
             jDialog.dispose();
         }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    public JButton getOkButton() {
+        return okButton;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton okButton;
     private javax.swing.JTextField valueField;
     private javax.swing.JLabel valueLabel;
     private javax.swing.JTextField x;

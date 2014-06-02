@@ -21,6 +21,7 @@ public class FileManager {
     private String elemFile = "elem_file.dat";
     private String inputFile = "input.dat";
     private String confFile = "conf_file.dat";
+    File filePath;
     private int NELG = 0;
     private int NMAT = 0;
     private double dO = 0.127;
@@ -45,10 +46,11 @@ public class FileManager {
     private double diam = 0.127E-01;
     private boolean displayScreen = true;
     
-    private Model modelo;
+    private final Model modelo;
     
     public FileManager(){
         modelo = Model.getInstance();
+        filePath = new File(new File(".").getAbsolutePath());
     }
     
     private void generateNodeFile() {
@@ -418,7 +420,13 @@ public class FileManager {
     public void setDisplayScreen(boolean displayScreen) {
         this.displayScreen = displayScreen;
     }
-    
-    
+
+    public File getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(File filePath) {
+        this.filePath = filePath;
+    }
     
 }

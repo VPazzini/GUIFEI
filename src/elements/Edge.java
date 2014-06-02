@@ -1,6 +1,9 @@
 package elements;
 
 import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 
 public class Edge {
@@ -19,7 +22,7 @@ public class Edge {
     private int[] pressureUnitVector = new int[3];
     private float pressureValue = 0;
     //Pressure
-    
+
     //Fluid Flow
     private float flowVelocity;
     private float fluidDensity;
@@ -206,7 +209,126 @@ public class Edge {
     public void setPressureValue(float pressureValue) {
         this.pressureValue = pressureValue;
     }
-    
+
+    public Shape getPressureArrow() {
+
+        double totalLength = getLength();
+        double elem = totalLength / 2;
+        double distance = 0;
+        int j = 0;
+
+        Point split = null;
+
+        for (int i = 0; i < getPoints().size() - 1; i++) {
+            Point p1 = getPoints().get(i);
+            Point p2 = getPoints().get(i + 1);
+            distance += p1.distance(p2);
+
+            if ((distance - 1) > elem) {
+                int dist = (int) (elem - (distance - p1.distance(p2)));
+                split = interpolationByDistance(p1, p2, dist);
+                distance = distance - elem;
+            }
+
+        }
+
+        double x = split.x;
+        double y = split.y;
+
+        if (pressureValue > 0) {
+            x = split.x + 10 * pressureUnitVector[0]
+                    * Math.log(pressureValue);
+
+            y = split.y + 10 * pressureUnitVector[1]
+                    * Math.log(pressureValue);
+
+        }
+        Point[] arrow = new Point[2];
+        arrow[0] = new Point((int) x, (int) y);
+        arrow[1] = split;
+
+        return createArrow(arrow[0].x, arrow[0].y,
+                arrow[1].x, arrow[1].y);
+    }
+
+    public Shape[] getSpringArrow() {
+        
+        if(springValue == 0){
+            return null;
+        }
+        
+        double totalLength = getLength();
+        double elem = totalLength / 5;
+        double distance = 0;
+
+        ArrayList<Point> splitPoints = new ArrayList<>();
+        Point split = null;
+
+        for (int i = 0; i < getPoints().size() - 1; i++) {
+            Point p1 = getPoints().get(i);
+            Point p2 = getPoints().get(i + 1);
+            distance += p1.distance(p2);
+
+            while ((distance - 1) > elem) {
+                int dist = (int) (elem - (distance - p1.distance(p2)));
+                split = interpolationByDistance(p1, p2, dist);
+                distance = distance - elem;
+                splitPoints.add(split);
+            }
+
+        }
+
+        Shape[] arrows = new Shape[4];
+        int i = 0;
+        for (Point p : splitPoints) {
+            double x = p.x;
+            double y = p.y;
+
+            if (springValue > 0) {
+                x = p.x + 10 * springUnitVector[0]
+                        * Math.log(springValue);
+
+                y = p.y + 10 * springUnitVector[1]
+                        * Math.log(springValue);
+
+            }
+
+            arrows[i++] = createArrow((float)x, (float)y,
+                    p.x, p.y);
+        }
+        return arrows;
+    }
+
+    protected Shape createArrow(float fx, float fy, float tx, float ty) {
+        int size = 7;
+        float dx = tx - fx;
+        float dy = ty - fy;
+        float D = (float) Math.sqrt(dx * dx + dy * dy);
+        float z = (dx <= 0) ? fx - D : fx + D;
+        float dec = (dx <= 0) ? size : -size;
+
+        GeneralPath gp = new GeneralPath();
+        gp.moveTo(fx, fy);
+        gp.lineTo(z, fy);
+        gp.lineTo(z + dec, fy - size / 2);
+        gp.moveTo(z, fy);
+        gp.lineTo(z + dec, fy + size / 2);
+
+        double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
+        // transform the shape to follow the line direction
+        return alpha != 0
+                ? gp.createTransformedShape(AffineTransform.getRotateInstance(alpha, fx, fy))
+                : gp;
+    }
+
+    public Point interpolationByDistance(Point p1, Point p2, double d) {
+        double len = p1.distance(p2);
+        double ratio = d / len;
+        int x = (int) (ratio * p2.x + (1.0 - ratio) * p1.x);
+        int y = (int) (ratio * p2.y + (1.0 - ratio) * p1.y);
+        return (new Point(x, y));
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;

@@ -1,10 +1,12 @@
 package elements;
 
-public class Force {
+import java.util.Objects;
+
+public class Force implements Cloneable{
     private final String axis;
     private float forceValue;
 
-    public Force(String axis, int forceValue) {
+    public Force(String axis, float forceValue) {
         this.axis = axis;
         this.forceValue = forceValue;
     }
@@ -13,7 +15,7 @@ public class Force {
         return axis;
     }
 
-    public float getForceValue() {
+    public float getValue() {
         return forceValue;
     }
     
@@ -27,15 +29,26 @@ public class Force {
     }
 
     @Override
+    public Force clone(){
+        Force f = new Force(this.axis, this.forceValue);
+        return f;
+    }
+    
+    @Override
     public boolean equals(Object obj) {
         if(! (obj instanceof Force)){
             return false;
         }
         Force f = (Force) obj;
-        if(f.getAxis().equals(this.axis)){
-            return true;
-        }
-        return false;
+        return f.getAxis().equals(this.axis);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.axis);
+        hash = 79 * hash + Float.floatToIntBits(this.forceValue);
+        return hash;
     }
     
     

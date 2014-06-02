@@ -8,10 +8,13 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -31,12 +34,12 @@ public class DrawInterface extends JPanel implements ActionListener {
     private Point selectP1 = null;
     private Point selectP2 = null;
     //Selection variables
-    
+
     //Free drawing variables
     private boolean newNode = false;
     private boolean newEdge = false;
     //Free drawing variables
-    
+
     public DrawInterface() {
         model = Model.getInstance();
         this.addMouseListener(
@@ -47,14 +50,13 @@ public class DrawInterface extends JPanel implements ActionListener {
                             selectP1 = new Point(evt.getPoint());
                             selectP2 = new Point(evt.getPoint());
                         }
-                        if(newNode){
+                        if (newNode) {
                             model.newNode(evt.getPoint());
-                            repaint();
                         }
-                        if(newEdge){
+                        if (newEdge) {
                             model.newEdge(evt.getPoint());
-                            repaint();
                         }
+                        repaint();
                     }
 
                     @Override
@@ -79,6 +81,7 @@ public class DrawInterface extends JPanel implements ActionListener {
                                 MainWindow.getInstance().elemSelected();
                             }
                         }
+
                     }
 
                 });
@@ -89,15 +92,15 @@ public class DrawInterface extends JPanel implements ActionListener {
                     public void mouseDragged(MouseEvent evt) {
                         if (selectNodeMode || selectEdgeMode) {
                             selectP2.setLocation(evt.getPoint());
-                            repaint();
                         }
-                        if(newNode && !model.getSelectedNodes().isEmpty()){
-                            model.getSelectedNodes().get(0).setPos(evt.getPoint());
-                            repaint();
+                        if (newNode) {
+                            if (!model.getSelectedNodes().isEmpty()) {
+                                model.getSelectedNodes().get(0).setPos(evt.getPoint());
+                            }
                         }
+                        repaint();
                     }
                 });
-
     }
 
     @Override
@@ -146,14 +149,27 @@ public class DrawInterface extends JPanel implements ActionListener {
                     g2d.setColor(Color.red);
                 }
             }
-            //g2d.drawString(e.getEdgeNumber()+"", e.getPoints().get(0).x, e.getPoints().get(0).y);
             for (int i = 0; i < e.getPoints().size() - 1; i++) {
 
                 Point p1 = e.getPoints().get(i);
                 Point p2 = e.getPoints().get(i + 1);
                 g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
+
+            g2d.setColor(Color.red);
+
+            g2d.draw(e.getPressureArrow());
+
+            g2d.setColor(Color.blue);
+
+            if (e.getSpringValue() != 0) {
+                for (Shape s : e.getSpringArrow()) {
+                    g2d.draw(s);
+                }
+            }
+
             g2d.setColor(Color.black);
+
         }
 
         for (Node n : nodes) {
@@ -165,7 +181,18 @@ public class DrawInterface extends JPanel implements ActionListener {
             g2d.drawOval(n.getPos().x - nodeSize / 2,
                     n.getPos().y - nodeSize / 2,
                     nodeSize, nodeSize);
+
+            g2d.setColor(Color.green);
+            for(Shape s:n.getForceArrows()){
+                g2d.draw(s);
+            }
+
             g2d.setColor(Color.black);
+            
+            for(Shape s: n.getConstraintArrow()){
+                g2d.draw(s);
+            }
+            
         }
 
     }
@@ -192,17 +219,17 @@ public class DrawInterface extends JPanel implements ActionListener {
         }
         this.selectEdgeMode = mode;
     }
-    
-    public void setNewNode(boolean newNode){
+
+    public void setNewNode(boolean newNode) {
         this.newNode = newNode;
         model.setSelectedNodes(new ArrayList<>());
     }
-    
-    public void setNewEdge(boolean newEdge){
+
+    public void setNewEdge(boolean newEdge) {
         this.newEdge = newEdge;
         model.setSelectedEdges(new ArrayList<>());
     }
-    
+
     public void holdControl() {
         control = true;
     }

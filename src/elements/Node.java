@@ -1,6 +1,9 @@
 package elements;
 
 import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 
 public class Node {
@@ -14,29 +17,150 @@ public class Node {
     private Boolean Rz = false;
     private final int number;
     private ArrayList<Force> forces = new ArrayList<>();
-    private ArrayList<Edge> edges = new ArrayList<>();
+    private final ArrayList<Edge> edges = new ArrayList<>();
 
     public Node(Point pos, int number) {
         this.pos = pos;
         this.number = number;
     }
 
+    public Shape[] getForceArrows() {
+        float xSum = pos.x;
+        float ySum = pos.y;
+        float zSum = 0;
+        float rXSum = pos.x;
+        float rYSum = pos.y;
+        float rZSum = 0;
+        float temp = 0;
+        Shape[] shapes = new Shape[2];
+
+        for (Force f : forces) {
+            temp = (f.getValue() > 0
+                    ? -5 : +5) * ((int) Math.log(Math.abs(f.getValue())));
+            switch (f.getAxis()) {
+                case ("Y"):
+                    ySum += temp;
+                    break;
+                case ("X"):
+                    xSum += temp;
+                    break;
+                case ("Z"):
+                    zSum += temp;
+                    break;
+                case ("RX"):
+                    rXSum += temp;
+                    break;
+                case ("RY"):
+                    rYSum += temp;
+                    break;
+                case ("RZ"):
+                    rZSum += temp;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        shapes[0] = createArrow(xSum, ySum, pos.x, pos.y, false);
+        shapes[1] = createArrow(rXSum, rYSum, pos.x, pos.y, true);
+
+        return shapes;
+    }
+
+    public ArrayList<Shape> getConstraintArrow() {
+        int size = 40;
+        ArrayList<Shape> shapes = new ArrayList<>();
+
+        if (x) {
+            shapes.add(createArrowStroke(pos.x - size, pos.y, pos.x, pos.y, false));
+        }
+        if (y) {
+            shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, false));
+        }
+        if (Rx) {
+            shapes.add(createArrowStroke(pos.x-size, pos.y, pos.x, pos.y, true));
+        }
+        if (Ry) {
+            shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, true));
+        }
+
+        return shapes;
+    }
+
+    protected Shape createArrow(float fx, float fy, float tx, float ty, boolean rot) {
+        int size = 7;
+        float dx = tx - fx;
+        float dy = ty - fy;
+        float D = (float) Math.sqrt(dx * dx + dy * dy);
+        float z = (dx <= 0) ? fx - D : fx + D;
+        float mid = (dx <= 0) ? fx - D / 2 : fx + D / 2;
+        float dec = (dx <= 0) ? size : -size;
+
+        GeneralPath gp = new GeneralPath();
+        gp.moveTo(fx, fy);
+        gp.lineTo(z, fy);
+        gp.lineTo(z + dec, fy - size / 2);
+        gp.moveTo(z, fy);
+        gp.lineTo(z + dec, fy + size / 2);
+
+        if (rot) {
+            gp.moveTo(mid + dec, fy - size / 2);
+            gp.curveTo(mid, fy - size, mid, fy + size, mid + dec, fy + size/2);
+        }
+        double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
+        // transform the shape to follow the line direction
+        return alpha != 0
+                ? gp.createTransformedShape(AffineTransform.getRotateInstance(alpha, fx, fy))
+                : gp;
+    }
+
+    protected Shape createArrowStroke(float fx, float fy, float tx, float ty, boolean rot) {
+        int size = 7;
+        float dx = tx - fx;
+        float dy = ty - fy;
+        float D = (float) Math.sqrt(dx * dx + dy * dy);
+        float z = (dx <= 0) ? fx - D : fx + D;
+        float mid = (dx <= 0) ? fx - D/2 : fx + D/2;
+        float dec = (dx <= 0) ? size : -size;
+        GeneralPath gp = new GeneralPath();
+        // the shape on an horizontal line
+        gp.moveTo(fx, fy - size / 2);
+        gp.lineTo(z + dec, fy - size / 2);
+        gp.lineTo(z + dec, fy - size);
+        gp.lineTo(z, fy);
+        gp.lineTo(z + dec, fy + size);
+        gp.lineTo(z + dec, fy + size / 2);
+        gp.lineTo(fx, fy + size / 2);
+        gp.closePath();
+        
+        if (rot) {
+            gp.moveTo(mid + dec, fy - size);
+            gp.curveTo(mid, fy - 1.5*size, mid, fy + 1.5*size, mid + dec, fy + size);
+        }
+        
+        double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
+        // transform the shape to follow the line direction
+        return alpha != 0
+                ? gp.createTransformedShape(AffineTransform.getRotateInstance(alpha, fx, fy))
+                : gp;
+    }
+
     public ArrayList<Edge> getEdges() {
         return edges;
     }
-    
-    public int edgesSize(){
+
+    public int edgesSize() {
         return edges.size();
     }
-    
-    public void addEdge(Edge e){
+
+    public void addEdge(Edge e) {
         edges.add(e);
     }
-    
-    public void deleteEdge(Edge e){
+
+    public void deleteEdge(Edge e) {
         edges.remove(e);
     }
-    
+
     public ArrayList<Force> getForces() {
         return forces;
     }
