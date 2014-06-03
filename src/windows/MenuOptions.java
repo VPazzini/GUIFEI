@@ -1,6 +1,7 @@
 package windows;
 
 import gui2.DrawInterface;
+import gui2.FileManager;
 import gui2.Model;
 import java.awt.Dimension;
 import java.io.File;
@@ -26,6 +27,8 @@ public class MenuOptions extends javax.swing.JFrame {
         this.springBox.setSelected(draw.isShowSpring());
         this.nodeNameBox.setSelected(draw.isShowNodeName());
         this.elementNameBox.setSelected(draw.isShowElementName());
+        this.printLimitField.setText(model.getFileManager().getPrintLimit()+"");
+        this.saveLimitField.setText(model.getFileManager().getSaveLimit()+"");
         
         
         this.setLocationRelativeTo(null);
@@ -54,6 +57,11 @@ public class MenuOptions extends javax.swing.JFrame {
         springBox = new javax.swing.JCheckBox();
         nodeNameBox = new javax.swing.JCheckBox();
         elementNameBox = new javax.swing.JCheckBox();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        saveLimitField = new javax.swing.JTextField();
+        printLimitField = new javax.swing.JTextField();
         OKButton = new javax.swing.JButton();
 
         jCheckBox1.setText("jCheckBox1");
@@ -91,7 +99,7 @@ public class MenuOptions extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fileLocationField)
-                    .addComponent(fortranLocationField, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                    .addComponent(fortranLocationField, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(changeFileLocButton)
@@ -152,7 +160,7 @@ public class MenuOptions extends javax.swing.JFrame {
                         .addComponent(nodeSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(nodeNameBox)
                     .addComponent(elementNameBox))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(constBox)
                     .addComponent(forceBox, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -188,6 +196,48 @@ public class MenuOptions extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Visual", jPanel2);
 
+        jLabel4.setText("Save Limit");
+
+        jLabel5.setText("Print Limit");
+
+        saveLimitField.setText("1000");
+
+        printLimitField.setText("1000");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(printLimitField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saveLimitField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(399, Short.MAX_VALUE))
+        );
+
+        jPanel3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel4, jLabel5});
+
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(saveLimitField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(printLimitField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(269, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Fortran", jPanel3);
+
         OKButton.setText("OK");
         OKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,7 +249,7 @@ public class MenuOptions extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -242,11 +292,15 @@ public class MenuOptions extends javax.swing.JFrame {
 
     private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
         Model model = Model.getInstance();
+        FileManager fManager = Model.getInstance().getFileManager();
         DrawInterface draw = DrawInterface.getInstance();
         
-        model.getFileManager().setFilePath(new File(fileLocationField.getText()));
-        model.getFileManager().setFortranPath(new File(fortranLocationField.getText()));
-        model.setNodeSize((Integer) nodeSizeSpinner.getValue());
+        fManager.setFilePath(new File(fileLocationField.getText()));
+        fManager.setFortranPath(new File(fortranLocationField.getText()));
+        fManager.setPrintLimit(Integer.parseInt(printLimitField.getText()));
+        fManager.setSaveLimit(Integer.parseInt(saveLimitField.getText()));
+        
+        Model.getInstance().setNodeSize((Integer) nodeSizeSpinner.getValue());
         
         draw.setShowConst(constBox.isSelected());
         draw.setShowForce(forceBox.isSelected());
@@ -273,12 +327,17 @@ public class MenuOptions extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JCheckBox nodeNameBox;
     private javax.swing.JSpinner nodeSizeSpinner;
     private javax.swing.JCheckBox pressureBox;
+    private javax.swing.JTextField printLimitField;
+    private javax.swing.JTextField saveLimitField;
     private javax.swing.JCheckBox springBox;
     // End of variables declaration//GEN-END:variables
 }

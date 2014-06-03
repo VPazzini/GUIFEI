@@ -12,10 +12,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FileManager {
+
+    private int saveLimit = 1000;
+    private int printLimit = 1000;
+    private int isolut = 2;
+
     private double tStart = 0;
     private double tStop = 10;
     private double deltaT = 1;
-    
+
     private int numberNodes = 0;
     private String nodeFile = "node_file.dat";
     private String elemFile = "elem_file.dat";
@@ -23,24 +28,23 @@ public class FileManager {
     private String confFile = "conf_file.dat";
     private File filePath;
     private File fortranPath;
-    
-    
+
     private int NELG = 0;
     private int NMAT = 0;
     private double dO = 0.127;
     private double dI = 0.120;
-    
+
     private double teMod = 0;
     private int tDens = 0;
     private double tPoi = 0;
-    
+
     private int direction = 0;
     private int model = 2;
     private int nFlex = 1;
     private double velocity = 1;
     private double density = 1;
     private double tf = 0.3;
-    
+
     private int iterations = 10;
     private double beta = 0.25;
     private int type_I = 2;
@@ -48,15 +52,15 @@ public class FileManager {
     private double stiffness = 0.555E+07;
     private double diam = 0.127E-01;
     private boolean displayScreen = true;
-    
+
     private final Model modelo;
-    
-    public FileManager(){
+
+    public FileManager() {
         modelo = Model.getInstance();
         filePath = new File(new File(".").getAbsolutePath());
         fortranPath = new File(new File(".").getAbsolutePath());
     }
-    
+
     private void generateNodeFile() {
         ArrayList<Node> nodes = modelo.getNodes();
         if (nodes.isEmpty()) {
@@ -123,6 +127,15 @@ public class FileManager {
         try {
             BufferedWriter output = new BufferedWriter(new FileWriter(file));
             String line;
+            
+            output.write("&SOLUTION\n");
+            line = "ISOLUT=" + isolut
+                    + ", SAVE_LIMIT=" + saveLimit
+                    + ", PRINT_LIMIT=" + printLimit
+                    + ", IFTURB=1"
+                    + ", IFLUID_FLOW=1"
+                    + "\n/\n";
+            output.write(line);
 
             output.write("&TIMING\n");
             line = "TSTART=" + tStart
@@ -266,13 +279,13 @@ public class FileManager {
     }
 
     public boolean setdO(String dO) {
-         double d;
-        try{
+        double d;
+        try {
             d = Double.parseDouble(dO);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
-        if(d <= dI){
+        if (d <= dI) {
             return false;
         }
         this.dO = d;
@@ -285,12 +298,12 @@ public class FileManager {
 
     public boolean setdI(String dI) {
         double d;
-        try{
+        try {
             d = Double.parseDouble(dI);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
-        if(d >= dO){
+        if (d >= dO) {
             return false;
         }
         this.dI = d;
@@ -440,5 +453,21 @@ public class FileManager {
     public void setFortranPath(File fortranPath) {
         this.fortranPath = fortranPath;
     }
-    
+
+    public int getSaveLimit() {
+        return saveLimit;
+    }
+
+    public void setSaveLimit(int saveLimit) {
+        this.saveLimit = saveLimit;
+    }
+
+    public int getPrintLimit() {
+        return printLimit;
+    }
+
+    public void setPrintLimit(int printLimit) {
+        this.printLimit = printLimit;
+    }
+
 }

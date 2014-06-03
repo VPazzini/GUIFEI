@@ -1,0 +1,64 @@
+! Comments that describe your input file
+&SOLUTION
+ISOLUT=2, SAVE_LIMIT=1,PRINT_LIMIT=1,IFTURB=1, IFLUID_FLOW=1
+/
+&DYNAMICS
+IDYNM=1,DAMPING=0.005,INTMETHOD=1
+/
+&TIMING
+TSTART=0., TSTOP=10000.0, DELTAT=1.e-3, gamma=0.5, beta_int=0.25
+/
+&NODELIST
+NNP=11, nodefile='node_file.dat', NELG=1, NMAT=1, elemfile='elem_file.dat', d_o=0.0127, d_i=0.011
+/
+&CONFORCES
+NCONF=1, conffile='conf_file.dat'
+/
+&PRESSURE
+IPRES=1, presfile='pres_file.dat'
+/
+&MATERIAL01
+TEMOD=107E9, TDENS=8000, TPOI=0.25
+/
+&TUBE_BUNDLE
+B_TYPE=1, P_D=1.5
+/
+
+&FLUID_FLOW
+fluid(1,1:6) =1., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(2,1:6) =2., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(3,1:6) =3., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(4,1:6) =4., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(5,1:6) =5., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(6,1:6) =6., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(7,1:6) =7., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(8,1:6) =8., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(9,1:6) =9., 10.0, 2.27, 0.0, 1.0, 0.0
+fluid(10,1:6)=10, 10.0, 2.27, 0.0, 1.0, 0.0
+/
+&TURBULENCE
+  TURB_F1=0.0, TURB_F2=60.0, TURB_dF=0.1, TURB_MODEL=1, CORR_LEN=0.25
+/
+&FLUIDELASTIC
+  FEI_MODEL=1
+  NFLEX=1
+  TURB_LOSS= 0.275 ! Turbulent losses coefficient, h [ND]
+  RFLC= 2.0 ! Relevant length of the fluid constant. L&W
+  VARSTDU= .FALSE. ! Steady State velocity varies along channel
+  VARSTDA= .FALSE. ! Steady State area varies along channel
+  AREAAMP_MODEL= 1 ! 0 - Constant, 1 - Linear, 2- Sigmoid Y&W 93 3 - Modified Sigmoid
+ TIMELAG_MODEL= 2 ! 1 - Original L&W, 2 - L&W '86, 3 - El Bouzidi and Hassan
+/
+&IMPACT
+  ITERATIONS=100000
+  BETA=0.25
+  TYPE_I=2
+  TOLERANCE=0.001
+  STIFF=0.555E+07 ! Stiffness [N/m]
+  DIAM=0.127E-01 ! Diameter [m]
+  DISPTOSCREEN= .TRUE.
+  NODE=1 2 3 7 10
+/
+&OUTPUT_SAVING
+MSAVE_NODES(1) = 11,9,7,6,5
+/
