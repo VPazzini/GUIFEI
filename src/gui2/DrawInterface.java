@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -25,7 +23,6 @@ public class DrawInterface extends JPanel implements ActionListener {
     private Graphics2D g2d;
     private Model model;
 
-    private final int nodeSize = 5;
     private boolean control = false;
 
     //Selection variables
@@ -39,6 +36,13 @@ public class DrawInterface extends JPanel implements ActionListener {
     private boolean newNode = false;
     private boolean newEdge = false;
     //Free drawing variables
+
+    private boolean showConst = true;
+    private boolean showForce = true;
+    private boolean showPressure = true;
+    private boolean showSpring = true;
+    private boolean showNodeName = false;
+    private boolean showElementName = false;
 
     public DrawInterface() {
         model = Model.getInstance();
@@ -156,15 +160,24 @@ public class DrawInterface extends JPanel implements ActionListener {
                 g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
 
+            if (showElementName) {
+                Point mP = e.middlePoint();
+                g2d.drawString(e.getEdgeNumber() + "", mP.x + 5, mP.y - 5);
+            }
+
             g2d.setColor(Color.red);
 
-            g2d.draw(e.getPressureArrow());
+            if (showPressure) {
+                g2d.draw(e.getPressureArrow());
+            }
 
             g2d.setColor(Color.blue);
 
-            if (e.getSpringValue() != 0) {
-                for (Shape s : e.getSpringArrow()) {
-                    g2d.draw(s);
+            if (showSpring) {
+                if (e.getSpringValue() != 0) {
+                    for (Shape s : e.getSpringArrow()) {
+                        g2d.draw(s);
+                    }
                 }
             }
 
@@ -172,27 +185,43 @@ public class DrawInterface extends JPanel implements ActionListener {
 
         }
 
+        int nodeSize = model.getNodeSize();
         for (Node n : nodes) {
             if (model.getSelectedNodes() != null) {
                 if (model.getSelectedNodes().contains(n)) {
                     g2d.setColor(Color.red);
                 }
             }
+
+            if (showNodeName) {
+                g2d.drawString(n.getNumber() + "",
+                        n.getPos().x + nodeSize / 2, n.getPos().y - nodeSize / 2);
+            }
+
             g2d.drawOval(n.getPos().x - nodeSize / 2,
                     n.getPos().y - nodeSize / 2,
                     nodeSize, nodeSize);
 
             g2d.setColor(Color.green);
-            for(Shape s:n.getForceArrows()){
-                g2d.draw(s);
+            if (showForce) {
+                for (Shape s : n.getForceArrows()) {
+                    g2d.draw(s);
+                }
             }
 
             g2d.setColor(Color.black);
-            
-            for(Shape s: n.getConstraintArrow()){
-                g2d.draw(s);
+
+            if (showConst) {
+                for (Shape s : n.getConstraintArrow()) {
+                    g2d.draw(s);
+                }
+                if (n.isZ()) {
+                    g2d.draw3DRect(n.getPos().x - nodeSize / 2,
+                            n.getPos().y - nodeSize / 2,
+                            nodeSize, nodeSize, false);
+                }
             }
-            
+
         }
 
     }
@@ -236,6 +265,54 @@ public class DrawInterface extends JPanel implements ActionListener {
 
     public void releaseControl() {
         control = false;
+    }
+
+    public boolean isShowConst() {
+        return showConst;
+    }
+
+    public void setShowConst(boolean showConst) {
+        this.showConst = showConst;
+    }
+
+    public boolean isShowForce() {
+        return showForce;
+    }
+
+    public void setShowForce(boolean showForce) {
+        this.showForce = showForce;
+    }
+
+    public boolean isShowPressure() {
+        return showPressure;
+    }
+
+    public void setShowPressure(boolean showPressure) {
+        this.showPressure = showPressure;
+    }
+
+    public boolean isShowSpring() {
+        return showSpring;
+    }
+
+    public void setShowSpring(boolean showSpring) {
+        this.showSpring = showSpring;
+    }
+
+    public boolean isShowNodeName() {
+        return showNodeName;
+    }
+
+    public void setShowNodeName(boolean showNodeName) {
+        this.showNodeName = showNodeName;
+    }
+
+    public boolean isShowElementName() {
+        return showElementName;
+    }
+
+    public void setShowElementName(boolean showElementName) {
+        this.showElementName = showElementName;
     }
 
 }

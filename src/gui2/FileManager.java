@@ -21,7 +21,10 @@ public class FileManager {
     private String elemFile = "elem_file.dat";
     private String inputFile = "input.dat";
     private String confFile = "conf_file.dat";
-    File filePath;
+    private File filePath;
+    private File fortranPath;
+    
+    
     private int NELG = 0;
     private int NMAT = 0;
     private double dO = 0.127;
@@ -51,6 +54,7 @@ public class FileManager {
     public FileManager(){
         modelo = Model.getInstance();
         filePath = new File(new File(".").getAbsolutePath());
+        fortranPath = new File(new File(".").getAbsolutePath());
     }
     
     private void generateNodeFile() {
@@ -427,6 +431,14 @@ public class FileManager {
 
     public void setFilePath(File filePath) {
         this.filePath = filePath;
+    }
+
+    public File getFortranPath() {
+        return fortranPath;
+    }
+
+    public void setFortranPath(File fortranPath) {
+        this.fortranPath = fortranPath;
     }
     
 }

@@ -22,7 +22,7 @@ public class Model {
     private static final Model model = new Model();
     private ArrayList<Node> nodes = new ArrayList<>();
     private ArrayList<Edge> edges = new ArrayList<>();
-    private final int nodeSize = 20;
+    private int nodeSize = 5;
     private int nodeNumber = 1;
     private int edgeNumber = 1;
     private final FileManager fileManager = new FileManager();
@@ -564,6 +564,14 @@ public class Model {
             selectedEdges.remove(0);
         }
         DrawInterface.getInstance().repaint();
+    }
+
+    public int getNodeSize() {
+        return nodeSize;
+    }
+
+    public void setNodeSize(int nodeSize) {
+        this.nodeSize = nodeSize;
     }
 
 }

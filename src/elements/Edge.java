@@ -210,7 +210,7 @@ public class Edge {
         this.pressureValue = pressureValue;
     }
 
-    public Shape getPressureArrow() {
+    public Point middlePoint() {
 
         double totalLength = getLength();
         double elem = totalLength / 2;
@@ -231,6 +231,12 @@ public class Edge {
             }
 
         }
+        return split;
+    }
+
+    public Shape getPressureArrow() {
+
+        Point split = middlePoint();
 
         double x = split.x;
         double y = split.y;
@@ -252,11 +258,11 @@ public class Edge {
     }
 
     public Shape[] getSpringArrow() {
-        
-        if(springValue == 0){
+
+        if (springValue == 0) {
             return null;
         }
-        
+
         double totalLength = getLength();
         double elem = totalLength / 5;
         double distance = 0;
@@ -293,7 +299,7 @@ public class Edge {
 
             }
 
-            arrows[i++] = createArrow((float)x, (float)y,
+            arrows[i++] = createArrow((float) x, (float) y,
                     p.x, p.y);
         }
         return arrows;

@@ -31,7 +31,7 @@ public class Node {
         float rXSum = pos.x;
         float rYSum = pos.y;
         float rZSum = 0;
-        float temp = 0;
+        float temp;
         Shape[] shapes = new Shape[2];
 
         for (Force f : forces) {
@@ -76,6 +76,9 @@ public class Node {
         }
         if (y) {
             shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, false));
+        }
+        if (z) {
+            //shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, false));
         }
         if (Rx) {
             shapes.add(createArrowStroke(pos.x-size, pos.y, pos.x, pos.y, true));
