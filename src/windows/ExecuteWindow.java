@@ -13,20 +13,19 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 public class ExecuteWindow extends javax.swing.JFrame {
-    
+
     JEditorPane pane = new JEditorPane();
     JScrollPane scrollPane = new JScrollPane();
-    
-    public ExecuteWindow() {
+
+    public ExecuteWindow() throws IOException, InterruptedException {
         initComponents();
         this.scrollPane.setViewportView(pane);
         this.add(scrollPane);
-        
+
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         run();
     }
-   
 
     private void append(String s) {
         try {
@@ -37,28 +36,22 @@ public class ExecuteWindow extends javax.swing.JFrame {
         }
     }
 
-    private void run() {
-        try {
-            String command = Model.getInstance().getFileManager().getFortranPath().getAbsolutePath();
+    private void run() throws IOException, InterruptedException {
+        String command = Model.getInstance().getFileManager().getFortranPath().getAbsolutePath();
 
-            Process proc = Runtime.getRuntime().exec(command);
+        Process proc = Runtime.getRuntime().exec(command);
 
-            BufferedReader reader
-                    = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        BufferedReader reader
+                = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                //System.out.print(line + "\n");
-                append(line+"\n");
-            }
-
-            proc.waitFor();
-        } catch (IOException ex) {
-            System.out.println("ERROR");
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        String line = "";
+        while ((line = reader.readLine()) != null) {
+            //System.out.print(line + "\n");
+            append(line + "\n");
         }
+
+        proc.waitFor();
+
     }
 
     @SuppressWarnings("unchecked")

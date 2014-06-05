@@ -84,17 +84,6 @@ public class Model {
         double distance = 0;
         int j = 0;
 
-        int numLargeElem = ((numNodesCurve - 1) / 4);
-        int numSmallElem = (numNodesCurve - 1) - 2 * numLargeElem;
-
-        double scale = 1.4;
-        double smallElem = (totalLength - 2 * numLargeElem * elem2 * scale) / numSmallElem;
-        //System.out.println(numLargeElem + " " + numSmallElem);
-
-        if (numLargeElem > 0) {
-            elem = elem2 * scale;
-        }
-
         for (int i = 0; i < edge.getPoints().size() - 1; i++) {
             Point p1 = edge.getPoints().get(i);
             Point p2 = edge.getPoints().get(i + 1);
@@ -107,13 +96,6 @@ public class Model {
                 distance = distance - elem;
                 splitPoints.add(split);
                 j++;
-                if (numLargeElem > 0) {
-                    if (j < numLargeElem || ((numNodesCurve - 2) - j) < numLargeElem) {
-                        elem = elem2 * scale;
-                    } else {
-                        elem = smallElem;
-                    }
-                }
             }
 
         }
