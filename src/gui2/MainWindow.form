@@ -112,7 +112,7 @@
             <Component class="javax.swing.JTree" name="optionsTree">
               <Properties>
                 <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-                  <TreeModel code="Options&#xa; Pre-Processor&#xa;  Element&#xa;   Geometry&#xa;   Material&#xa; Tube Configuration&#xa;  Library&#xa;   U bend&#xa;   Straight&#xa;  Free&#xa;   Node&#xa;   Element&#xa; Solution&#xa;  Apply&#xa;   Constraint&#xa;   Force&#xa;   Pressure&#xa;   Spring&#xa;  Fluid Flow&#xa;   Add Group&#xa;  Flow Excitation&#xa;   Geometry&#xa;   Turbulence&#xa;   FEI&#xa;  Solution Typo"/>
+                  <TreeModel code="Options&#xa; Pre-Processor&#xa;  Element&#xa;   Geometry&#xa;   Material&#xa; Tube Configuration&#xa;  Library&#xa;   U bend&#xa;   Straight&#xa;  Free&#xa;   Node&#xa;   Element&#xa; Solution&#xa;  Apply&#xa;   Constraint&#xa;   Force&#xa;   Pressure&#xa;   Spring&#xa;  Fluid Flow&#xa;   Add Group&#xa;   Geometry&#xa;   Turbulence&#xa;   FEI&#xa;  Solution Typo"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>

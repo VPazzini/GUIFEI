@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 import windows.ExecuteWindow;
@@ -127,8 +128,6 @@ public class MainWindow extends javax.swing.JFrame {
         treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Fluid Flow");
         treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Add Group");
         treeNode3.add(treeNode4);
-        treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Flow Excitation");
         treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Geometry");
         treeNode3.add(treeNode4);
         treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Turbulence");
@@ -232,7 +231,7 @@ public class MainWindow extends javax.swing.JFrame {
         try {
             new ExecuteWindow();
         } catch (Exception ex) {
-            //new window
+            //
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -256,7 +255,7 @@ public class MainWindow extends javax.swing.JFrame {
                     drawInterf.setSelectionEdgeMode(false);
                     new Geometry();
                 }
-                if (node.getParent().toString().equals("Flow Excitation")) {
+                if (node.getParent().toString().equals("Fluid Flow")) {
                     drawInterf.setSelectionNodeMode(false);
                     drawInterf.setSelectionEdgeMode(false);
                     new FlowGeometry(new JFrame(), true);
