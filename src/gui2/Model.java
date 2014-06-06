@@ -106,6 +106,33 @@ public class Model {
 
     }
 
+    public void drawUbend(int length, int radius) {
+        Path2D.Double path = new Path2D.Double();
+        int ix = 100;
+        int iy = 50;
+        path.moveTo(ix + length, iy);
+        path.curveTo(ix + length + radius, iy, ix + length + radius,
+                iy + radius, ix + length, iy + radius);
+        FlatteningPathIterator f = new FlatteningPathIterator(
+                path.getPathIterator(new AffineTransform()), 1);
+
+        Node n1 = new Node(new Point(ix,iy),nodeNumber++);
+        Node n2 = new Node(new Point(ix,iy+radius),nodeNumber++);
+        nodes.add(n1);
+        nodes.add(n2);
+
+        Edge edge = newEdge(n1, n2);
+
+        float[] coords = new float[6];
+        while (!f.isDone()) {
+            f.currentSegment(coords);
+            int x = (int) coords[0];
+            int y = (int) coords[1];
+            edge.insertPoint(new Point(x, y));
+            f.next();
+        }
+    }
+
     public Point interpolationByDistance(Point p1, Point p2, double d) {
         double len = p1.distance(p2);
         double ratio = d / len;
