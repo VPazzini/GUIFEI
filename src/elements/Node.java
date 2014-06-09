@@ -8,16 +8,16 @@ import java.util.ArrayList;
 
 public class Node {
 
-    private Point pos;
+    protected Point pos;
     private Boolean x = false;
     private Boolean y = false;
     private Boolean z = false;
     private Boolean Rx = false;
     private Boolean Ry = false;
     private Boolean Rz = false;
-    private final int number;
+    protected final int number;
     private ArrayList<Force> forces = new ArrayList<>();
-    private final ArrayList<Edge> edges = new ArrayList<>();
+    protected final ArrayList<Edge> edges = new ArrayList<>();
 
     public Node(Point pos, int number) {
         this.pos = pos;
@@ -81,7 +81,7 @@ public class Node {
             //shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, false));
         }
         if (Rx) {
-            shapes.add(createArrowStroke(pos.x-size, pos.y, pos.x, pos.y, true));
+            shapes.add(createArrowStroke(pos.x - size, pos.y, pos.x, pos.y, true));
         }
         if (Ry) {
             shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, true));
@@ -108,7 +108,7 @@ public class Node {
 
         if (rot) {
             gp.moveTo(mid + dec, fy - size / 2);
-            gp.curveTo(mid, fy - size, mid, fy + size, mid + dec, fy + size/2);
+            gp.curveTo(mid, fy - size, mid, fy + size, mid + dec, fy + size / 2);
         }
         double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
         // transform the shape to follow the line direction
@@ -123,7 +123,7 @@ public class Node {
         float dy = ty - fy;
         float D = (float) Math.sqrt(dx * dx + dy * dy);
         float z = (dx <= 0) ? fx - D : fx + D;
-        float mid = (dx <= 0) ? fx - D/2 : fx + D/2;
+        float mid = (dx <= 0) ? fx - D / 2 : fx + D / 2;
         float dec = (dx <= 0) ? size : -size;
         GeneralPath gp = new GeneralPath();
         // the shape on an horizontal line
@@ -135,12 +135,12 @@ public class Node {
         gp.lineTo(z + dec, fy + size / 2);
         gp.lineTo(fx, fy + size / 2);
         gp.closePath();
-        
+
         if (rot) {
             gp.moveTo(mid + dec, fy - size);
-            gp.curveTo(mid, fy - 1.5*size, mid, fy + 1.5*size, mid + dec, fy + size);
+            gp.curveTo(mid, fy - 1.5 * size, mid, fy + 1.5 * size, mid + dec, fy + size);
         }
-        
+
         double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
         // transform the shape to follow the line direction
         return alpha != 0
@@ -158,6 +158,10 @@ public class Node {
 
     public void addEdge(Edge e) {
         edges.add(e);
+    }
+
+    public void addEdge(int index, Edge e) {
+        edges.add(index, e);
     }
 
     public void deleteEdge(Edge e) {

@@ -2,10 +2,11 @@ package windows;
 
 import gui2.DrawInterface;
 import gui2.Model;
+import java.awt.Color;
 
 public class StraightLine extends javax.swing.JFrame {
 
-    private Model model;
+    private final Model model;
 
     public StraightLine() {
         initComponents();
@@ -22,8 +23,6 @@ public class StraightLine extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextLength = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jSpinnerNodes = new javax.swing.JSpinner();
         jButtonTry = new javax.swing.JButton();
         jButtonDone = new javax.swing.JButton();
 
@@ -34,15 +33,6 @@ public class StraightLine extends javax.swing.JFrame {
         jLabel1.setText("Length");
 
         jTextLength.setText("800");
-
-        jLabel2.setText("Nodes");
-
-        jSpinnerNodes.setModel(new javax.swing.SpinnerNumberModel(10, 2, 100, 1));
-        jSpinnerNodes.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSpinnerNodesStateChanged(evt);
-            }
-        });
 
         jButtonTry.setText("Try");
         jButtonTry.addActionListener(new java.awt.event.ActionListener() {
@@ -64,18 +54,16 @@ public class StraightLine extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonDone, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButtonTry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextLength)
-                                .addComponent(jSpinnerNodes, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonTry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextLength, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))))
+                    .addComponent(jButtonDone, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -85,15 +73,11 @@ public class StraightLine extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jSpinnerNodes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonTry)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonDone)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,36 +99,32 @@ public class StraightLine extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonTryActionPerformed
 
     private void jButtonDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDoneActionPerformed
-        this.tryButton();
-        this.dispose();
+        if (this.tryButton()) {
+            this.dispose();
+        }
     }//GEN-LAST:event_jButtonDoneActionPerformed
 
-    private void jSpinnerNodesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerNodesStateChanged
-        this.tryButton();
-    }//GEN-LAST:event_jSpinnerNodesStateChanged
-
-    private void tryButton(){
+    private boolean tryButton() {
         this.model.deleteAll();
         int length = 100;
-        int numNodes = 2;
         try {
+            jLabel1.setForeground(Color.black);
             length = Integer.parseInt(this.jTextLength.getText());
-            numNodes = (int) this.jSpinnerNodes.getValue();
+            model.drawLine(length);
+            DrawInterface.getInstance().repaint();
         } catch (NumberFormatException e) {
-            System.out.println(e);
+            jLabel1.setForeground(Color.red);
+            return false;
         }
-        model.drawLine(length, numNodes);
-        
-        DrawInterface.getInstance().repaint();
+        return true;
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDone;
     private javax.swing.JButton jButtonTry;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSpinner jSpinnerNodes;
     private javax.swing.JTextField jTextLength;
     // End of variables declaration//GEN-END:variables
 }

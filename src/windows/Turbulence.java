@@ -16,8 +16,6 @@ public class Turbulence extends javax.swing.JFrame {
 
         this.setVisible(true);
 
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
         resultList = new DefaultListModel();
         groupsList.setModel(resultList);
         attList();

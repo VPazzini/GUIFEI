@@ -3,6 +3,7 @@ package gui2;
 import elements.Edge;
 import elements.Group;
 import elements.Node;
+import elements.Support;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -16,6 +17,7 @@ import windows.FluidFlow;
 import windows.ForcesWindow;
 import windows.Pressure;
 import windows.Spring;
+import windows.SupportParameters;
 
 public class Model {
 
@@ -33,80 +35,28 @@ public class Model {
     //group of elements
     private final ArrayList<Group> groups = new ArrayList<>();
     //group of elements
-
-    public Node drawLine(int length, int numNodes, int ix, int iy) {
-        double elem = (length / (numNodes - 1));
+    
+    //Meshing
+    private boolean meshed = false;
+    //Meshing
+    
+    public Node drawLine(int length, int ix, int iy) {
+        meshed = false;
         Node n1 = new Node(new Point(ix, iy), nodeNumber++);
         Node n2 = new Node(new Point(ix + length, iy), nodeNumber++);
         newEdge(n1, n2);
         nodes.add(n1);
         nodes.add(n2);
-        for (int i = 0; i < numNodes - 2; i++) {
-            double x = (ix + (i + 1) * elem);
-            Point p = new Point((int) x, iy);
-            this.splitEdge(p);
-        }
+
         return n2;
     }
 
-    public void drawLine(int length, int numNodes) {
-        drawLine(length, numNodes, 100, 50);
-    }
-
-    public void drawUbend(int length, int width, int radius, int numNodesCurve, int numNodesLine) {
-        Path2D.Double path = new Path2D.Double();
-        int ix = 100;
-        int iy = 50;
-        path.moveTo(ix + length, iy);
-        path.curveTo(ix + length + radius, iy, ix + length + radius,
-                iy + width, ix + length, iy + width);
-        FlatteningPathIterator f = new FlatteningPathIterator(
-                path.getPathIterator(new AffineTransform()), 1);
-
-        Node n1 = drawLine(length, numNodesLine, ix, iy);
-        Node n2 = drawLine(length, numNodesLine, ix, iy + width);
-
-        Edge edge = newEdge(n1, n2);
-
-        float[] coords = new float[6];
-        while (!f.isDone()) {
-            f.currentSegment(coords);
-            int x = (int) coords[0];
-            int y = (int) coords[1];
-            edge.insertPoint(new Point(x, y));
-            f.next();
-        }
-
-        ArrayList<Point> splitPoints = new ArrayList<>();
-        double totalLength = edge.getLength();
-        double elem = totalLength / (numNodesCurve - 1);
-        double elem2 = elem;
-        double distance = 0;
-        int j = 0;
-
-        for (int i = 0; i < edge.getPoints().size() - 1; i++) {
-            Point p1 = edge.getPoints().get(i);
-            Point p2 = edge.getPoints().get(i + 1);
-            distance += p1.distance(p2);
-
-            while ((distance - 1) > elem) {
-
-                int dist = (int) (elem - (distance - p1.distance(p2)));
-                Point split = interpolationByDistance(p1, p2, dist);
-                distance = distance - elem;
-                splitPoints.add(split);
-                j++;
-            }
-
-        }
-
-        for (Point sPoint : splitPoints) {
-            this.splitEdge(sPoint);
-        }
-
+    public void drawLine(int length) {
+        drawLine(length, 100, 50);
     }
 
     public void drawUbend(int length, int radius) {
+        meshed = false;
         Path2D.Double path = new Path2D.Double();
         int ix = 100;
         int iy = 50;
@@ -116,8 +66,8 @@ public class Model {
         FlatteningPathIterator f = new FlatteningPathIterator(
                 path.getPathIterator(new AffineTransform()), 1);
 
-        Node n1 = new Node(new Point(ix,iy),nodeNumber++);
-        Node n2 = new Node(new Point(ix,iy+radius),nodeNumber++);
+        Node n1 = new Node(new Point(ix, iy), nodeNumber++);
+        Node n2 = new Node(new Point(ix, iy + radius), nodeNumber++);
         nodes.add(n1);
         nodes.add(n2);
 
@@ -141,22 +91,34 @@ public class Model {
         return (new Point(x, y));
     }
 
-    private void splitEdge(Point p) {
+    private void splitEdge(Point p, boolean isNode) {
         Edge newEdge = null;
+        int index = 0;
+        int i = 0;
         for (Edge e : edges) {
-            if (e.belongToEdge(p)) {
-                Node n = new Node(p, nodeNumber++);
-                nodes.add(n);
-                newEdge = e.splitEdge(p, n, edgeNumber++);
+            if (e.contains(p)) {
+                Node n;
+                if (isNode) {
+                    n = new Node(p, nodeNumber++);
 
-                n.addEdge(newEdge);
-                n.addEdge(e);
+                    nodes.add(n);
+                    newEdge = e.splitEdge(p, n, edgeNumber++);
 
+                    index = i + 1;
+
+                    n.addEdge(e);
+                    n.addEdge(newEdge);
+                } else {
+                    n = new Support(p, nodeNumber++);
+                    e.addSupport(p, (Support) n);
+                    nodes.add(n);
+                }
                 break;
             }
+            i++;
         }
         if (newEdge != null) {
-            edges.add(newEdge);
+            edges.add(index, newEdge);
         }
     }
 
@@ -167,10 +129,23 @@ public class Model {
      * @param p is the point used to find a Node
      * @return Closest Node to the given point, considering a limit boundary
      */
-    private Node getNode(Point p) {
+    public Node getNode(Point p) {
         for (Node n : nodes) {
             if (isInside(n, p)) {
-                return n;
+                if (!(n instanceof Support)) {
+                    return n;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Support getSupport(Point p) {
+        for (Node n : nodes) {
+            if (isInside(n, p)) {
+                if (n instanceof Support) {
+                    return (Support) n;
+                }
             }
         }
         return null;
@@ -327,6 +302,44 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    public void addSupport() {
+        JDialog rest = new JDialog();
+        rest.setSize(190, 240);
+        rest.setModal(true);
+        rest.setResizable(false);
+        rest.setLocationRelativeTo(null);
+
+        ArrayList<Support> supports = new ArrayList<>();
+
+        for (Node n : selectedNodes) {
+            if (n instanceof Support) {
+                supports.add((Support) n);
+            }
+        }
+
+        Node temp;
+        SupportParameters r = new SupportParameters(rest);
+        if (supports.size() == 1) {
+            temp = supports.get(0);
+            rest.setTitle("Support " + temp.getNumber());
+            r = new SupportParameters(rest, (Support) temp);
+
+        } else {
+            rest.setTitle(supports.size() + " Supports");
+        }
+
+        rest.add(r);
+
+        rest.setVisible(true);
+
+        for (Support t : supports) {
+            System.out.println("yeah");
+        }
+
+        selectedNodes = new ArrayList<>();
+        DrawInterface.getInstance().repaint();
+    }
+
     public void addSpring() {
         JDialog rest = new JDialog();
         rest.setSize(190, 240);
@@ -449,8 +462,8 @@ public class Model {
         Node n = getNode(p1);
         if (n == null) {
             for (Edge e : edges) {
-                if (e.belongToEdge(p1)) {
-                    splitEdge(p1);
+                if (e.contains(p1)) {
+                    splitEdge(p1, true);
                     return;
                 }
             }
@@ -466,10 +479,31 @@ public class Model {
         }
     }
 
+    public void newSupport(Point p1) {
+        Support s = getSupport(p1);
+        if (s == null) {
+            for (Edge e : edges) {
+                if (e.contains(p1)) {
+                    splitEdge(p1, false);
+                    return;
+                }
+            }
+            nodes.add(new Support(p1, nodeNumber++));
+        } else {
+            if (selectedNodes.isEmpty()) {
+                selectedNodes.add(s);
+            } else {
+                if (!selectedNodes.remove(s)) {
+                    selectedNodes.add(s);
+                }
+            }
+        }
+    }
+
     public void newEdge(Point p) {
 
         for (Edge e : edges) {
-            if (e.belongToEdge(p)) {
+            if (e.contains(p)) {
                 if (!selectedEdges.remove(e)) {
                     selectedEdges.add(e);
                 }
@@ -581,6 +615,54 @@ public class Model {
 
     public void setNodeSize(int nodeSize) {
         this.nodeSize = nodeSize;
+    }
+
+    public void mesh(double maxElemLength) {
+        meshed = true;
+        ArrayList<Point> suppPoints = new ArrayList<>();
+        for (Node n : nodes) {
+            if (n instanceof Support) {
+                suppPoints.add(n.getPos());
+            }
+        }
+        for (Point p : suppPoints) {
+            splitEdge(p, true);
+        }
+
+        ArrayList<Point> splitPoints = new ArrayList<>();
+        for (Edge edge : edges) {
+
+            double totalLength = edge.getLength();
+            int numNodesCurve = ((int) Math.floor(totalLength / maxElemLength)) + 1;
+            double elem = totalLength / (numNodesCurve - 1);
+            double distance = 0;
+            int j = 0;
+
+            for (int i = 0; i < edge.getPoints().size() - 1; i++) {
+                Point p1 = edge.getPoints().get(i);
+                Point p2 = edge.getPoints().get(i + 1);
+                distance += p1.distance(p2);
+
+                while ((distance - 1) > elem) {
+
+                    int dist = (int) (elem - (distance - p1.distance(p2)));
+                    Point split = interpolationByDistance(p1, p2, dist);
+                    distance = distance - elem;
+                    splitPoints.add(split);
+                    j++;
+                }
+
+            }
+        }
+
+        for (Point sPoint : splitPoints) {
+            this.splitEdge(sPoint, true);
+        }
+        DrawInterface.getInstance().repaint();
+    }
+
+    public boolean isMeshed() {
+        return meshed;
     }
 
 }

@@ -71,7 +71,7 @@ public class Edge {
         }
     }
 
-    public boolean belongToEdge(Point p) {
+    public boolean contains(Point p) {
         Point p1 = new Point();
         Point p2 = new Point();
         for (int i = 0; i < points.size() - 1; i++) {
@@ -88,6 +88,56 @@ public class Edge {
 
         }
         return false;
+    }
+
+    public Point[] getSegment(Point p) {
+        Point p1 = new Point();
+        Point p2 = new Point();
+        for (int i = 0; i < points.size() - 1; i++) {
+            p1.setLocation(points.get(i));
+            p2.setLocation(points.get(i + 1));
+
+            Point closePoint = getClosestPointOnSegment(p1.x, p1.y, p2.x, p2.y, p.x, p.y);
+            if (closePoint == null) {
+                return null;
+            }
+            if (closePoint.distance(p) < 10) {
+                Point[] seg = new Point[2];
+                seg[0] = p1;
+                seg[1] = p2;
+                return seg;
+            }
+
+        }
+        return null;
+    }
+
+    public Point getClosestPointOnSegment(Point p) {
+        Point p1, p2;
+
+        int div = 0;
+        int closeDist = 10;
+        Point closestPoint = null;
+
+        for (int i = 0; i < points.size() - 1; i++) {
+            p1 = points.get(i);
+            p2 = points.get(i + 1);
+
+            Point closePoint = getClosestPointOnSegment(p1.x, p1.y, p2.x, p2.y, p.x, p.y);
+
+            if (closePoint.distance(p) < closeDist) {
+                closeDist = (int) closePoint.distance(p);
+                div = i;
+                closestPoint = closePoint;
+            }
+        }
+        return closestPoint;
+    }
+
+    public void addSupport(Point p, Support supp) {
+        Point closestPoint = getClosestPointOnSegment(p);
+
+        supp.setPos(closestPoint);
     }
 
     public Edge splitEdge(Point p, Node newNode, int edgeNumber) {
@@ -119,6 +169,9 @@ public class Edge {
             newEdge.insertPoint(rPoint);
         }
         this.points.add(closestPoint);
+
+        this.node2.deleteEdge(this);
+        this.node2.addEdge(0, newEdge);
         this.node2 = newNode;
 
         return newEdge;
@@ -144,6 +197,62 @@ public class Edge {
         }
 
         return closestPoint;
+    }
+
+    public double distance(Point p) {
+        double distance1 = 0;
+        double distance2 = 0;
+        Point p1, p2;
+
+        for (int i = 0; i < points.size() - 1; i++) {
+            p1 = points.get(i);
+            p2 = points.get(i + 1);
+
+            Point closePoint = getClosestPointOnSegment(p1.x, p1.y, p2.x, p2.y, p.x, p.y);
+            System.out.println(closePoint.distance(p));
+            if (closePoint.distance(p) < 5) {
+                distance1 += p1.distance(p);
+                break;
+            } else {
+                distance1 += p1.distance(p2);
+            }
+        }
+
+        for (int i = points.size() - 1; i > 0; i--) {
+            p1 = points.get(i);
+            p2 = points.get(i - 1);
+
+            Point closePoint = getClosestPointOnSegment(p1.x, p1.y, p2.x, p2.y, p.x, p.y);
+
+            if (closePoint.distance(p) < p1.distance(p2)) {
+                distance2 += p1.distance(p);
+                break;
+            } else {
+                distance2 += p1.distance(p2);
+            }
+        }
+
+        return Math.min(distance1, distance2);
+    }
+
+    public Point distance(double length) {
+        double elem = length;
+        double distance = 0;
+
+        for (int i = 0; i < getPoints().size() - 1; i++) {
+            Point p1 = getPoints().get(i);
+            Point p2 = getPoints().get(i + 1);
+            distance += p1.distance(p2);
+
+            if (distance >= elem) {
+                double dist = (elem - (distance - p1.distance(p2)));
+                Point split = interpolationByDistance(p1, p2, dist);
+                
+                return split;
+            }
+
+        }
+        return null;
     }
 
     public int[] getSpringUnitVector() {
@@ -237,6 +346,10 @@ public class Edge {
     public Shape getPressureArrow() {
 
         Point split = middlePoint();
+
+        if (split == null) {
+            return null;
+        }
 
         double x = split.x;
         double y = split.y;

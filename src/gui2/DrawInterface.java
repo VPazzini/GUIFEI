@@ -2,6 +2,7 @@ package gui2;
 
 import elements.Edge;
 import elements.Node;
+import elements.Support;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import windows.SupportLocation;
 
 public class DrawInterface extends JPanel implements ActionListener {
 
@@ -35,6 +37,7 @@ public class DrawInterface extends JPanel implements ActionListener {
     //Free drawing variables
     private boolean newNode = false;
     private boolean newEdge = false;
+    private boolean newSupport = false;
     //Free drawing variables
 
     private boolean showConst = true;
@@ -50,15 +53,29 @@ public class DrawInterface extends JPanel implements ActionListener {
                 new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent evt) {
-                        if (selectNodeMode || selectEdgeMode) {
-                            selectP1 = new Point(evt.getPoint());
-                            selectP2 = new Point(evt.getPoint());
+                        if (evt.getButton() == MouseEvent.BUTTON1) {
+                            if (selectNodeMode || selectEdgeMode) {
+                                selectP1 = new Point(evt.getPoint());
+                                selectP2 = new Point(evt.getPoint());
+                            }
+                            if (newNode) {
+                                model.newNode(evt.getPoint());
+                            }
+                            if (newEdge) {
+                                model.newEdge(evt.getPoint());
+                            }
+                            if (newSupport) {
+                                model.newSupport(evt.getPoint());
+                            }
                         }
-                        if (newNode) {
-                            model.newNode(evt.getPoint());
-                        }
-                        if (newEdge) {
-                            model.newEdge(evt.getPoint());
+                        if (evt.getButton() == MouseEvent.BUTTON3) {
+                            if (newSupport) {
+                                Support s = model.getSupport(evt.getPoint());
+                                if (s != null) {
+                                    new SupportLocation(s);
+                                }
+                            }
+
                         }
                         repaint();
                     }
@@ -97,7 +114,7 @@ public class DrawInterface extends JPanel implements ActionListener {
                         if (selectNodeMode || selectEdgeMode) {
                             selectP2.setLocation(evt.getPoint());
                         }
-                        if (newNode) {
+                        if (newNode || newSupport) {
                             if (!model.getSelectedNodes().isEmpty()) {
                                 model.getSelectedNodes().get(0).setPos(evt.getPoint());
                             }
@@ -168,7 +185,10 @@ public class DrawInterface extends JPanel implements ActionListener {
             g2d.setColor(Color.red);
 
             if (showPressure) {
-                g2d.draw(e.getPressureArrow());
+                Shape s = e.getPressureArrow();
+                if (s != null) {
+                    g2d.draw(s);
+                }
             }
 
             g2d.setColor(Color.blue);
@@ -198,10 +218,16 @@ public class DrawInterface extends JPanel implements ActionListener {
                         n.getPos().x + nodeSize / 2, n.getPos().y - nodeSize / 2);
             }
 
-            g2d.drawOval(n.getPos().x - nodeSize / 2,
-                    n.getPos().y - nodeSize / 2,
-                    nodeSize, nodeSize);
-
+            if (n instanceof Support) {
+                /*g2d.draw3DRect(n.getPos().x - nodeSize / 2,
+                 n.getPos().y - nodeSize / 2,
+                 nodeSize, nodeSize, false);*/
+                g2d.draw(((Support) n).getSupportShape());
+            } else {
+                g2d.drawOval(n.getPos().x - nodeSize / 2,
+                        n.getPos().y - nodeSize / 2,
+                        nodeSize, nodeSize);
+            }
             g2d.setColor(Color.green);
             if (showForce) {
                 for (Shape s : n.getForceArrows()) {
@@ -251,6 +277,11 @@ public class DrawInterface extends JPanel implements ActionListener {
 
     public void setNewNode(boolean newNode) {
         this.newNode = newNode;
+        model.setSelectedNodes(new ArrayList<>());
+    }
+
+    public void setNewSupport(boolean newSupport) {
+        this.newSupport = newSupport;
         model.setSelectedNodes(new ArrayList<>());
     }
 

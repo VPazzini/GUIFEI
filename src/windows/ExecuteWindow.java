@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -17,14 +18,18 @@ public class ExecuteWindow extends javax.swing.JFrame {
     JEditorPane pane = new JEditorPane();
     JScrollPane scrollPane = new JScrollPane();
 
-    public ExecuteWindow() throws IOException, InterruptedException {
+    public ExecuteWindow(){
         initComponents();
         this.scrollPane.setViewportView(pane);
         this.add(scrollPane);
 
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
-        run();
+        try {
+            run();
+            this.setVisible(true);
+        } catch (IOException | InterruptedException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
     }
 
     private void append(String s) {

@@ -2,20 +2,18 @@ package gui2;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import windows.ExecuteWindow;
+import windows.FEI;
 import windows.FlowGeometry;
 import windows.Geometry;
 import windows.Material;
 import windows.MenuOptions;
+import windows.Meshing;
 import windows.SolutionTypo;
 import windows.StraightLine;
 import windows.Turbulence;
@@ -57,6 +55,9 @@ public class MainWindow extends javax.swing.JFrame {
                             String name = node.toString();
                             switch (name) {
                                 case ("Node"):
+                                    model.deleteNode();
+                                    break;
+                                case ("Loose Support"):
                                     model.deleteNode();
                                     break;
                                 case ("Element"):
@@ -115,7 +116,13 @@ public class MainWindow extends javax.swing.JFrame {
         treeNode4.add(treeNode5);
         treeNode3.add(treeNode4);
         treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Loose Support");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Support");
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Loose Support");
+        treeNode3.add(treeNode4);
+        treeNode4 = new javax.swing.tree.DefaultMutableTreeNode("Support Parameters");
+        treeNode3.add(treeNode4);
+        treeNode2.add(treeNode3);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Mesh");
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
         treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Solution");
@@ -220,11 +227,11 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void optionsTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_optionsTreeValueChanged
-        //optionSelection();
+        optionSelection();
     }//GEN-LAST:event_optionsTreeValueChanged
 
     private void optionsTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_optionsTreeMouseClicked
-        optionSelection();
+        //optionSelection();
     }//GEN-LAST:event_optionsTreeMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -232,11 +239,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        try {
-            new ExecuteWindow();
-        } catch (Exception ex) {
-            //
-        }
+        new ExecuteWindow();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void optionSelection() {
@@ -250,6 +253,8 @@ public class MainWindow extends javax.swing.JFrame {
         String name = node.toString();
         drawInterf.setNewNode(false);
         drawInterf.setNewEdge(false);
+        drawInterf.setNewSupport(false);
+        infoLabel.setText(" ");
         repaint();
         switch (name) {
             case ("Geometry"):
@@ -324,10 +329,37 @@ public class MainWindow extends javax.swing.JFrame {
                 drawInterf.setSelectionEdgeMode(false);
                 drawInterf.setNewNode(true);
                 break;
+            case ("Loose Support"):
+                drawInterf.setSelectionNodeMode(false);
+                drawInterf.setSelectionEdgeMode(false);
+                if (!model.isMeshed()) {
+                    drawInterf.setNewSupport(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "This model was already Meshed");
+                }
+                break;
+            case ("Support Parameters"):
+                drawInterf.setSelectionNodeMode(true);
+                drawInterf.setSelectionEdgeMode(false);
+                break;
             case ("Element"):
                 drawInterf.setSelectionNodeMode(false);
                 drawInterf.setSelectionEdgeMode(false);
                 drawInterf.setNewEdge(true);
+                break;
+            case ("Mesh"):
+                drawInterf.setSelectionNodeMode(false);
+                drawInterf.setSelectionEdgeMode(false);
+                if (!model.isMeshed()) {
+                    new Meshing();
+                } else {
+                    JOptionPane.showMessageDialog(this, "This model was already Meshed");
+                }
+                break;
+            case ("FEI"):
+                drawInterf.setSelectionNodeMode(false);
+                drawInterf.setSelectionEdgeMode(false);
+                new FEI();
                 break;
             default:
                 break;
@@ -351,6 +383,9 @@ public class MainWindow extends javax.swing.JFrame {
         switch (name) {
             case ("Constraint"):
                 model.addConstraint();
+                break;
+            case ("Support Parameters"):
+                model.addSupport();
                 break;
             case ("Force"):
                 model.addForce();
@@ -382,7 +417,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) {
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
