@@ -335,7 +335,7 @@ public class MainWindow extends javax.swing.JFrame {
                 if (!model.isMeshed()) {
                     drawInterf.setNewSupport(true);
                 } else {
-                    JOptionPane.showMessageDialog(this, "This model was already Meshed");
+                    JOptionPane.showMessageDialog(this, "This model is already Meshed");
                 }
                 break;
             case ("Support Parameters"):
@@ -399,14 +399,14 @@ public class MainWindow extends javax.swing.JFrame {
             case ("Add Group"):
                 model.addFluidFlow();
                 break;
-            case ("Turbulence"):
+            /*case ("Turbulence"):
                 model.addGroup(turb.getStartFreq(), turb.getEndFreq(),
                         turb.getDFreq(), turb.getMethod());
-                turb.attList();
+                //turb.attList();
                 drawInterf.setSelectionNodeMode(false);
                 drawInterf.setSelectionEdgeMode(false);
                 this.infoLabel.setText("");
-                break;
+                break;*/
             default:
                 System.out.println(name);
                 break;

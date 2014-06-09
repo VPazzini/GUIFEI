@@ -52,6 +52,14 @@ public class FileManager {
     private double stiffness = 0.555E+07;
     private double diam = 0.127E-01;
     private boolean displayScreen = true;
+    
+    //Turbulence
+    private double turbF1 = 0.0;
+    private double turbF2 = 60.0;
+    private double turbDF = 60.0;
+    private int turbModel = 1;
+    private double corrLen = 0.25;
+    //Turbulence
 
     private final Model modelo;
 
@@ -470,4 +478,43 @@ public class FileManager {
         this.printLimit = printLimit;
     }
 
+    public double getTurbF1() {
+        return turbF1;
+    }
+
+    public void setTurbF1(double turbF1) {
+        this.turbF1 = turbF1;
+    }
+
+    public double getTurbF2() {
+        return turbF2;
+    }
+
+    public void setTurbF2(double turbF2) {
+        this.turbF2 = turbF2;
+    }
+
+    public double getTurbDF() {
+        return turbDF;
+    }
+
+    public void setTurbDF(double turbDF) {
+        this.turbDF = turbDF;
+    }
+
+    public int getTurbModel() {
+        return turbModel;
+    }
+
+    public void setTurbModel(int turbModel) {
+        this.turbModel = turbModel;
+    }
+
+    public double getCorrLen() {
+        return corrLen;
+    }
+
+    public void setCorrLen(double corrLen) {
+        this.corrLen = corrLen;
+    }
 }

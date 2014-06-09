@@ -24,15 +24,20 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jPanel1" max="32767" attributes="0"/>
-          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jButton1" min="-2" pref="70" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -53,44 +58,58 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel1" linkSize="1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="startFreqField" linkSize="2" min="-2" pref="60" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel2" linkSize="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="endFreqField" linkSize="2" min="-2" pref="60" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel3" linkSize="1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="dFreqField" linkSize="2" min="-2" pref="60" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="startLabel" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="startFreqField" min="-2" pref="46" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="endLabel" linkSize="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="endFreqField" min="-2" pref="48" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="dfLabel" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="dfFreqField" min="-2" pref="46" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  <Component id="turbMetCombo" min="-2" pref="136" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
-                      <Component id="turbMetCombo" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="corrLenLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="corrLenField" min="-2" pref="46" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="startLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="startFreqField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="endLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="endFreqField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="dFreqField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="dfLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="dfFreqField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="corrLenLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="corrLenField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="turbMetCombo" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -100,39 +119,42 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="startLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Start"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="startFreqField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="1"/>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="endLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="End"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="endFreqField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="10"/>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="60"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel3">
+        <Component class="javax.swing.JLabel" name="dfLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="DF"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="dFreqField">
+        <Component class="javax.swing.JTextField" name="dfFreqField">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="0.1"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Turbulence Met"/>
+            <Property name="text" type="java.lang.String" value="Turbulence Model"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="turbMetCombo">
@@ -145,115 +167,26 @@
             </Property>
           </Properties>
         </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPanel" name="jPanel2">
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="infoLabel" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="groupsListScrollPane" pref="0" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="removeGroupButton" linkSize="3" max="32767" attributes="0"/>
-                              <Component id="newGroupButton" linkSize="3" max="32767" attributes="0"/>
-                              <Component id="okButton" linkSize="3" min="-2" pref="82" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Component id="elementOrGroupComboBox" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="elementOrGroupComboBox" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="newGroupButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="removeGroupButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="okButton" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="groupsListScrollPane" min="-2" pref="99" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="infoLabel" min="-2" pref="22" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JComboBox" name="elementOrGroupComboBox">
+        <Component class="javax.swing.JLabel" name="corrLenLabel">
           <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
-                <StringItem index="0" value="Group Elements"/>
-                <StringItem index="1" value="Element by Element"/>
-              </StringArray>
-            </Property>
+            <Property name="text" type="java.lang.String" value="Correlation Length"/>
           </Properties>
-          <Events>
-            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="elementOrGroupComboBoxItemStateChanged"/>
-          </Events>
         </Component>
-        <Container class="javax.swing.JScrollPane" name="groupsListScrollPane">
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JList" name="groupsList">
-              <Properties>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                  <StringArray count="0"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="groupsListValueChanged"/>
-              </Events>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Component class="javax.swing.JButton" name="okButton">
+        <Component class="javax.swing.JTextField" name="corrLenField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="OK"/>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="okButtonActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="newGroupButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="New Group"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newGroupButtonActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="removeGroupButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Remove"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeGroupButtonActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="infoLabel">
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="OK"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>
