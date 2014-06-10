@@ -4,7 +4,6 @@ import elements.Edge;
 import elements.Group;
 import elements.Node;
 import elements.Support;
-import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -41,7 +40,19 @@ public class Model {
     private boolean meshed = false;
     //Meshing
 
+    //UBend points
+    private Point startUbend;
+    private Point endUbend;
+    //UBend points
+
+    //Model
+    private boolean line = false;
+    private boolean uBend = false;
+    //Model
+
     public Node drawLine(int length, int ix, int iy) {
+        line = true;
+        uBend = false;
         meshed = false;
         Node n1 = new Node(new Point(ix, iy), nodeNumber++);
         Node n2 = new Node(new Point(ix + length, iy), nodeNumber++);
@@ -57,7 +68,10 @@ public class Model {
     }
 
     public void drawUbend(int length, int radius) {
+        line = false;
+        uBend = true;
         meshed = false;
+
         Path2D.Double path = new Path2D.Double();
         int ix = 100;
         int iy = 50;
@@ -82,6 +96,9 @@ public class Model {
             edge.insertPoint(new Point(x, y));
             f.next();
         }
+
+        startUbend = edge.getPoints().get(1);
+        endUbend = edge.getPoints().get(edge.getPoints().size() - 2);
     }
 
     public Point interpolationByDistance(Point p1, Point p2, double d) {
@@ -356,7 +373,7 @@ public class Model {
 
     public void addPressure() {
         JDialog rest = new JDialog();
-        rest.setSize(240, 185);//[212, 131]
+        rest.setSize(240, 185);
         rest.setModal(true);
         rest.setResizable(false);
         rest.setLocationRelativeTo(null);
@@ -376,8 +393,6 @@ public class Model {
         rest.getRootPane().setDefaultButton(r.getOkButton());
         rest.setVisible(true);
 
-       
-
         selectedEdges = new ArrayList<>();
         DrawInterface.getInstance().repaint();
     }
@@ -385,7 +400,7 @@ public class Model {
     public void addFluidFlow() {
         JDialog rest = new JDialog();
         rest.setSize(190, 240);
-        
+
         rest.setModal(true);
         rest.setResizable(false);
         rest.setLocationRelativeTo(null);
@@ -600,7 +615,7 @@ public class Model {
         this.nodeSize = nodeSize;
     }
 
-    public void mesh(double maxElemLength) {
+    public void mesh(double maxElemLengthLine, double maxElemLengthUbend) {
         meshed = true;
         ArrayList<Point> suppPoints = new ArrayList<>();
         for (Node n : nodes) {
@@ -612,28 +627,49 @@ public class Model {
             splitEdge(p, true);
         }
 
+        boolean onUbend = false;
+
         ArrayList<Point> splitPoints = new ArrayList<>();
         for (Edge edge : edges) {
+            double totalLength, elem, distance;
+            int numNodes;
 
-            double totalLength = edge.getLength();
-            int numNodesCurve = ((int) Math.floor(totalLength / maxElemLength)) + 1;
-            double elem = totalLength / (numNodesCurve - 1);
-            double distance = 0;
-            int j = 0;
+            distance = 0;
+            totalLength = edge.getLength();
+            if (onUbend) {
+                numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
+            } else {
+                numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
+            }
+            elem = totalLength / (numNodes - 1);
 
             for (int i = 0; i < edge.getPoints().size() - 1; i++) {
                 Point p1 = edge.getPoints().get(i);
                 Point p2 = edge.getPoints().get(i + 1);
                 distance += p1.distance(p2);
 
+                if (p1.equals(startUbend)) {
+                    onUbend = true;
+                    totalLength = edge.getLength() - distance;
+                    numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
+                    elem = totalLength / (numNodes - 1);
+                }
+                
+                if (p1.equals(endUbend)) {
+                    onUbend = false;
+                    totalLength = edge.getLength() - distance;
+                    numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
+                    elem = totalLength / (numNodes - 1);
+                }
+                
                 while ((distance - 1) > elem) {
-
                     int dist = (int) (elem - (distance - p1.distance(p2)));
                     Point split = interpolationByDistance(p1, p2, dist);
-                    distance = distance - elem;
+                    distance -= elem;
                     splitPoints.add(split);
-                    j++;
                 }
+                
+                
 
             }
         }
