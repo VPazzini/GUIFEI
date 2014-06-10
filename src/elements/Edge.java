@@ -204,7 +204,6 @@ public class Edge {
             p2 = points.get(i + 1);
 
             Point closePoint = getClosestPointOnSegment(p1.x, p1.y, p2.x, p2.y, p.x, p.y);
-            System.out.println(closePoint.distance(p));
             if (closePoint.distance(p) < 5) {
                 distance1 += p1.distance(p);
                 break;
@@ -230,23 +229,41 @@ public class Edge {
         return Math.min(distance1, distance2);
     }
 
-    public Point distance(double length) {
+    public Point distance(double length, Point p) {
         double elem = length;
         double distance = 0;
 
-        for (int i = 0; i < getPoints().size() - 1; i++) {
-            Point p1 = getPoints().get(i);
-            Point p2 = getPoints().get(i + 1);
-            distance += p1.distance(p2);
+        Point p1 = getPoints().get(0);
+        Point p2 = getPoints().get(getPoints().size() - 1);
+        if (p.distance(p1) < p.distance(p2)) {
+            for (int i = 0; i < getPoints().size() - 1; i++) {
+                p1 = getPoints().get(i);
+                p2 = getPoints().get(i + 1);
+                distance += p1.distance(p2);
 
-            if (distance >= elem) {
-                double dist = (elem - (distance - p1.distance(p2)));
-                Point split = interpolationByDistance(p1, p2, dist);
+                if (distance >= elem) {
+                    double dist = (elem - (distance - p1.distance(p2)));
+                    Point split = interpolationByDistance(p1, p2, dist);
 
-                return split;
+                    return split;
+                }
+
             }
+        } else {
+            for (int i = getPoints().size()-1; i > 0; i--) {
+                p1 = getPoints().get(i);
+                p2 = getPoints().get(i - 1);
+                distance += p1.distance(p2);
 
+                if (distance >= elem) {
+                    double dist = (elem - (distance - p1.distance(p2)));
+                    Point split = interpolationByDistance(p1, p2, dist);
+                    return split;
+                }
+
+            }
         }
+        
         return null;
     }
 

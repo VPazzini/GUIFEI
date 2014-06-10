@@ -66,7 +66,7 @@ public class SupportLocation extends javax.swing.JFrame {
                 return;
             }
 
-            supp.setPos(edge1.distance(dist));
+            supp.setPos(edge1.distance(dist, supp.getPos()));
 
             showInfo();
             DrawInterface.getInstance().repaint();
