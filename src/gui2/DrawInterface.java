@@ -179,26 +179,27 @@ public class DrawInterface extends JPanel implements ActionListener {
 
             if (showElementName) {
                 Point mP = e.middlePoint();
-                g2d.drawString(e.getEdgeNumber() + "", mP.x + 5, mP.y - 5);
+                g2d.drawString(e.getNumber() + "", mP.x + 5, mP.y - 5);
             }
 
             g2d.setColor(Color.red);
 
-            if (showPressure) {
-                Shape s = e.getPressureArrow();
-                if (s != null) {
-                    g2d.draw(s);
+            if (showPressure && e.getPressureValue() != 0) {
+                for (Shape s : e.getPressureArrow()) {
+                    if (s != null) {
+                        g2d.draw(s);
+                    }
                 }
             }
 
             g2d.setColor(Color.blue);
 
             if (showSpring) {
-                if (e.getSpringValue() != 0) {
+                /*if (e.getSpringValue() != 0) {
                     for (Shape s : e.getSpringArrow()) {
                         g2d.draw(s);
                     }
-                }
+                }*/
             }
 
             g2d.setColor(Color.black);

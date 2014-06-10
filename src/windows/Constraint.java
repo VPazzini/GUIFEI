@@ -1,22 +1,26 @@
 package windows;
 
-import java.util.ArrayList;
-import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
 import elements.Force;
+import elements.Node;
+import java.util.ArrayList;
+import javax.swing.JDialog;
 
 public class Constraint extends javax.swing.JPanel {
 
     JDialog jFrame;
+    ArrayList<Node> listNodes = new ArrayList<>();
 
-    public Constraint(JDialog jFrame) {
+    public Constraint(JDialog jFrame, ArrayList<Node> list) {
         initComponents();
         this.jFrame = jFrame;
-
+        this.listNodes = list;
     }
-    
-    public Constraint(JDialog jFrame, boolean[] rest, ArrayList<Force> forces) {
+
+    public Constraint(JDialog jFrame, Node n) {
         initComponents();
+        listNodes.add(n);
+
+        boolean[] rest = n.getRest();
         this.jFrame = jFrame;
         this.jCheckBoxX.setSelected(rest[0]);
         this.jCheckBoxY.setSelected(rest[1]);
@@ -103,6 +107,18 @@ public class Constraint extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        boolean[] rest = new boolean[6];
+        rest[0] = isX();
+        rest[1] = isY();
+        rest[2] = isZ();
+        rest[3] = isRX();
+        rest[4] = isRY();
+        rest[5] = isRZ();
+
+        for (Node t : listNodes) {
+            t.setRest(rest);
+        }
+
         this.jFrame.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

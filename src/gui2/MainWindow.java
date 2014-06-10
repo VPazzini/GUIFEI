@@ -2,7 +2,6 @@ package gui2;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -305,9 +304,9 @@ public class MainWindow extends javax.swing.JFrame {
                 drawInterf.setSelectionEdgeMode(true);
                 break;
             case ("Spring"):
-                this.infoLabel.setText("Select Elements");
-                drawInterf.setSelectionEdgeMode(true);
-                drawInterf.setSelectionNodeMode(false);
+                this.infoLabel.setText("Select Nodes");
+                drawInterf.setSelectionEdgeMode(false);
+                drawInterf.setSelectionNodeMode(true);
                 break;
             case ("Add Group"):
                 this.infoLabel.setText("Select Elements");

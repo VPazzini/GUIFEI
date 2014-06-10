@@ -11,12 +11,7 @@ public class Edge {
     private Node node1;
     private Node node2;
     private final ArrayList<Point> points = new ArrayList<>();
-    private final int edgeNumber;
-
-    //Spring
-    private int[] springUnitVector = new int[3];
-    private float springValue = 0;
-    //Spring
+    private final int number;
 
     //Pressure
     private int[] pressureUnitVector = new int[3];
@@ -32,7 +27,7 @@ public class Edge {
     public Edge(Node node1, Node node2, int number) {
         this.node1 = node1;
         this.node2 = node2;
-        this.edgeNumber = number;
+        this.number = number;
         points.add(node1.getPos());
         points.add(node2.getPos());
     }
@@ -45,8 +40,8 @@ public class Edge {
         return node2;
     }
 
-    public int getEdgeNumber() {
-        return edgeNumber;
+    public int getNumber() {
+        return number;
     }
 
     public ArrayList<Point> getPoints() {
@@ -57,7 +52,7 @@ public class Edge {
 
     public double getLength() {
         double length = 0;
-        double elem_length = 0;
+        double elem_length;
         for (int i = 0; i < points.size() - 1; i++) {
             elem_length = points.get(i).distance(points.get(i + 1));
             length += elem_length;
@@ -247,28 +242,12 @@ public class Edge {
             if (distance >= elem) {
                 double dist = (elem - (distance - p1.distance(p2)));
                 Point split = interpolationByDistance(p1, p2, dist);
-                
+
                 return split;
             }
 
         }
         return null;
-    }
-
-    public int[] getSpringUnitVector() {
-        return springUnitVector;
-    }
-
-    public float getSpringValue() {
-        return springValue;
-    }
-
-    public void setSpringUnitVector(int[] springUnitVector) {
-        this.springUnitVector = springUnitVector;
-    }
-
-    public void setSpringValue(float springValue) {
-        this.springValue = springValue;
     }
 
     public float getFlowVelocity() {
@@ -343,36 +322,9 @@ public class Edge {
         return split;
     }
 
-    public Shape getPressureArrow() {
+    public Shape[] getPressureArrow() {
 
-        Point split = middlePoint();
-
-        if (split == null) {
-            return null;
-        }
-
-        double x = split.x;
-        double y = split.y;
-
-        if (pressureValue > 0) {
-            x = split.x + 10 * pressureUnitVector[0]
-                    * Math.log(pressureValue);
-
-            y = split.y + 10 * pressureUnitVector[1]
-                    * Math.log(pressureValue);
-
-        }
-        Point[] arrow = new Point[2];
-        arrow[0] = new Point((int) x, (int) y);
-        arrow[1] = split;
-
-        return createArrow(arrow[0].x, arrow[0].y,
-                arrow[1].x, arrow[1].y);
-    }
-
-    public Shape[] getSpringArrow() {
-
-        if (springValue == 0) {
+        if (pressureValue == 0) {
             return null;
         }
 
@@ -397,23 +349,25 @@ public class Edge {
 
         }
 
+        //Point split = middlePoint();
         Shape[] arrows = new Shape[4];
         int i = 0;
         for (Point p : splitPoints) {
+
             double x = p.x;
             double y = p.y;
 
-            if (springValue > 0) {
-                x = p.x + 10 * springUnitVector[0]
-                        * Math.log(springValue);
+            if (pressureValue > 0) {
+                x = p.x - 10 * pressureUnitVector[0]
+                        * Math.log(pressureValue + 1);
 
-                y = p.y + 10 * springUnitVector[1]
-                        * Math.log(springValue);
+                y = p.y + 10 * pressureUnitVector[1]
+                        * Math.log(pressureValue + 1);
 
             }
-
             arrows[i++] = createArrow((float) x, (float) y,
                     p.x, p.y);
+
         }
         return arrows;
     }

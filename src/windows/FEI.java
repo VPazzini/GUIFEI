@@ -1,52 +1,73 @@
 package windows;
 
-public class FEI extends javax.swing.JFrame {
+import gui2.FileManager;
+import gui2.Model;
+import java.awt.Color;
 
+public class FEI extends javax.swing.JFrame {
+    
     public FEI() {
         initComponents();
-        
         this.setSize(380, 300);
-        //this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
-        
+        loadParameters();
         visible();
-
         this.setVisible(true);
-
     }
-
+    
+    private void loadParameters() {
+        FileManager fManager = Model.getInstance().getFileManager();
+        
+        modelComboBox.setSelectedIndex(fManager.getTurbModel() - 1);
+        nflexComboBox.setSelectedIndex(fManager.getnFlex() - 1);
+        turbLossField.setText(fManager.getTurbLoss() + "");
+        RLFCField.setText(fManager.getRLFC() + "");
+        STDUCheckBox.setSelected(fManager.isVarSTDU());
+        STDACheckBox.setSelected(fManager.isVarSTDA());
+        areaAmpModelComboBox.setSelectedIndex(fManager.getAreaAmpModel() - 1);
+        timeLagModelComboBox.setSelectedIndex(fManager.getTimeLagModel() - 1);
+        
+        dragCoeffField.setText(fManager.getDragCoeff() + "");
+        DCL_DYField.setText(fManager.getDCL_DY() + "");
+        pepMUField.setText(fManager.getPepMU() + "");
+        
+        conCoeffField.setText(fManager.getConCoeff() + "");
+        conExpField.setText(fManager.getConExp() + "");
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         modelComboBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        nflexComboBox = new javax.swing.JComboBox();
         LEWPanel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jComboBox4 = new javax.swing.JComboBox();
+        turbLossLabel = new javax.swing.JLabel();
+        turbLossField = new javax.swing.JTextField();
+        RLFCLabel = new javax.swing.JLabel();
+        RLFCField = new javax.swing.JTextField();
+        STDUCheckBox = new javax.swing.JCheckBox();
+        STDACheckBox = new javax.swing.JCheckBox();
+        areaAmpModelComboBox = new javax.swing.JComboBox();
+        timeLagModelComboBox = new javax.swing.JComboBox();
         PEPPanel = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        dragCoeffLabel = new javax.swing.JLabel();
+        dragCoeffField = new javax.swing.JTextField();
+        DCL_DYLabel = new javax.swing.JLabel();
+        DCL_DYField = new javax.swing.JTextField();
+        pepMULabel = new javax.swing.JLabel();
+        pepMUField = new javax.swing.JTextField();
         ChenPanel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         ConnorPanel = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        conCoeffLabel = new javax.swing.JLabel();
+        conCoeffField = new javax.swing.JTextField();
+        conExpLabel = new javax.swing.JLabel();
+        conExpField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,7 +83,7 @@ public class FEI extends javax.swing.JFrame {
 
         jLabel2.setText("NFlex");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Single Flexible Tube", "Flexible Array" }));
+        nflexComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Single Flexible Tube", "Flexible Array" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -76,7 +97,7 @@ public class FEI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nflexComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -87,27 +108,31 @@ public class FEI extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(modelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nflexComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel3.setText("Turbulent Losses Coefficient");
+        turbLossLabel.setText("Turbulent Losses Coefficient");
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField1.setText("0");
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, turbLossField, org.jdesktop.beansbinding.ObjectProperty.create(), turbLossLabel, org.jdesktop.beansbinding.BeanProperty.create("labelFor"));
+        bindingGroup.addBinding(binding);
 
-        jLabel4.setText("Relevant Length of the Fluid Constant");
+        turbLossField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        turbLossField.setText("0");
 
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField2.setText("0");
+        RLFCLabel.setLabelFor(RLFCField);
+        RLFCLabel.setText("Relevant Length of the Fluid Constant");
 
-        jCheckBox1.setText("Steady State velocity varies along channel");
+        RLFCField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        RLFCField.setText("0");
 
-        jCheckBox2.setText("Steady State area varies along channel");
+        STDUCheckBox.setText("Steady State velocity varies along channel");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Constant", "Linear", "Sigmoid Y&W 93", "Modified Sigmoid" }));
+        STDACheckBox.setText("Steady State area varies along channel");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Original L&W", "L&W '86", "El Bouzidi and Hassan" }));
+        areaAmpModelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Constant", "Linear", "Sigmoid Y&W 93", "Modified Sigmoid" }));
+
+        timeLagModelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Original L&W", "L&W '86", "El Bouzidi and Hassan" }));
 
         javax.swing.GroupLayout LEWPanelLayout = new javax.swing.GroupLayout(LEWPanel);
         LEWPanel.setLayout(LEWPanelLayout);
@@ -116,62 +141,62 @@ public class FEI extends javax.swing.JFrame {
             .addGroup(LEWPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox1)
+                    .addComponent(STDACheckBox)
+                    .addComponent(STDUCheckBox)
                     .addGroup(LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LEWPanelLayout.createSequentialGroup()
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(areaAmpModelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(timeLagModelComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LEWPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel3)
+                            .addComponent(turbLossLabel)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(turbLossField, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LEWPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel4)
+                            .addComponent(RLFCLabel)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(RLFCField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        LEWPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jCheckBox1, jCheckBox2, jLabel3, jLabel4});
+        LEWPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {RLFCLabel, STDACheckBox, STDUCheckBox, turbLossLabel});
 
         LEWPanelLayout.setVerticalGroup(
             LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LEWPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(turbLossLabel)
+                    .addComponent(turbLossField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(RLFCLabel)
+                    .addComponent(RLFCField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox1)
+                .addComponent(STDUCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox2)
+                .addComponent(STDACheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(areaAmpModelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(timeLagModelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel5.setText("Drag Coefficient");
+        dragCoeffLabel.setText("Drag Coefficient");
 
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField3.setText("0.1");
+        dragCoeffField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        dragCoeffField.setText("0.1");
 
-        jLabel6.setText("Lift Coefficient Derivative");
+        DCL_DYLabel.setText("Lift Coefficient Derivative");
 
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField4.setText("0.1");
+        DCL_DYField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        DCL_DYField.setText("0.1");
 
-        jLabel7.setText("Time Delay Multiplier");
+        pepMULabel.setText("Time Delay Multiplier");
 
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField5.setText("0");
+        pepMUField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        pepMUField.setText("0");
 
         javax.swing.GroupLayout PEPPanelLayout = new javax.swing.GroupLayout(PEPPanel);
         PEPPanel.setLayout(PEPPanelLayout);
@@ -181,39 +206,39 @@ public class FEI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(PEPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PEPPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(dragCoeffLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(dragCoeffField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PEPPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addComponent(DCL_DYLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(DCL_DYField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PEPPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addComponent(pepMULabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pepMUField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        PEPPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTextField3, jTextField4, jTextField5});
+        PEPPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {DCL_DYField, dragCoeffField, pepMUField});
 
-        PEPPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel5, jLabel6, jLabel7});
+        PEPPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {DCL_DYLabel, dragCoeffLabel, pepMULabel});
 
         PEPPanelLayout.setVerticalGroup(
             PEPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PEPPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PEPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dragCoeffLabel)
+                    .addComponent(dragCoeffField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PEPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(DCL_DYLabel)
+                    .addComponent(DCL_DYField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PEPPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pepMULabel)
+                    .addComponent(pepMUField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -237,13 +262,13 @@ public class FEI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel9.setText("Connors Coefficient");
+        conCoeffLabel.setText("Connors Coefficient");
 
-        jTextField6.setText("2.4");
+        conCoeffField.setText("2.4");
 
-        jLabel10.setText("Connors Exponent");
+        conExpLabel.setText("Connors Exponent");
 
-        jTextField7.setText("0.5");
+        conExpField.setText("0.5");
 
         javax.swing.GroupLayout ConnorPanelLayout = new javax.swing.GroupLayout(ConnorPanel);
         ConnorPanel.setLayout(ConnorPanelLayout);
@@ -253,35 +278,40 @@ public class FEI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(ConnorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ConnorPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel9)
+                        .addComponent(conCoeffLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(conCoeffField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(ConnorPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel10)
+                        .addComponent(conExpLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(conExpField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        ConnorPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel10, jLabel9});
+        ConnorPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {conCoeffLabel, conExpLabel});
 
-        ConnorPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTextField6, jTextField7});
+        ConnorPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {conCoeffField, conExpField});
 
         ConnorPanelLayout.setVerticalGroup(
             ConnorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ConnorPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ConnorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(conCoeffLabel)
+                    .addComponent(conCoeffField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ConnorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(conExpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(conExpField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -314,6 +344,8 @@ public class FEI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        bindingGroup.bind();
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -321,36 +353,164 @@ public class FEI extends javax.swing.JFrame {
         visible();
     }//GEN-LAST:event_modelComboBoxItemStateChanged
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        FileManager fManager = Model.getInstance().getFileManager();
+        int input;
+        
+        input = nflexComboBox.getSelectedIndex() + 1;
+        fManager.setnFlex(input);
+        
+        input = modelComboBox.getSelectedIndex() + 1;
+        fManager.setTurbModel(input);
+        
+        switch (input) {
+            case (1):
+                saveLEW();
+                break;
+            case (2):
+                savePEP();
+                break;
+            case (3):
+                saveConnors();
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void saveLEW() {
+        FileManager fManager = Model.getInstance().getFileManager();
+        int input;
+        double dInput;
+        boolean error = false;
+        
+        turbLossLabel.setForeground(Color.black);
+        try {
+            dInput = Double.parseDouble(turbLossField.getText());
+            fManager.setTurbLoss(dInput);
+        } catch (NumberFormatException e) {
+            error = true;
+            turbLossLabel.setForeground(Color.red);
+        }
+        
+        RLFCLabel.setForeground(Color.black);
+        try {
+            dInput = Double.parseDouble(RLFCField.getText());
+            fManager.setRLFC(dInput);
+        } catch (NumberFormatException e) {
+            error = true;
+            RLFCLabel.setForeground(Color.red);
+        }
+        
+        fManager.setAreaAmpModel(areaAmpModelComboBox.getSelectedIndex() + 1);
+        fManager.setTimeLagModel(timeLagModelComboBox.getSelectedIndex() + 1);
+        fManager.setVarSTDU(STDUCheckBox.isSelected());
+        fManager.setVarSTDA(STDACheckBox.isSelected());
+        
+        if (!error) {
+            this.dispose();
+        }
+        
+    }
+    
+    private void savePEP() {
+        FileManager fManager = Model.getInstance().getFileManager();
+        int input;
+        double dInput;
+        boolean error = false;
+        
+        dragCoeffLabel.setForeground(Color.black);
+        try {
+            dInput = Double.parseDouble(dragCoeffField.getText());
+            fManager.setDragCoeff(dInput);
+        } catch (NumberFormatException e) {
+            error = true;
+            dragCoeffLabel.setForeground(Color.red);
+        }
+        
+        DCL_DYLabel.setForeground(Color.black);
+        try {
+            dInput = Double.parseDouble(dragCoeffField.getText());
+            fManager.setDCL_DY(dInput);
+        } catch (NumberFormatException e) {
+            error = true;
+            DCL_DYLabel.setForeground(Color.red);
+        }
+        
+        pepMULabel.setForeground(Color.black);
+        try {
+            dInput = Double.parseDouble(pepMUField.getText());
+            fManager.setPepMU(dInput);
+        } catch (NumberFormatException e) {
+            error = true;
+            pepMULabel.setForeground(Color.red);
+        }
+        
+        if (!error) {
+            this.dispose();
+        }
+    }
+    
+    private void saveConnors() {
+        FileManager fManager = Model.getInstance().getFileManager();
+        int input;
+        double dInput;
+        boolean error = false;
+        
+        conCoeffLabel.setForeground(Color.black);
+        try {
+            dInput = Double.parseDouble(conCoeffField.getText());
+            fManager.setConCoeff(dInput);
+        } catch (NumberFormatException e) {
+            error = true;
+            conCoeffLabel.setForeground(Color.red);
+        }
+        
+        conExpLabel.setForeground(Color.black);
+        try {
+            dInput = Double.parseDouble(conExpField.getText());
+            fManager.setConExp(dInput);
+        } catch (NumberFormatException e) {
+            error = true;
+            conExpLabel.setForeground(Color.red);
+        }
+        
+        if (!error) {
+            this.dispose();
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ChenPanel;
     private javax.swing.JPanel ConnorPanel;
+    private javax.swing.JTextField DCL_DYField;
+    private javax.swing.JLabel DCL_DYLabel;
     private javax.swing.JPanel LEWPanel;
     private javax.swing.JPanel PEPPanel;
+    private javax.swing.JTextField RLFCField;
+    private javax.swing.JLabel RLFCLabel;
+    private javax.swing.JCheckBox STDACheckBox;
+    private javax.swing.JCheckBox STDUCheckBox;
+    private javax.swing.JComboBox areaAmpModelComboBox;
+    private javax.swing.JTextField conCoeffField;
+    private javax.swing.JLabel conCoeffLabel;
+    private javax.swing.JTextField conExpField;
+    private javax.swing.JLabel conExpLabel;
+    private javax.swing.JTextField dragCoeffField;
+    private javax.swing.JLabel dragCoeffLabel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JComboBox modelComboBox;
+    private javax.swing.JComboBox nflexComboBox;
+    private javax.swing.JTextField pepMUField;
+    private javax.swing.JLabel pepMULabel;
+    private javax.swing.JComboBox timeLagModelComboBox;
+    private javax.swing.JTextField turbLossField;
+    private javax.swing.JLabel turbLossLabel;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
     private void visible() {

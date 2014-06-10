@@ -4,6 +4,7 @@ import elements.Edge;
 import elements.Group;
 import elements.Node;
 import elements.Support;
+import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -35,11 +36,11 @@ public class Model {
     //group of elements
     private final ArrayList<Group> groups = new ArrayList<>();
     //group of elements
-    
+
     //Meshing
     private boolean meshed = false;
     //Meshing
-    
+
     public Node drawLine(int length, int ix, int iy) {
         meshed = false;
         Node n1 = new Node(new Point(ix, iy), nodeNumber++);
@@ -249,23 +250,20 @@ public class Model {
         rest.setLocationRelativeTo(null);
 
         Node temp;
-        Constraint r = new Constraint(rest);
+        Constraint r;
         if (selectedNodes.size() == 1) {
             temp = selectedNodes.get(0);
             rest.setTitle("Node " + temp.getNumber());
-            r = new Constraint(rest, temp.getRest(), temp.getForces());
+            r = new Constraint(rest, temp);
 
         } else {
             rest.setTitle(selectedNodes.size() + " Nodes");
+            r = new Constraint(rest, selectedNodes);
         }
 
         rest.add(r);
 
         rest.setVisible(true);
-
-        for (Node t : selectedNodes) {
-            t.setRest(r.getRest());
-        }
 
         selectedNodes = new ArrayList<>();
         DrawInterface.getInstance().repaint();
@@ -275,28 +273,23 @@ public class Model {
     public void addForce() {
         JDialog rest = new JDialog();
         rest.setSize(190, 240);
-        rest.setTitle("Forces");
         rest.setModal(true);
         rest.setResizable(false);
         rest.setLocationRelativeTo(null);
 
         Node temp;
-        ForcesWindow r = new ForcesWindow(rest);
+        ForcesWindow r;
         if (selectedNodes.size() == 1) {
             temp = selectedNodes.get(0);
             rest.setTitle("Node " + temp.getNumber());
-            r = new ForcesWindow(rest, temp.getForces());
+            r = new ForcesWindow(rest, temp);
         } else {
+            r = new ForcesWindow(rest, selectedNodes);
             rest.setTitle(selectedNodes.size() + " Nodes");
         }
 
         rest.add(r);
-
         rest.setVisible(true);
-
-        for (Node t : selectedNodes) {
-            t.setForces(r.getForces());
-        }
 
         selectedNodes = new ArrayList<>();
         DrawInterface.getInstance().repaint();
@@ -332,10 +325,6 @@ public class Model {
 
         rest.setVisible(true);
 
-        for (Support t : supports) {
-            System.out.println("yeah");
-        }
-
         selectedNodes = new ArrayList<>();
         DrawInterface.getInstance().repaint();
     }
@@ -347,54 +336,47 @@ public class Model {
         rest.setResizable(false);
         rest.setLocationRelativeTo(null);
 
-        Edge temp;
-        Spring r = new Spring(rest);
-        if (selectedEdges.size() == 1) {
-            temp = selectedEdges.get(0);
-            rest.setTitle("Edge " + temp.getEdgeNumber());
-            r = new Spring(rest, temp.getSpringValue(), temp.getSpringUnitVector());
+        Node temp;
+        Spring r;
+        if (selectedNodes.size() == 1) {
+            temp = selectedNodes.get(0);
+            rest.setTitle("Edge " + temp.getNumber());
+            r = new Spring(rest, temp);
         } else {
-            rest.setTitle(selectedEdges.size() + " Nodes");
+            rest.setTitle(selectedNodes.size() + " Nodes");
+            r = new Spring(rest, selectedNodes);
         }
 
         rest.add(r);
-
         rest.setVisible(true);
 
-        for (Edge e : selectedEdges) {
-            e.setSpringUnitVector(r.getUnitvector());
-            e.setSpringValue(r.getValueSpring());
-        }
-
-        selectedEdges = new ArrayList<>();
+        selectedNodes = new ArrayList<>();
         DrawInterface.getInstance().repaint();
     }
 
     public void addPressure() {
         JDialog rest = new JDialog();
-        rest.setSize(190, 240);
+        rest.setSize(240, 185);//[212, 131]
         rest.setModal(true);
         rest.setResizable(false);
         rest.setLocationRelativeTo(null);
 
         Edge temp;
-        Pressure r = new Pressure(rest);
+        Pressure r;
         if (selectedEdges.size() == 1) {
             temp = selectedEdges.get(0);
-            rest.setTitle("Edge " + temp.getEdgeNumber());
-            r = new Pressure(rest, temp.getPressureValue(), temp.getPressureUnitVector());
+            rest.setTitle("Edge " + temp.getNumber());
+            r = new Pressure(rest, temp);
         } else {
-            rest.setTitle(selectedEdges.size() + " Nodes");
+            rest.setTitle(selectedEdges.size() + " Edges");
+            r = new Pressure(rest, selectedEdges);
         }
 
         rest.add(r);
         rest.getRootPane().setDefaultButton(r.getOkButton());
         rest.setVisible(true);
 
-        for (Edge e : selectedEdges) {
-            e.setPressureUnitVector(r.getUnitVector());
-            e.setPressureValue(r.getPressureValue());
-        }
+       
 
         selectedEdges = new ArrayList<>();
         DrawInterface.getInstance().repaint();
@@ -403,6 +385,7 @@ public class Model {
     public void addFluidFlow() {
         JDialog rest = new JDialog();
         rest.setSize(190, 240);
+        
         rest.setModal(true);
         rest.setResizable(false);
         rest.setLocationRelativeTo(null);
@@ -412,7 +395,7 @@ public class Model {
 
         if (selectedEdges.size() == 1) {
             temp = selectedEdges.get(0);
-            rest.setTitle("Edge " + temp.getEdgeNumber());
+            rest.setTitle("Edge " + temp.getNumber());
             r = new FluidFlow(rest, temp.getFlowVelocity(),
                     temp.getFluidDensity(), temp.getFlowUnitVector());
         } else {

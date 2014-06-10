@@ -38,13 +38,6 @@ public class FileManager {
     private int tDens = 0;
     private double tPoi = 0;
 
-    private int direction = 0;
-    private int model = 2;
-    private int nFlex = 1;
-    private double velocity = 1;
-    private double density = 1;
-    private double tf = 0.3;
-
     private int iterations = 10;
     private double beta = 0.25;
     private int type_I = 2;
@@ -60,6 +53,32 @@ public class FileManager {
     private int turbModel = 1;
     private double corrLen = 0.25;
     //Turbulence
+    
+    //FEI
+    private int feiModel = 1;
+    private int nFlex = 1;
+    
+    //L%W
+    private double turbLoss = 0.275;
+    private double RLFC = 2.0;
+    private boolean varSTDU = false;
+    private boolean varSTDA = false;
+    private int areaAmpModel = 1;
+    private int timeLagModel = 2;
+    //L%W
+    
+    //P&P
+    private double dragCoeff = 0.1;
+    private double DCL_DY = 0.1;
+    private double pepMU = 1;
+    //P&P
+    
+    //Connors
+    private double conCoeff = 2.4;
+    private double conExp = 0.5;
+    //Connors
+    
+    //FEI
 
     private final Model modelo;
 
@@ -118,7 +137,7 @@ public class FileManager {
             BufferedWriter output = new BufferedWriter(new FileWriter(file));
             for (Edge e : edges) {
                 String line;
-                line = e.getEdgeNumber() + " "
+                line = e.getNumber() + " "
                         + e.getNode1().getNumber() + " "
                         + e.getNode2().getNumber() + "\n";
                 output.write(line);
@@ -170,12 +189,8 @@ public class FileManager {
             output.write(line);
 
             output.write("&FLUIDELASTIC\n");
-            line = "DIRECTION=" + direction
-                    + ", Model=" + model
-                    + ", NFLEX=" + nFlex
-                    + ", VELOCITY=" + velocity
-                    + ", DENSITY=" + density
-                    + ", TF=" + tf + "\n/\n";
+            line =  "FEI_MODEL=" + feiModel
+                    + ", NFLEX=" + nFlex + "\n/\n";
             output.write(line);
 
             output.write("&IMPACT\n");
@@ -191,7 +206,7 @@ public class FileManager {
 
             line = "";
             for (Edge e : edges) {
-                line += e.getEdgeNumber() + " ";
+                line += e.getNumber() + " ";
             }
             line += "\n/";
             output.write(line);
@@ -342,52 +357,12 @@ public class FileManager {
         this.tPoi = tPoi;
     }
 
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    public int getModel() {
-        return model;
-    }
-
-    public void setModel(int model) {
-        this.model = model;
-    }
-
     public int getnFlex() {
         return nFlex;
     }
 
     public void setnFlex(int nFlex) {
         this.nFlex = nFlex;
-    }
-
-    public double getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(double velocity) {
-        this.velocity = velocity;
-    }
-
-    public double getDensity() {
-        return density;
-    }
-
-    public void setDensity(double density) {
-        this.density = density;
-    }
-
-    public double getTf() {
-        return tf;
-    }
-
-    public void setTf(double tf) {
-        this.tf = tf;
     }
 
     public int getIterations() {
@@ -517,4 +492,103 @@ public class FileManager {
     public void setCorrLen(double corrLen) {
         this.corrLen = corrLen;
     }
+
+    public int getFeiModel() {
+        return feiModel;
+    }
+
+    public void setFeiModel(int feiModel) {
+        this.feiModel = feiModel;
+    }
+
+    public double getTurbLoss() {
+        return turbLoss;
+    }
+
+    public void setTurbLoss(double turbLoss) {
+        this.turbLoss = turbLoss;
+    }
+
+    public double getRLFC() {
+        return RLFC;
+    }
+
+    public void setRLFC(double RLFC) {
+        this.RLFC = RLFC;
+    }
+
+    public boolean isVarSTDU() {
+        return varSTDU;
+    }
+
+    public void setVarSTDU(boolean varSTDU) {
+        this.varSTDU = varSTDU;
+    }
+
+    public boolean isVarSTDA() {
+        return varSTDA;
+    }
+
+    public void setVarSTDA(boolean varSTDa) {
+        this.varSTDA = varSTDa;
+    }
+
+    public int getAreaAmpModel() {
+        return areaAmpModel;
+    }
+
+    public void setAreaAmpModel(int areaAmpModel) {
+        this.areaAmpModel = areaAmpModel;
+    }
+
+    public int getTimeLagModel() {
+        return timeLagModel;
+    }
+
+    public void setTimeLagModel(int timeLagModel) {
+        this.timeLagModel = timeLagModel;
+    }
+
+    public double getDragCoeff() {
+        return dragCoeff;
+    }
+
+    public void setDragCoeff(double dragCoeff) {
+        this.dragCoeff = dragCoeff;
+    }
+
+    public double getDCL_DY() {
+        return DCL_DY;
+    }
+
+    public void setDCL_DY(double DCL_DY) {
+        this.DCL_DY = DCL_DY;
+    }
+
+    public double getPepMU() {
+        return pepMU;
+    }
+
+    public void setPepMU(double pepMU) {
+        this.pepMU = pepMU;
+    }
+
+    public double getConCoeff() {
+        return conCoeff;
+    }
+
+    public void setConCoeff(double conCoeff) {
+        this.conCoeff = conCoeff;
+    }
+
+    public double getConExp() {
+        return conExp;
+    }
+
+    public void setConExp(double conExp) {
+        this.conExp = conExp;
+    }
+    
+    
+    
 }

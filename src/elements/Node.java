@@ -19,6 +19,11 @@ public class Node {
     private ArrayList<Force> forces = new ArrayList<>();
     protected final ArrayList<Edge> edges = new ArrayList<>();
 
+    //Spring
+    private int[] springUnitVector = new int[3];
+    private double springValue = 0;
+    //Spring
+
     public Node(Point pos, int number) {
         this.pos = pos;
         this.number = number;
@@ -39,7 +44,7 @@ public class Node {
                     ? -5 : +5) * ((int) Math.log(Math.abs(f.getValue())));
             switch (f.getAxis()) {
                 case ("Y"):
-                    ySum += temp;
+                    ySum -= temp;
                     break;
                 case ("X"):
                     xSum += temp;
@@ -276,6 +281,22 @@ public class Node {
         }
         final Node other = (Node) obj;
         return this.pos.equals(other.getPos());
+    }
+
+    public int[] getSpringUnitVector() {
+        return springUnitVector;
+    }
+
+    public void setSpringUnitVector(int[] springUnitVector) {
+        this.springUnitVector = springUnitVector;
+    }
+
+    public double getSpringValue() {
+        return springValue;
+    }
+
+    public void setSpringValue(double springValue) {
+        this.springValue = springValue;
     }
 
 }

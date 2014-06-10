@@ -26,7 +26,7 @@ public class Group {
     public String toString() {
         String s = "";
         for (Edge e : group) {
-            s += e.getEdgeNumber() + " ";
+            s += e.getNumber() + " ";
         }
         return s;
     }

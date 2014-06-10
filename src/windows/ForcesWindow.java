@@ -1,6 +1,7 @@
 package windows;
 
 import elements.Force;
+import elements.Node;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
@@ -9,24 +10,28 @@ public class ForcesWindow extends javax.swing.JPanel {
 
     JDialog jDialog;
     DefaultListModel resultList;
+    ArrayList<Node> listNodes = new ArrayList<>();
 
-    public ForcesWindow(JDialog jDialog) {
-        initComponents();
-        this.jDialog = jDialog;
-        resultList = new DefaultListModel();
-        jListForces.setModel(resultList);
-    }
-
-    public ForcesWindow(JDialog jDialog, ArrayList<Force> forces) {
+    public ForcesWindow(JDialog jDialog, Node n) {
         initComponents();
         this.jDialog = jDialog;
         resultList = new DefaultListModel();
         jListForces.setModel(resultList);
 
-        for (Force f : forces) {
+        for (Force f : n.getForces()) {
             resultList.addElement(f);
         }
 
+        listNodes.add(n);
+
+    }
+
+    public ForcesWindow(JDialog jDialog, ArrayList<Node> list) {
+        initComponents();
+        this.jDialog = jDialog;
+        resultList = new DefaultListModel();
+        jListForces.setModel(resultList);
+        this.listNodes = list;
     }
 
     @SuppressWarnings("unchecked")
@@ -41,7 +46,7 @@ public class ForcesWindow extends javax.swing.JPanel {
         jButtonRemoveForce = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        OKButton = new javax.swing.JButton();
 
         jComboForceAxis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "X", "Y", "Z", "RX", "RY", "RZ" }));
 
@@ -74,10 +79,10 @@ public class ForcesWindow extends javax.swing.JPanel {
 
         jLabel2.setText("Force Value");
 
-        jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        OKButton.setText("OK");
+        OKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                OKButtonActionPerformed(evt);
             }
         });
 
@@ -93,7 +98,7 @@ public class ForcesWindow extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(OKButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButtonAddForce, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jButtonRemoveForce)))
                     .addGroup(layout.createSequentialGroup()
@@ -107,7 +112,7 @@ public class ForcesWindow extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButtonAddForce, jButtonRemoveForce, jComboForceAxis, jTextFieldForceValue});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {OKButton, jButtonAddForce, jButtonRemoveForce, jComboForceAxis, jTextFieldForceValue});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,7 +132,7 @@ public class ForcesWindow extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonRemoveForce)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addComponent(OKButton))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -164,28 +169,30 @@ public class ForcesWindow extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButtonRemoveForceActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
+        ArrayList<Force> forces = new ArrayList<>();
+
+        for (Object o : resultList.toArray()) {
+            Force f = (Force) o;
+            forces.add(f.clone());
+        }
+
+        for (Node n : listNodes) {
+            n.setForces(forces);
+        }
+
         this.jDialog.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_OKButtonActionPerformed
 
     private void jListForcesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListForcesValueChanged
-        if(jListForces.getSelectedValue() != null){
+        if (jListForces.getSelectedValue() != null) {
             Force f = (Force) jListForces.getSelectedValue();
             jComboForceAxis.setSelectedItem(f.getAxis());
         }
     }//GEN-LAST:event_jListForcesValueChanged
 
-    public ArrayList<Force> getForces() {
-        ArrayList<Force> forces = new ArrayList<>();
-        for (Object o : resultList.toArray()) {
-            Force f = (Force) o;
-            forces.add(f.clone());
-        }
-        return (ArrayList<Force>) forces.clone();
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton OKButton;
     private javax.swing.JButton jButtonAddForce;
     private javax.swing.JButton jButtonRemoveForce;
     private javax.swing.JComboBox jComboForceAxis;
