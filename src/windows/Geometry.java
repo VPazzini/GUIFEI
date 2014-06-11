@@ -5,18 +5,18 @@ import gui2.Model;
 import java.awt.Color;
 
 public class Geometry extends javax.swing.JFrame {
-    
-    private FileManager fileM;
+
+    private FileManager fManager;
 
     public Geometry() {
         initComponents();
-        fileM = Model.getInstance().getFileManager();
+        fManager = Model.getInstance().getFileManager();
 
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        
-        this.innerDiameter.setText("" + fileM.getdI());
-        this.outterDiameter.setText("" + fileM.getdO());
+
+        this.innerDiameter.setText("" + fManager.getdI());
+        this.outterDiameter.setText("" + fManager.getdO());
     }
 
     @SuppressWarnings("unchecked")
@@ -49,9 +49,11 @@ public class Geometry extends javax.swing.JFrame {
         });
 
         innerDiameter.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.000"))));
+        innerDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         innerDiameter.setText("0");
 
         outterDiameter.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.000"))));
+        outterDiameter.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         outterDiameter.setText("0.1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -61,17 +63,18 @@ public class Geometry extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(outterLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(outterDiameter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(innerLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(innerDiameter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(outterLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(outterDiameter, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
 
@@ -82,17 +85,17 @@ public class Geometry extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(innerLabel)
                     .addComponent(innerDiameter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(outterLabel)
                     .addComponent(outterDiameter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -110,24 +113,32 @@ public class Geometry extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String d_I = innerDiameter.getText();
-        String d_O = outterDiameter.getText();
-        boolean finish = true;
-        if(!fileM.setdI(d_I)){
-            finish = false;
-            innerLabel.setForeground(Color.red);
-        }else{
+        double dI = 0;
+        double dO = 0.1;
+        boolean error = false;
+
+        try {
             innerLabel.setForeground(Color.black);
+            dI = Double.parseDouble(innerDiameter.getText());
+        } catch (NumberFormatException e) {
+            innerLabel.setForeground(Color.red);
+            error = true;
         }
-        if(!fileM.setdO(d_O)){
-            finish = false;
-            outterLabel.setForeground(Color.red);
-        }else{
+
+        try {
             outterLabel.setForeground(Color.black);
+            dO = Double.parseDouble(outterDiameter.getText());
+        } catch (NumberFormatException e) {
+            outterLabel.setForeground(Color.red);
+            error = true;
         }
-        if(finish){
+
+        if (!error) {
+            fManager.setdI(dI);
+            fManager.setdO(dO);
             this.dispose();
         }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
