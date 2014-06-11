@@ -87,12 +87,19 @@ public class FileManager {
     private int bType = 1;
     private double p_d = 1.25;
 
-    private final Model modelo;
+    private Model modelo;
 
     public FileManager() {
-        modelo = Model.getInstance();
+
         filePath = new File(new File(".").getAbsolutePath());
         fortranPath = new File(new File(".").getAbsolutePath());
+    }
+
+    public void generateAllFiles() {
+        modelo = Model.getInstance();
+        generateInputFile();
+        generateElemFile();
+        generateNodeFile();
     }
 
     private void generateNodeFile() {
@@ -223,22 +230,22 @@ public class FileManager {
                     + ", P_D=" + p_d
                     + "\n/\n";
             output.write(line);
-            
+
             int i = 0;
-            for(Edge e: edges){
-                line = "fluid(" + i + ",1:6)="
-                        + e.getNumber() + ","
-                        + e.getFlowVelocity() + ","
-                        + e.getFluidDensity() + ","
-                        + e.getFlowUnitVector()[0] + ","
-                        + e.getFlowUnitVector()[1] + ","
-                        + e.getFlowUnitVector()[2] + "\n";
+            for (Edge e : edges) {
+                if (e.getFlowVelocity() != 0) {
+                    line = "fluid(" + i + ",1:6)="
+                            + e.getNumber() + ","
+                            + e.getFlowVelocity() + ","
+                            + e.getFluidDensity() + ","
+                            + e.getFlowUnitVector()[0] + ","
+                            + e.getFlowUnitVector()[1] + ","
+                            + e.getFlowUnitVector()[2] + "\n";
+                    output.write(line);
+                }
             }
-            output.write(line);
             output.write("\n/\n");
-            
-            
-            
+
             output.write("&TURBULENCE\n");
             line = "TURB_F1=" + turbF1
                     + ", TURB_F2=" + turbF2

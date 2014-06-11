@@ -27,7 +27,7 @@ public class Model {
     private int nodeSize = 5;
     private int nodeNumber = 1;
     private int edgeNumber = 1;
-    private final FileManager fileManager = new FileManager();
+    private final FileManager fileManager;
 
     private ArrayList<Node> selectedNodes = new ArrayList<>();
     private ArrayList<Edge> selectedEdges = new ArrayList<>();
@@ -50,6 +50,12 @@ public class Model {
     private boolean turbulence = false;
     private boolean fluidFlow = false;
 
+    public Model() {
+         fileManager = new FileManager();
+    }
+
+    
+    
     public Node drawLine(int length, int ix, int iy) {
         line = true;
         uBend = false;

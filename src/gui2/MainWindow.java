@@ -238,7 +238,12 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        new ExecuteWindow();
+        model.getFileManager().generateAllFiles();
+        try{
+            new ExecuteWindow();
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void optionSelection() {
