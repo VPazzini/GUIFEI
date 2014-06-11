@@ -1,35 +1,49 @@
 package windows;
 
+import gui2.FileManager;
+import gui2.Model;
+import java.awt.Color;
+
 public class FlowGeometry extends javax.swing.JDialog {
 
     public FlowGeometry(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        
-        this.setVisible(true);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    }
 
+        bTypeComboBox.setSelectedIndex(
+                Model.getInstance().getFileManager().getbType() - 1
+        );
+        PTDTextField.setText(Model.getInstance().getFileManager().getP_d() + "");
+
+        this.setVisible(true);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
+        bTypeComboBox = new javax.swing.JComboBox();
+        OKButton = new javax.swing.JButton();
+        PTDLabel = new javax.swing.JLabel();
+        PTDTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "In Line", "Rotated Square", "Normal Triangle", "Parallel Triangle" }));
+        bTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "In Line", "Rotated Square", "Normal Triangle", "Parallel Triangle" }));
 
-        jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        OKButton.setText("OK");
+        OKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                OKButtonActionPerformed(evt);
             }
         });
+
+        PTDLabel.setText("Pitch to Diameter Ratio");
+
+        PTDTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        PTDTextField.setText("1.25");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -37,18 +51,26 @@ public class FlowGeometry extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1, 0, 179, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(PTDLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PTDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PTDLabel)
+                    .addComponent(PTDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(OKButton)
                 .addContainerGap())
         );
 
@@ -66,14 +88,32 @@ public class FlowGeometry extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
+        FileManager fManager = Model.getInstance().getFileManager();
+        fManager.setbType(bTypeComboBox.getSelectedIndex() + 1);
+
+        double ptd = 0;
+        try {
+            PTDLabel.setForeground(Color.black);
+            ptd = Double.parseDouble(PTDTextField.getText());
+
+            if (ptd >= 1.25 && ptd <= 3) {
+                fManager.setP_d(ptd);
+                this.dispose();
+            } else {
+                PTDLabel.setForeground(Color.red);
+            }
+        } catch (Exception e) {
+            PTDLabel.setForeground(Color.red);
+        }
+    }//GEN-LAST:event_OKButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JButton OKButton;
+    private javax.swing.JLabel PTDLabel;
+    private javax.swing.JTextField PTDTextField;
+    private javax.swing.JComboBox bTypeComboBox;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
