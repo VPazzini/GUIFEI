@@ -16,16 +16,17 @@ public class SolutionTypo extends javax.swing.JDialog {
 
         Double time = fileM.gettStop() - fileM.gettStart();
 
-        this.timeField.setText(time.toString());
-        this.timeStepField.setText(((Double) fileM.getDeltaT()).toString());
+        timeField.setText(time.toString());
+        timeStepField.setText(fileM.getDeltaT() + "");
+        typeComboBox.setSelectedIndex(fileM.getIsolut() - 1);
 
-        this.timeField.setVisible(false);
-        this.timeStepField.setVisible(false);
-        this.timeLabel.setVisible(false);
-        this.timeStepLabel.setVisible(false);
+        timeField.setVisible(false);
+        timeStepField.setVisible(false);
+        timeLabel.setVisible(false);
+        timeStepLabel.setVisible(false);
 
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,7 +39,7 @@ public class SolutionTypo extends javax.swing.JDialog {
         timeLabel = new javax.swing.JLabel();
         timeStepLabel = new javax.swing.JLabel();
         timeStepField = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        OKButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,10 +62,10 @@ public class SolutionTypo extends javax.swing.JDialog {
 
         timeStepField.setText("0");
 
-        jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        OKButton.setText("OK");
+        OKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                OKButtonActionPerformed(evt);
             }
         });
 
@@ -86,7 +87,7 @@ public class SolutionTypo extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(OKButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -106,7 +107,7 @@ public class SolutionTypo extends javax.swing.JDialog {
                     .addComponent(timeStepField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(timeStepLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(OKButton)
                 .addContainerGap())
         );
 
@@ -139,7 +140,7 @@ public class SolutionTypo extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_typeComboBoxItemStateChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
         String s = (String) typeComboBox.getSelectedItem();
         if (s.equals("Transient")) {
             boolean error = false;
@@ -150,27 +151,30 @@ public class SolutionTypo extends javax.swing.JDialog {
                 time = Double.parseDouble(timeField.getText());
             } catch (NumberFormatException e) {
                 timeLabel.setForeground(Color.red);
+                error = true;
             }
             try {
                 timeStepLabel.setForeground(Color.black);
                 deltaT = Double.parseDouble(timeStepField.getText());
             } catch (NumberFormatException e) {
                 timeStepLabel.setForeground(Color.red);
+                error = true;
             }
             if (!error) {
                 fileM.settStop(time);
                 fileM.setDeltaT(deltaT);
+                fileM.setIsolut(typeComboBox.getSelectedIndex() + 1);
                 this.dispose();
             }
-        }else{
+        } else {
+            fileM.setIsolut(typeComboBox.getSelectedIndex() + 1);
             this.dispose();
         }
-        //What to do when other option is selected on combobox
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_OKButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton OKButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField timeField;
     private javax.swing.JLabel timeLabel;

@@ -32,10 +32,6 @@ public class Model {
     private ArrayList<Node> selectedNodes = new ArrayList<>();
     private ArrayList<Edge> selectedEdges = new ArrayList<>();
 
-    //group of elements
-    private final ArrayList<Group> groups = new ArrayList<>();
-    //group of elements
-
     //Meshing
     private boolean meshed = false;
     //Meshing
@@ -49,6 +45,10 @@ public class Model {
     private boolean line = false;
     private boolean uBend = false;
     //Model
+
+    private boolean fei = false;
+    private boolean turbulence = false;
+    private boolean fluidFlow = false;
 
     public Node drawLine(int length, int ix, int iy) {
         line = true;
@@ -406,54 +406,22 @@ public class Model {
         rest.setLocationRelativeTo(null);
 
         Edge temp;
-        FluidFlow r = new FluidFlow(rest);
+        FluidFlow r;
 
         if (selectedEdges.size() == 1) {
             temp = selectedEdges.get(0);
             rest.setTitle("Edge " + temp.getNumber());
-            r = new FluidFlow(rest, temp.getFlowVelocity(),
-                    temp.getFluidDensity(), temp.getFlowUnitVector());
+            r = new FluidFlow(rest, temp);
         } else {
-            rest.setTitle(selectedEdges.size() + " Nodes");
+            rest.setTitle(selectedEdges.size() + " Elements");
+            r = new FluidFlow(rest, selectedEdges);
         }
 
         rest.add(r);
-
         rest.setVisible(true);
-
-        for (Edge e : selectedEdges) {
-            e.setFlowUnitVector(r.getUnitvector());
-            e.setFlowVelocity(r.getFlowVelocity());
-            e.setFluidDensity(r.getFlowDensity());
-        }
 
         selectedEdges = new ArrayList<>();
         DrawInterface.getInstance().repaint();
-    }
-
-    public void addGroup(float startF, float endF, float df, String met) {
-
-        ArrayList<Group> toRemove = new ArrayList<>();
-        for (Group g : groups) {
-            g.getGroup().removeAll(selectedEdges);
-            if (g.getGroup().isEmpty()) {
-                toRemove.add(g);
-            }
-        }
-        for (Group g : toRemove) {
-            groups.remove(g);
-        }
-
-        groups.add(new Group(selectedEdges, startF, endF, df, met));
-        selectedEdges = new ArrayList<>();
-    }
-
-    public void removeGroup(Group g) {
-        this.groups.remove(g);
-    }
-
-    public ArrayList<Group> getGroups() {
-        return groups;
     }
 
     public void newNode(Point p1) {
@@ -654,22 +622,20 @@ public class Model {
                     numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
                     elem = totalLength / (numNodes - 1);
                 }
-                
+
                 if (p1.equals(endUbend)) {
                     onUbend = false;
                     totalLength = edge.getLength() - distance;
                     numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
                     elem = totalLength / (numNodes - 1);
                 }
-                
+
                 while ((distance - 1) > elem) {
                     int dist = (int) (elem - (distance - p1.distance(p2)));
                     Point split = interpolationByDistance(p1, p2, dist);
                     distance -= elem;
                     splitPoints.add(split);
                 }
-                
-                
 
             }
         }
@@ -682,6 +648,30 @@ public class Model {
 
     public boolean isMeshed() {
         return meshed;
+    }
+
+    public boolean isFei() {
+        return fei;
+    }
+
+    public void setFei(boolean fei) {
+        this.fei = fei;
+    }
+
+    public boolean isTurbulence() {
+        return turbulence;
+    }
+
+    public void setTurbulence(boolean turbulence) {
+        this.turbulence = turbulence;
+    }
+
+    public boolean isFluidFlow() {
+        return fluidFlow;
+    }
+
+    public void setFluidFlow(boolean fluidFlow) {
+        this.fluidFlow = fluidFlow;
     }
 
 }

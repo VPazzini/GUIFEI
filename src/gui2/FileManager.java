@@ -45,7 +45,7 @@ public class FileManager {
     private double stiffness = 0.555E+07;
     private double diam = 0.127E-01;
     private boolean displayScreen = true;
-    
+
     //Turbulence
     private double turbF1 = 0.0;
     private double turbF2 = 60.0;
@@ -53,11 +53,11 @@ public class FileManager {
     private int turbModel = 1;
     private double corrLen = 0.25;
     //Turbulence
-    
+
     //FEI
     private int feiModel = 1;
     private int nFlex = 1;
-    
+
     //L%W
     private double turbLoss = 0.275;
     private double RLFC = 2.0;
@@ -66,20 +66,19 @@ public class FileManager {
     private int areaAmpModel = 1;
     private int timeLagModel = 2;
     //L%W
-    
+
     //P&P
     private double dragCoeff = 0.1;
     private double DCL_DY = 0.1;
     private double pepMU = 1;
     //P&P
-    
+
     //Connors
     private double conCoeff = 2.4;
     private double conExp = 0.5;
     //Connors
-    
-    //FEI
 
+    //FEI
     private final Model modelo;
 
     public FileManager() {
@@ -154,13 +153,14 @@ public class FileManager {
         try {
             BufferedWriter output = new BufferedWriter(new FileWriter(file));
             String line;
-            
+
             output.write("&SOLUTION\n");
             line = "ISOLUT=" + isolut
                     + ", SAVE_LIMIT=" + saveLimit
                     + ", PRINT_LIMIT=" + printLimit
-                    + ", IFTURB=1"
-                    + ", IFLUID_FLOW=1"
+                    + ", IFTURB=" + (modelo.isTurbulence() ? "1" : "0")
+                    + ", IFLUID_FLOW=" + (modelo.isFluidFlow() ? "1" : "0")
+                    + ", IFFEI=" + (modelo.isFei() ? "1" : "0")
                     + "\n/\n";
             output.write(line);
 
@@ -189,7 +189,7 @@ public class FileManager {
             output.write(line);
 
             output.write("&FLUIDELASTIC\n");
-            line =  "FEI_MODEL=" + feiModel
+            line = "FEI_MODEL=" + feiModel
                     + ", NFLEX=" + nFlex + "\n/\n";
             output.write(line);
 
@@ -588,7 +588,13 @@ public class FileManager {
     public void setConExp(double conExp) {
         this.conExp = conExp;
     }
-    
-    
-    
+
+    public int getIsolut() {
+        return isolut;
+    }
+
+    public void setIsolut(int isolut) {
+        this.isolut = isolut;
+    }
+
 }

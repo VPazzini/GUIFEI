@@ -3,7 +3,6 @@ package windows;
 import gui2.FileManager;
 import gui2.Model;
 import java.awt.Color;
-import javax.swing.DefaultListModel;
 
 public class Turbulence extends javax.swing.JFrame {
 
@@ -37,7 +36,7 @@ public class Turbulence extends javax.swing.JFrame {
         turbMetCombo = new javax.swing.JComboBox();
         corrLenLabel = new javax.swing.JLabel();
         corrLenField = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        OKButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -122,10 +121,10 @@ public class Turbulence extends javax.swing.JFrame {
                     .addComponent(turbMetCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        OKButton.setText("OK");
+        OKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                OKButtonActionPerformed(evt);
             }
         });
 
@@ -136,7 +135,7 @@ public class Turbulence extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -144,14 +143,14 @@ public class Turbulence extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(OKButton)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
         FileManager fManager = Model.getInstance().getFileManager();
         boolean error = false;
         double fInput;
@@ -189,60 +188,25 @@ public class Turbulence extends javax.swing.JFrame {
             error = true;
             corrLenLabel.setForeground(Color.red);
         }
+        
         input = turbMetCombo.getSelectedIndex() + 1;
         fManager.setTurbModel(input);
+        
         if (!error) {
+            Model.getInstance().setTurbulence(true);
             this.dispose();
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    public float getStartFreq() {
-        float startf;
-        try {
-            startf = Float.parseFloat(startFreqField.getText());
-        } catch (NumberFormatException e) {
-            startf = 0;
-            System.out.println(e);
-        }
-        return startf;
-    }
-
-    public float getEndFreq() {
-        float endf;
-        try {
-            endf = Float.parseFloat(endFreqField.getText());
-        } catch (NumberFormatException e) {
-            endf = 0;
-            System.out.println(e);
-        }
-        return endf;
-    }
-
-    public float getDFreq() {
-        float df;
-        try {
-            df = Float.parseFloat(dfFreqField.getText());
-        } catch (NumberFormatException e) {
-            df = 0;
-            System.out.println(e);
-        }
-        return df;
-    }
-
-    public String getMethod() {
-        String s = (String) turbMetCombo.getSelectedItem();
-        return s;
-    }
+    }//GEN-LAST:event_OKButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton OKButton;
     private javax.swing.JTextField corrLenField;
     private javax.swing.JLabel corrLenLabel;
     private javax.swing.JTextField dfFreqField;
     private javax.swing.JLabel dfLabel;
     private javax.swing.JTextField endFreqField;
     private javax.swing.JLabel endLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField startFreqField;

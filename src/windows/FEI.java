@@ -68,7 +68,7 @@ public class FEI extends javax.swing.JFrame {
         conCoeffField = new javax.swing.JTextField();
         conExpLabel = new javax.swing.JLabel();
         conExpField = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        OKButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -306,10 +306,10 @@ public class FEI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        OKButton.setText("OK");
+        OKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                OKButtonActionPerformed(evt);
             }
         });
 
@@ -324,7 +324,7 @@ public class FEI extends javax.swing.JFrame {
             .addComponent(ConnorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -340,7 +340,7 @@ public class FEI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConnorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(OKButton)
                 .addContainerGap())
         );
 
@@ -353,7 +353,7 @@ public class FEI extends javax.swing.JFrame {
         visible();
     }//GEN-LAST:event_modelComboBoxItemStateChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
         FileManager fManager = Model.getInstance().getFileManager();
         int input;
         
@@ -376,11 +376,11 @@ public class FEI extends javax.swing.JFrame {
             default:
                 break;
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        Model.getInstance().setFei(true);
+    }//GEN-LAST:event_OKButtonActionPerformed
     
     private void saveLEW() {
         FileManager fManager = Model.getInstance().getFileManager();
-        int input;
         double dInput;
         boolean error = false;
         
@@ -415,7 +415,6 @@ public class FEI extends javax.swing.JFrame {
     
     private void savePEP() {
         FileManager fManager = Model.getInstance().getFileManager();
-        int input;
         double dInput;
         boolean error = false;
         
@@ -453,7 +452,6 @@ public class FEI extends javax.swing.JFrame {
     
     private void saveConnors() {
         FileManager fManager = Model.getInstance().getFileManager();
-        int input;
         double dInput;
         boolean error = false;
         
@@ -486,6 +484,7 @@ public class FEI extends javax.swing.JFrame {
     private javax.swing.JTextField DCL_DYField;
     private javax.swing.JLabel DCL_DYLabel;
     private javax.swing.JPanel LEWPanel;
+    private javax.swing.JButton OKButton;
     private javax.swing.JPanel PEPPanel;
     private javax.swing.JTextField RLFCField;
     private javax.swing.JLabel RLFCLabel;
@@ -498,7 +497,6 @@ public class FEI extends javax.swing.JFrame {
     private javax.swing.JLabel conExpLabel;
     private javax.swing.JTextField dragCoeffField;
     private javax.swing.JLabel dragCoeffLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;
