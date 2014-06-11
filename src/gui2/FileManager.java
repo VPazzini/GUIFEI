@@ -26,6 +26,7 @@ public class FileManager {
     private String elemFile = "elem_file.dat";
     private String inputFile = "input.dat";
     private String confFile = "conf_file.dat";
+    private String pressFile = "pres_file.dat";
     private File filePath;
     private File fortranPath;
 
@@ -39,7 +40,7 @@ public class FileManager {
     private double tPoi = 0;
 
     private int iterations = 10;
-    private double beta = 0.25;
+
     private int type_I = 2;
     private double tolerance = 0.001;
     private double stiffness = 0.555E+07;
@@ -78,7 +79,14 @@ public class FileManager {
     private double conExp = 0.5;
     //Connors
 
-    //FEI
+    private double damping = 0.005;
+    private int intMethod = 1;
+    private double gamma = 0.5;
+    private double beta = 0.25;
+
+    private int bType = 1;
+    private double p_d = 1.25;
+
     private final Model modelo;
 
     public FileManager() {
@@ -164,10 +172,19 @@ public class FileManager {
                     + "\n/\n";
             output.write(line);
 
+            output.write("&DYNAMICS\n");
+            line = "IDYNM=1"
+                    + ", DAMPING=" + damping
+                    + ", INTMETHOD=" + intMethod
+                    + "\n/\n";
+            output.write(line);
+
             output.write("&TIMING\n");
             line = "TSTART=" + tStart
                     + ", TSTOP=" + tStop
                     + ", DELTAT=" + deltaT
+                    + ", gamma=" + gamma
+                    + ", beta_int=" + beta
                     + "\n/\n";
             output.write(line);
 
@@ -179,7 +196,20 @@ public class FileManager {
                     + ", elemfile='" + elemFile + "'"
                     + ", conffile='" + confFile + "'"
                     + ", d_o=" + dO
-                    + ", d_i=" + dI + "\n/\n";
+                    + ", d_i=" + dI
+                    + "\n/\n";
+            output.write(line);
+
+            output.write("&CONFORCES\n");
+            line = "NCONF=1" //CHECK!!!!!!!!!!!!!!!
+                    + ", conffile='" + confFile + "'"
+                    + "\n/\n";
+            output.write(line);
+
+            output.write("&PRESSURE\n");
+            line = "IPRES=1" //CHECK!!!!!!!!!!!!!!!
+                    + ", presfile='" + pressFile + "'"
+                    + "\n/\n";
             output.write(line);
 
             output.write("&MATERIAL01\n");
@@ -188,9 +218,40 @@ public class FileManager {
                     + ", TPOI=" + tPoi + "\n/\n";
             output.write(line);
 
+            output.write("&TUBE_BUNDLE\n");
+            line = "B_TYPE=" + bType
+                    + ", P_D=" + p_d
+                    + "\n/\n";
+            output.write(line);
+            
+            int i = 0;
+            for(Edge e: edges){
+                line = "fluid(" + i + ",1:6)="
+                        + e.getNumber() + ","
+                        + e.getFlowVelocity() + ","
+                        + e.getFluidDensity() + ","
+                        + e.getFlowUnitVector()[0] + ","
+                        + e.getFlowUnitVector()[1] + ","
+                        + e.getFlowUnitVector()[2] + "\n";
+            }
+            output.write(line);
+            output.write("\n/\n");
+            
+            
+            
+            output.write("&TURBULENCE\n");
+            line = "TURB_F1=" + turbF1
+                    + ", TURB_F2=" + turbF2
+                    + ", TURB_dF=" + turbDF
+                    + ", TURB_MODEL=" + turbModel
+                    + ", CORR_LEN=" + corrLen
+                    + "\n/\n";
+            output.write(line);
+
             output.write("&FLUIDELASTIC\n");
             line = "FEI_MODEL=" + feiModel
-                    + ", NFLEX=" + nFlex + "\n/\n";
+                    + ", NFLEX=" + nFlex
+                    + "\n/\n";
             output.write(line);
 
             output.write("&IMPACT\n");
@@ -301,36 +362,16 @@ public class FileManager {
         return dO;
     }
 
-    public boolean setdO(String dO) {
-        double d;
-        try {
-            d = Double.parseDouble(dO);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        if (d <= dI) {
-            return false;
-        }
-        this.dO = d;
-        return true;
+    public void setdO(double dO) {
+        this.dO = dO;
     }
 
     public double getdI() {
         return dI;
     }
 
-    public boolean setdI(String dI) {
-        double d;
-        try {
-            d = Double.parseDouble(dI);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        if (d >= dO) {
-            return false;
-        }
-        this.dI = d;
-        return true;
+    public void setdI(double dI) {
+        this.dI = dI;
     }
 
     public double getTeMod() {
@@ -595,6 +636,46 @@ public class FileManager {
 
     public void setIsolut(int isolut) {
         this.isolut = isolut;
+    }
+
+    public double getDamping() {
+        return damping;
+    }
+
+    public void setDamping(double damping) {
+        this.damping = damping;
+    }
+
+    public int getIntMethod() {
+        return intMethod;
+    }
+
+    public void setIntMethod(int intMethod) {
+        this.intMethod = intMethod;
+    }
+
+    public double getGamma() {
+        return gamma;
+    }
+
+    public void setGamma(double gamma) {
+        this.gamma = gamma;
+    }
+
+    public int getbType() {
+        return bType;
+    }
+
+    public void setbType(int bType) {
+        this.bType = bType;
+    }
+
+    public double getP_d() {
+        return p_d;
+    }
+
+    public void setP_d(double p_d) {
+        this.p_d = p_d;
     }
 
 }
