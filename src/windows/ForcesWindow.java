@@ -4,17 +4,19 @@ import elements.Force;
 import elements.Node;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
 
-public class ForcesWindow extends javax.swing.JPanel {
+public class ForcesWindow extends javax.swing.JDialog {
 
-    JDialog jDialog;
     DefaultListModel resultList;
     ArrayList<Node> listNodes = new ArrayList<>();
 
-    public ForcesWindow(JDialog jDialog, Node n) {
+    public ForcesWindow(Node n) {
         initComponents();
-        this.jDialog = jDialog;
+
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle("Node " + n.getNumber());
+
         resultList = new DefaultListModel();
         jListForces.setModel(resultList);
 
@@ -22,33 +24,54 @@ public class ForcesWindow extends javax.swing.JPanel {
             resultList.addElement(f);
         }
 
-        listNodes.add(n);
+        if (!n.getForces().isEmpty()) {
+            jListForces.setSelectedIndex(0);
+        }
+        if (jListForces.getSelectedValue() != null) {
+            Force f = (Force) jListForces.getSelectedValue();
+            jComboForceAxis.setSelectedItem(f.getAxis());
+        }
 
+        listNodes.add(n);
+        this.setVisible(true);
     }
 
-    public ForcesWindow(JDialog jDialog, ArrayList<Node> list) {
+    public ForcesWindow(ArrayList<Node> list) {
         initComponents();
-        this.jDialog = jDialog;
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle(list.size() + " Nodes");
+
         resultList = new DefaultListModel();
         jListForces.setModel(resultList);
         this.listNodes = list;
+
+        this.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboForceAxis = new javax.swing.JComboBox();
+        jPanel1 = new javax.swing.JPanel();
+        OKButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListForces = new javax.swing.JList();
-        jTextFieldForceValue = new javax.swing.JTextField();
-        jButtonAddForce = new javax.swing.JButton();
         jButtonRemoveForce = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jButtonAddForce = new javax.swing.JButton();
+        jTextFieldForceValue = new javax.swing.JTextField();
+        jComboForceAxis = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        OKButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
-        jComboForceAxis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "X", "Y", "Z", "RX", "RY", "RZ" }));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        OKButton.setText("OK");
+        OKButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OKButtonActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(54, 100));
 
@@ -59,7 +82,12 @@ public class ForcesWindow extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jListForces);
 
-        jTextFieldForceValue.setText("100");
+        jButtonRemoveForce.setText("Remove");
+        jButtonRemoveForce.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoveForceActionPerformed(evt);
+            }
+        });
 
         jButtonAddForce.setText("Add");
         jButtonAddForce.addActionListener(new java.awt.event.ActionListener() {
@@ -68,66 +96,57 @@ public class ForcesWindow extends javax.swing.JPanel {
             }
         });
 
-        jButtonRemoveForce.setText("Remove");
-        jButtonRemoveForce.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRemoveForceActionPerformed(evt);
-            }
-        });
+        jTextFieldForceValue.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextFieldForceValue.setText("100");
 
-        jLabel1.setText("Axis");
+        jComboForceAxis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "X", "Y", "Z", "RX", "RY", "RZ" }));
 
         jLabel2.setText("Force Value");
 
-        OKButton.setText("OK");
-        OKButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OKButtonActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Axis");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(OKButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButtonAddForce, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jButtonRemoveForce)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldForceValue, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jComboForceAxis, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {OKButton, jButtonAddForce, jButtonRemoveForce, jComboForceAxis, jTextFieldForceValue});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {OKButton, jButtonAddForce, jButtonRemoveForce, jComboForceAxis, jTextFieldForceValue});
 
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jComboForceAxis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldForceValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButtonAddForce)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonRemoveForce)
@@ -136,6 +155,20 @@ public class ForcesWindow extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        setSize(new java.awt.Dimension(204, 245));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAddForceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddForceActionPerformed
@@ -181,7 +214,7 @@ public class ForcesWindow extends javax.swing.JPanel {
             n.setForces(forces);
         }
 
-        this.jDialog.dispose();
+        this.dispose();
     }//GEN-LAST:event_OKButtonActionPerformed
 
     private void jListForcesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListForcesValueChanged
@@ -199,6 +232,7 @@ public class ForcesWindow extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JList jListForces;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldForceValue;
     // End of variables declaration//GEN-END:variables

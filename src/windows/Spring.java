@@ -3,25 +3,30 @@ package windows;
 import elements.Node;
 import java.awt.Color;
 import java.util.ArrayList;
-import javax.swing.JDialog;
 
-public class Spring extends javax.swing.JPanel {
+public class Spring extends javax.swing.JDialog {
 
-    private JDialog jDialog;
     private int[] unitvector = new int[3];
     private double springValue = 0;
     ArrayList<Node> listNodes = new ArrayList<>();
 
-    public Spring(JDialog jDialog, ArrayList<Node> list) {
+    public Spring(ArrayList<Node> list) {
         initComponents();
+
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle(list.size() + " Nodes");
 
         this.listNodes = list;
-        this.jDialog = jDialog;
+        this.setVisible(true);
     }
 
-    public Spring(JDialog jDialog, Node n) {
+    public Spring(Node n) {
         initComponents();
-        this.jDialog = jDialog;
+
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle("Node " + n.getNumber());
 
         listNodes.add(n);
 
@@ -29,15 +34,16 @@ public class Spring extends javax.swing.JPanel {
         x.setText(n.getSpringUnitVector()[0] + "");
         y.setText(n.getSpringUnitVector()[1] + "");
         z.setText(n.getSpringUnitVector()[2] + "");
+        
+        this.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        valueLabel = new javax.swing.JLabel();
-        valueField = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        OKButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         xLabel = new javax.swing.JLabel();
         x = new javax.swing.JTextField();
@@ -45,16 +51,15 @@ public class Spring extends javax.swing.JPanel {
         y = new javax.swing.JTextField();
         zLabel = new javax.swing.JLabel();
         z = new javax.swing.JTextField();
+        valueField = new javax.swing.JTextField();
+        valueLabel = new javax.swing.JLabel();
 
-        valueLabel.setText("Value");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        valueField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        valueField.setText("0");
-
-        jButton1.setText("OK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        OKButton.setText("OK");
+        OKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                OKButtonActionPerformed(evt);
             }
         });
 
@@ -113,38 +118,57 @@ public class Spring extends javax.swing.JPanel {
                 .addComponent(z, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        valueField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        valueField.setText("0");
+
+        valueLabel.setText("Value");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(valueLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(valueLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(valueField))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(valueLabel)
                     .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(OKButton)
                 .addContainerGap())
         );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
         boolean error = false;
         try {
             xLabel.setForeground(Color.black);
@@ -191,15 +215,16 @@ public class Spring extends javax.swing.JPanel {
                 n.setSpringValue(springValue);
             }
 
-            jDialog.dispose();
+            this.dispose();
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_OKButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton OKButton;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField valueField;
     private javax.swing.JLabel valueLabel;
     private javax.swing.JTextField x;

@@ -51,11 +51,9 @@ public class Model {
     private boolean fluidFlow = false;
 
     public Model() {
-         fileManager = new FileManager();
+        fileManager = new FileManager();
     }
 
-    
-    
     public Node drawLine(int length, int ix, int iy) {
         line = true;
         uBend = false;
@@ -266,27 +264,11 @@ public class Model {
     }
 
     public void addConstraint() {
-        JDialog rest = new JDialog();
-        rest.setSize(190, 120);
-        rest.setModal(true);
-        rest.setResizable(false);
-        rest.setLocationRelativeTo(null);
-
-        Node temp;
-        Constraint r;
         if (selectedNodes.size() == 1) {
-            temp = selectedNodes.get(0);
-            rest.setTitle("Node " + temp.getNumber());
-            r = new Constraint(rest, temp);
-
+            new Constraint(selectedNodes.get(0));
         } else {
-            rest.setTitle(selectedNodes.size() + " Nodes");
-            r = new Constraint(rest, selectedNodes);
+            new Constraint(selectedNodes);
         }
-
-        rest.add(r);
-
-        rest.setVisible(true);
 
         selectedNodes = new ArrayList<>();
         DrawInterface.getInstance().repaint();
@@ -294,36 +276,17 @@ public class Model {
     }
 
     public void addForce() {
-        JDialog rest = new JDialog();
-        rest.setSize(190, 240);
-        rest.setModal(true);
-        rest.setResizable(false);
-        rest.setLocationRelativeTo(null);
-
-        Node temp;
-        ForcesWindow r;
         if (selectedNodes.size() == 1) {
-            temp = selectedNodes.get(0);
-            rest.setTitle("Node " + temp.getNumber());
-            r = new ForcesWindow(rest, temp);
+            new ForcesWindow(selectedNodes.get(0));
         } else {
-            r = new ForcesWindow(rest, selectedNodes);
-            rest.setTitle(selectedNodes.size() + " Nodes");
+            new ForcesWindow(selectedNodes);
         }
-
-        rest.add(r);
-        rest.setVisible(true);
 
         selectedNodes = new ArrayList<>();
         DrawInterface.getInstance().repaint();
     }
 
     public void addSupport() {
-        JDialog rest = new JDialog();
-        rest.setSize(190, 240);
-        rest.setModal(true);
-        rest.setResizable(false);
-        rest.setLocationRelativeTo(null);
 
         ArrayList<Support> supports = new ArrayList<>();
 
@@ -333,71 +296,32 @@ public class Model {
             }
         }
 
-        Node temp;
-        SupportParameters r = new SupportParameters(rest);
         if (supports.size() == 1) {
-            temp = supports.get(0);
-            rest.setTitle("Support " + temp.getNumber());
-            r = new SupportParameters(rest, (Support) temp);
-
+            new SupportParameters(supports.get(0));
         } else {
-            rest.setTitle(supports.size() + " Supports");
+            new SupportParameters(supports);
         }
-
-        rest.add(r);
-
-        rest.setVisible(true);
 
         selectedNodes = new ArrayList<>();
         DrawInterface.getInstance().repaint();
     }
 
     public void addSpring() {
-        JDialog rest = new JDialog();
-        rest.setSize(190, 240);
-        rest.setModal(true);
-        rest.setResizable(false);
-        rest.setLocationRelativeTo(null);
-
-        Node temp;
-        Spring r;
         if (selectedNodes.size() == 1) {
-            temp = selectedNodes.get(0);
-            rest.setTitle("Edge " + temp.getNumber());
-            r = new Spring(rest, temp);
+            new Spring(selectedNodes.get(0));
         } else {
-            rest.setTitle(selectedNodes.size() + " Nodes");
-            r = new Spring(rest, selectedNodes);
+            new Spring(selectedNodes);
         }
-
-        rest.add(r);
-        rest.setVisible(true);
-
         selectedNodes = new ArrayList<>();
         DrawInterface.getInstance().repaint();
     }
 
     public void addPressure() {
-        JDialog rest = new JDialog();
-        rest.setSize(240, 185);
-        rest.setModal(true);
-        rest.setResizable(false);
-        rest.setLocationRelativeTo(null);
-
-        Edge temp;
-        Pressure r;
         if (selectedEdges.size() == 1) {
-            temp = selectedEdges.get(0);
-            rest.setTitle("Edge " + temp.getNumber());
-            r = new Pressure(rest, temp);
+            new Pressure(selectedEdges.get(0));
         } else {
-            rest.setTitle(selectedEdges.size() + " Edges");
-            r = new Pressure(rest, selectedEdges);
+            new Pressure(selectedEdges);
         }
-
-        rest.add(r);
-        rest.getRootPane().setDefaultButton(r.getOkButton());
-        rest.setVisible(true);
 
         selectedEdges = new ArrayList<>();
         DrawInterface.getInstance().repaint();

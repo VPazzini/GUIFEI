@@ -2,44 +2,70 @@ package windows;
 
 import elements.Node;
 import java.util.ArrayList;
-import javax.swing.JDialog;
 
-public class Constraint extends javax.swing.JPanel {
+public class Constraint extends javax.swing.JDialog {
 
-    JDialog jFrame;
-    ArrayList<Node> listNodes = new ArrayList<>();
+    private ArrayList<Node> listNodes = new ArrayList<>();
 
-    public Constraint(JDialog jFrame, ArrayList<Node> list) {
+    public Constraint(ArrayList<Node> list) {
         initComponents();
-        this.jFrame = jFrame;
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle(list.size() + " Nodes");
+
         this.listNodes = list;
+        this.setVisible(true);
     }
 
-    public Constraint(JDialog jFrame, Node n) {
+    public Constraint(Node n) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle("Node " + n.getNumber());
+
         listNodes.add(n);
 
         boolean[] rest = n.getRest();
-        this.jFrame = jFrame;
         this.jCheckBoxX.setSelected(rest[0]);
         this.jCheckBoxY.setSelected(rest[1]);
         this.jCheckBoxZ.setSelected(rest[2]);
         this.jCheckBoxRX.setSelected(rest[3]);
         this.jCheckBoxRY.setSelected(rest[4]);
         this.jCheckBoxRZ.setSelected(rest[5]);
+        this.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jCheckBoxRZ = new javax.swing.JCheckBox();
-        jCheckBoxRX = new javax.swing.JCheckBox();
-        jCheckBoxY = new javax.swing.JCheckBox();
+        jPanel1 = new javax.swing.JPanel();
         jCheckBoxX = new javax.swing.JCheckBox();
+        jCheckBoxY = new javax.swing.JCheckBox();
+        jCheckBoxRX = new javax.swing.JCheckBox();
         jCheckBoxZ = new javax.swing.JCheckBox();
         jCheckBoxRY = new javax.swing.JCheckBox();
+        jCheckBoxRZ = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(180, 110));
+        setPreferredSize(new java.awt.Dimension(180, 150));
+
+        jPanel1.setMinimumSize(new java.awt.Dimension(173, 89));
+        jPanel1.setPreferredSize(new java.awt.Dimension(180, 150));
+
+        jCheckBoxX.setText("X");
+
+        jCheckBoxY.setText("Y");
+
+        jCheckBoxRX.setText("RX");
+
+        jCheckBoxZ.setText("Z");
+
+        jCheckBoxRY.setText("RY");
+
+        jCheckBoxRZ.setText("RZ");
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -48,61 +74,63 @@ public class Constraint extends javax.swing.JPanel {
             }
         });
 
-        jCheckBoxRZ.setText("RZ");
-
-        jCheckBoxRX.setText("RX");
-
-        jCheckBoxY.setText("Y");
-
-        jCheckBoxX.setText("X");
-
-        jCheckBoxZ.setText("Z");
-
-        jCheckBoxRY.setText("RY");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxX)
                             .addComponent(jCheckBoxY))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxZ)
                             .addComponent(jCheckBoxRX))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxRY, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCheckBoxRZ))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jCheckBoxRX, jCheckBoxRZ, jCheckBoxX, jCheckBoxY, jCheckBoxZ});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jCheckBoxRX, jCheckBoxRZ, jCheckBoxX, jCheckBoxY, jCheckBoxZ});
 
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBoxX)
                     .addComponent(jCheckBoxZ)
                     .addComponent(jCheckBoxRY))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBoxY)
                     .addComponent(jCheckBoxRX)
                     .addComponent(jCheckBoxRZ))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        setSize(new java.awt.Dimension(189, 128));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -118,7 +146,7 @@ public class Constraint extends javax.swing.JPanel {
             t.setRest(rest);
         }
 
-        this.jFrame.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public boolean isX() {
@@ -164,5 +192,6 @@ public class Constraint extends javax.swing.JPanel {
     private javax.swing.JCheckBox jCheckBoxX;
     private javax.swing.JCheckBox jCheckBoxY;
     private javax.swing.JCheckBox jCheckBoxZ;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

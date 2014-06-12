@@ -7,7 +7,20 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 
 public class Support extends Node {
-
+    
+    private int supportType = 1;
+    private double gap = 0.5;
+    private int[] normalUnitVector = new int[3];
+    private double offsetValue = 0;
+    private int[] offsetUnitVector = new int[3];
+    private double stiffines = 10E6;
+    private double damp = 0.25;
+    private int iterations = 100;
+    private double tolerence = 1E-3;
+    private double width = 0.1;
+    
+    
+    
     public Support(Point pos, int number) {
         super(pos, number);
     }
@@ -62,6 +75,86 @@ public class Support extends Node {
                 ? gp.createTransformedShape(AffineTransform.getRotateInstance(alpha, pos.x, pos.y))
                 : gp;
 
+    }
+
+    public int getSupportType() {
+        return supportType;
+    }
+
+    public void setSupportType(int supportType) {
+        this.supportType = supportType;
+    }
+
+    public double getGap() {
+        return gap;
+    }
+
+    public void setGap(double gap) {
+        this.gap = gap;
+    }
+
+    public int[] getNormalUnitVector() {
+        return normalUnitVector;
+    }
+
+    public void setNormalUnitVector(int[] normalUnitVector) {
+        this.normalUnitVector = normalUnitVector;
+    }
+
+    public int[] getOffsetUnitVector() {
+        return offsetUnitVector;
+    }
+
+    public void setOffsetUnitVector(int[] offsetUnitVector) {
+        this.offsetUnitVector = offsetUnitVector;
+    }
+
+    public double getStiffines() {
+        return stiffines;
+    }
+
+    public void setStiffines(double stiffines) {
+        this.stiffines = stiffines;
+    }
+
+    public double getDamp() {
+        return damp;
+    }
+
+    public void setDamp(double damp) {
+        this.damp = damp;
+    }
+
+    public int getIterations() {
+        return iterations;
+    }
+
+    public void setIterations(int iterations) {
+        this.iterations = iterations;
+    }
+
+    public double getTolerence() {
+        return tolerence;
+    }
+
+    public void setTolerence(double tolerence) {
+        this.tolerence = tolerence;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public double getOffsetValue() {
+        return offsetValue;
+    }
+
+    public void setOffsetValue(double offsetValue) {
+        this.offsetValue = offsetValue;
     }
 
 }

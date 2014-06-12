@@ -4,39 +4,47 @@ import elements.Edge;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 
-public class Pressure extends javax.swing.JPanel {
+public class Pressure extends javax.swing.JDialog {
 
-    private JDialog jDialog;
     private int[] unitvector = new int[3];
     private float pressureValue;
     ArrayList<Edge> listEdges = new ArrayList<>();
 
-    public Pressure(JDialog jDialog, ArrayList<Edge> list) {
+    public Pressure(ArrayList<Edge> list) {
         initComponents();
-        this.jDialog = jDialog;
+
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle(list.size() + " Elements");
+
         this.listEdges = list;
+
+        this.setVisible(true);
     }
 
-    public Pressure(JDialog jDialog, Edge e) {
+    public Pressure(Edge e) {
         initComponents();
-        this.jDialog = jDialog;
+
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle("Element " + e.getNumber());
+
         listEdges.add(e);
 
         this.valueField.setText(e.getPressureValue() + "");
         x.setText(e.getPressureUnitVector()[0] + "");
         y.setText(e.getPressureUnitVector()[1] + "");
         z.setText(e.getPressureUnitVector()[2] + "");
-
+        
+        this.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        valueLabel = new javax.swing.JLabel();
-        valueField = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         xLabel = new javax.swing.JLabel();
@@ -45,11 +53,10 @@ public class Pressure extends javax.swing.JPanel {
         y = new javax.swing.JTextField();
         zLabel = new javax.swing.JLabel();
         z = new javax.swing.JTextField();
+        valueField = new javax.swing.JTextField();
+        valueLabel = new javax.swing.JLabel();
 
-        valueLabel.setText("Value");
-
-        valueField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        valueField.setText("0");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -108,29 +115,33 @@ public class Pressure extends javax.swing.JPanel {
                 .addComponent(z, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(valueLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+        valueField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        valueField.setText("0");
+
+        valueLabel.setText("Value");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(valueLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(valueLabel)
                     .addComponent(valueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -139,6 +150,22 @@ public class Pressure extends javax.swing.JPanel {
                 .addComponent(okButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -187,7 +214,7 @@ public class Pressure extends javax.swing.JPanel {
                 e.setPressureUnitVector(unitvector);
                 e.setPressureValue(pressureValue);
             }
-            jDialog.dispose();
+            this.dispose();
         }
 
     }//GEN-LAST:event_okButtonActionPerformed
@@ -198,6 +225,7 @@ public class Pressure extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField valueField;
     private javax.swing.JLabel valueLabel;
