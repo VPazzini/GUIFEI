@@ -71,7 +71,7 @@ public class FEI extends javax.swing.JDialog {
         conExpField = new javax.swing.JTextField();
         OKButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("FEI Model");
 
@@ -142,22 +142,24 @@ public class FEI extends javax.swing.JDialog {
             .addGroup(LEWPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(STDACheckBox)
-                    .addComponent(STDUCheckBox)
-                    .addGroup(LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LEWPanelLayout.createSequentialGroup()
-                            .addComponent(areaAmpModelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(timeLagModelComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LEWPanelLayout.createSequentialGroup()
-                            .addComponent(turbLossLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(turbLossField, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LEWPanelLayout.createSequentialGroup()
-                            .addComponent(RLFCLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(RLFCField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(LEWPanelLayout.createSequentialGroup()
+                        .addComponent(turbLossLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(turbLossField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(LEWPanelLayout.createSequentialGroup()
+                        .addGroup(LEWPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(STDACheckBox)
+                            .addComponent(STDUCheckBox)
+                            .addGroup(LEWPanelLayout.createSequentialGroup()
+                                .addComponent(areaAmpModelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(timeLagModelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(LEWPanelLayout.createSequentialGroup()
+                        .addComponent(RLFCLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(RLFCField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         LEWPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {RLFCLabel, STDACheckBox, STDUCheckBox, turbLossLabel});
@@ -250,10 +252,7 @@ public class FEI extends javax.swing.JDialog {
         ChenPanel.setLayout(ChenPanelLayout);
         ChenPanelLayout.setHorizontalGroup(
             ChenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ChenPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         ChenPanelLayout.setVerticalGroup(
             ChenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,10 +264,12 @@ public class FEI extends javax.swing.JDialog {
 
         conCoeffLabel.setText("Connors Coefficient");
 
+        conCoeffField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         conCoeffField.setText("2.4");
 
         conExpLabel.setText("Connors Exponent");
 
+        conExpField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         conExpField.setText("0.5");
 
         javax.swing.GroupLayout ConnorPanelLayout = new javax.swing.GroupLayout(ConnorPanel);
