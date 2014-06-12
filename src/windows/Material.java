@@ -1,10 +1,11 @@
 
 package windows;
 
-public class Material extends javax.swing.JFrame {
+public class Material extends javax.swing.JDialog {
 
     public Material() {
         initComponents();
+        this.setModal(true);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
@@ -22,7 +23,7 @@ public class Material extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Material (Pa)");
@@ -30,10 +31,12 @@ public class Material extends javax.swing.JFrame {
 
         jLabel2.setText("Modulus of Elasticity");
 
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField1.setText("200E7");
 
         jLabel3.setText("Poisson's Rate");
 
+        jTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField2.setText("0.25");
 
         jButton1.setText("OK");

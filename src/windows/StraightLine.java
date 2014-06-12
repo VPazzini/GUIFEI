@@ -32,6 +32,7 @@ public class StraightLine extends javax.swing.JFrame {
 
         jLabel1.setText("Length");
 
+        jTextLength.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextLength.setText("800");
 
         jButtonTry.setText("Try");

@@ -4,11 +4,12 @@ import gui2.FileManager;
 import gui2.Model;
 import java.awt.Color;
 
-public class Turbulence extends javax.swing.JFrame {
+public class Turbulence extends javax.swing.JDialog {
 
     public Turbulence() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setModal(true);
         showInfo();
         this.setVisible(true);
     }

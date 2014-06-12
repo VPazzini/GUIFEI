@@ -1,6 +1,5 @@
 package windows;
 
-import elements.Force;
 import elements.Node;
 import java.util.ArrayList;
 import javax.swing.JDialog;

@@ -3,11 +3,11 @@ package windows;
 import gui2.Model;
 import java.awt.Color;
 
-public class Meshing extends javax.swing.JFrame {
+public class Meshing extends javax.swing.JDialog {
 
     public Meshing() {
         initComponents();
-
+        this.setModal(true);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }

@@ -51,7 +51,6 @@ public class SolutionTypo extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Solution Type");
-        setMinimumSize(new java.awt.Dimension(0, 0));
 
         jPanel1.setMaximumSize(new java.awt.Dimension(178, 158));
         jPanel1.setMinimumSize(new java.awt.Dimension(178, 158));

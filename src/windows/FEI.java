@@ -4,12 +4,13 @@ import gui2.FileManager;
 import gui2.Model;
 import java.awt.Color;
 
-public class FEI extends javax.swing.JFrame {
+public class FEI extends javax.swing.JDialog {
     
     public FEI() {
         initComponents();
         this.setSize(380, 300);
         this.setLocationRelativeTo(null);
+        this.setModal(true);
         loadParameters();
         visible();
         this.setVisible(true);

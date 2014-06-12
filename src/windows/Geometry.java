@@ -4,19 +4,20 @@ import gui2.FileManager;
 import gui2.Model;
 import java.awt.Color;
 
-public class Geometry extends javax.swing.JFrame {
+public class Geometry extends javax.swing.JDialog {
 
-    private FileManager fManager;
+    private final FileManager fManager;
 
     public Geometry() {
         initComponents();
         fManager = Model.getInstance().getFileManager();
 
         this.setLocationRelativeTo(null);
+        this.setModal(true);
         this.setVisible(true);
 
-        this.innerDiameter.setText("" + fManager.getdI());
-        this.outterDiameter.setText("" + fManager.getdO());
+        innerDiameter.setText("" + fManager.getdI());
+        outterDiameter.setText("" + fManager.getdO());
     }
 
     @SuppressWarnings("unchecked")

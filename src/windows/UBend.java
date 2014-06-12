@@ -4,13 +4,14 @@ import gui2.DrawInterface;
 import gui2.Model;
 
 
-public class UBend extends javax.swing.JFrame {
+public class UBend extends javax.swing.JDialog {
 
     private Model model;
     private DrawInterface drawInterf;
 
     public UBend() {
         initComponents();
+        this.setModal(true);
         this.model = Model.getInstance();
         this.drawInterf = DrawInterface.getInstance();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

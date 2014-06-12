@@ -271,7 +271,7 @@ public class MainWindow extends javax.swing.JFrame {
                 if (node.getParent().toString().equals("Fluid Flow")) {
                     drawInterf.setSelectionNodeMode(false);
                     drawInterf.setSelectionEdgeMode(false);
-                    new FlowGeometry(new JFrame(), true);
+                    new FlowGeometry();
                 }
                 break;
             case ("Material"):
