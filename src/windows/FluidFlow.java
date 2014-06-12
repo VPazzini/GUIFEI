@@ -4,25 +4,31 @@ import elements.Edge;
 import gui2.Model;
 import java.awt.Color;
 import java.util.ArrayList;
-import javax.swing.JDialog;
 
-public class FluidFlow extends javax.swing.JPanel {
+public class FluidFlow extends javax.swing.JDialog {
 
-    private final JDialog jDialog;
     private final int[] unitvector = new int[3];
     private float flowVelocity;
     private float flowDensity;
     private ArrayList<Edge> listEdges = new ArrayList<>();
 
-    public FluidFlow(JDialog jDialog, ArrayList<Edge> list) {
-        initComponents();
-        this.jDialog = jDialog;
-        listEdges = list;
+    public FluidFlow(ArrayList<Edge> list) {
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle(list.size() + " Elements");
+
+        this.listEdges = list;
+
+        this.setVisible(true);
     }
 
-    public FluidFlow(JDialog jDialog, Edge e) {
+    public FluidFlow(Edge e) {
         initComponents();
-        this.jDialog = jDialog;
+
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.setTitle("Element " + e.getNumber());
+
         this.flowVelocityField.setText(e.getFlowVelocity() + "");
         this.flowDensityField.setText(e.getFluidDensity() + "");
         x.setText(e.getFlowUnitVector()[0] + "");
@@ -30,6 +36,7 @@ public class FluidFlow extends javax.swing.JPanel {
         z.setText(e.getFlowUnitVector()[2] + "");
 
         listEdges.add(e);
+        this.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -37,10 +44,7 @@ public class FluidFlow extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        flowVelocityLabel = new javax.swing.JLabel();
-        flowVelocityField = new javax.swing.JTextField();
-        flowDensityLabel = new javax.swing.JLabel();
-        flowDensityField = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
         OKButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         xLabel = new javax.swing.JLabel();
@@ -49,18 +53,12 @@ public class FluidFlow extends javax.swing.JPanel {
         y = new javax.swing.JTextField();
         zLabel = new javax.swing.JLabel();
         z = new javax.swing.JTextField();
+        flowDensityField = new javax.swing.JTextField();
+        flowDensityLabel = new javax.swing.JLabel();
+        flowVelocityField = new javax.swing.JTextField();
+        flowVelocityLabel = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
-
-        flowVelocityLabel.setText("Velocity");
-
-        flowVelocityField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        flowVelocityField.setText("0");
-
-        flowDensityLabel.setText("Density");
-
-        flowDensityField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        flowDensityField.setText("0");
 
         OKButton.setText("OK");
         OKButton.addActionListener(new java.awt.event.ActionListener() {
@@ -118,17 +116,27 @@ public class FluidFlow extends javax.swing.JPanel {
                 .addComponent(z, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        flowDensityField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        flowDensityField.setText("0");
+
+        flowDensityLabel.setText("Density");
+
+        flowVelocityField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        flowVelocityField.setText("0");
+
+        flowVelocityLabel.setText("Velocity");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(flowVelocityLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(flowVelocityField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -141,22 +149,33 @@ public class FluidFlow extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {flowDensityLabel, flowVelocityLabel});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {flowDensityLabel, flowVelocityLabel});
 
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(flowVelocityLabel)
                     .addComponent(flowVelocityField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(flowDensityLabel)
                     .addComponent(flowDensityField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(OKButton)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -207,7 +226,7 @@ public class FluidFlow extends javax.swing.JPanel {
                 e.setFluidDensity(flowDensity);
             }
             Model.getInstance().setFluidFlow(true);
-            jDialog.dispose();
+            this.dispose();
         }
     }//GEN-LAST:event_OKButtonActionPerformed
 
@@ -219,6 +238,7 @@ public class FluidFlow extends javax.swing.JPanel {
     private javax.swing.JLabel flowVelocityLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField x;
     private javax.swing.JLabel xLabel;
     private javax.swing.JTextField y;

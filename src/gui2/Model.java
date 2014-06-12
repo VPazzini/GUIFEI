@@ -1,7 +1,6 @@
 package gui2;
 
 import elements.Edge;
-import elements.Group;
 import elements.Node;
 import elements.Support;
 import java.awt.Point;
@@ -328,27 +327,12 @@ public class Model {
     }
 
     public void addFluidFlow() {
-        JDialog rest = new JDialog();
-        rest.setSize(190, 240);
-
-        rest.setModal(true);
-        rest.setResizable(false);
-        rest.setLocationRelativeTo(null);
-
-        Edge temp;
-        FluidFlow r;
 
         if (selectedEdges.size() == 1) {
-            temp = selectedEdges.get(0);
-            rest.setTitle("Edge " + temp.getNumber());
-            r = new FluidFlow(rest, temp);
+            new FluidFlow(selectedEdges.get(0));
         } else {
-            rest.setTitle(selectedEdges.size() + " Elements");
-            r = new FluidFlow(rest, selectedEdges);
+            new FluidFlow(selectedEdges);
         }
-
-        rest.add(r);
-        rest.setVisible(true);
 
         selectedEdges = new ArrayList<>();
         DrawInterface.getInstance().repaint();
