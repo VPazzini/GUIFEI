@@ -196,10 +196,10 @@ public class DrawInterface extends JPanel implements ActionListener {
 
             if (showSpring) {
                 /*if (e.getSpringValue() != 0) {
-                    for (Shape s : e.getSpringArrow()) {
-                        g2d.draw(s);
-                    }
-                }*/
+                 for (Shape s : e.getSpringArrow()) {
+                 g2d.draw(s);
+                 }
+                 }*/
             }
 
             g2d.setColor(Color.black);
@@ -239,18 +239,12 @@ public class DrawInterface extends JPanel implements ActionListener {
             g2d.setColor(Color.black);
 
             if (showConst) {
-                for (Shape s : n.getConstraintArrow()) {
+                Shape s = n.getConstraintArrow();
+                if (s != null) {
                     g2d.draw(s);
                 }
-                if (n.isZ()) {
-                    g2d.draw3DRect(n.getPos().x - nodeSize / 2,
-                            n.getPos().y - nodeSize / 2,
-                            nodeSize, nodeSize, false);
-                }
             }
-
         }
-
     }
 
     @Override

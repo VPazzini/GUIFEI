@@ -72,27 +72,14 @@ public class Node {
         return shapes;
     }
 
-    public ArrayList<Shape> getConstraintArrow() {
+    public Shape getConstraintArrow() {
         int size = 40;
-        ArrayList<Shape> shapes = new ArrayList<>();
-
-        if (x) {
-            shapes.add(createArrowStroke(pos.x - size, pos.y, pos.x, pos.y, false));
-        }
-        if (y) {
-            shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, false));
-        }
-        if (z) {
-            //shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, false));
-        }
-        if (Rx) {
-            shapes.add(createArrowStroke(pos.x - size, pos.y, pos.x, pos.y, true));
-        }
-        if (Ry) {
-            shapes.add(createArrowStroke(pos.x, pos.y - size, pos.x, pos.y, true));
+        Shape shape = null;
+        if (x || y || z || Rx || Ry || Rz) {
+            shape = createTriangle(pos.x, pos.y - size, pos.x, pos.y, false);
         }
 
-        return shapes;
+        return shape;
     }
 
     protected Shape createArrow(float fx, float fy, float tx, float ty, boolean rot) {
@@ -110,6 +97,34 @@ public class Node {
         gp.lineTo(z + dec, fy - size / 2);
         gp.moveTo(z, fy);
         gp.lineTo(z + dec, fy + size / 2);
+
+        if (rot) {
+            gp.moveTo(mid + dec, fy - size / 2);
+            gp.curveTo(mid, fy - size, mid, fy + size, mid + dec, fy + size / 2);
+        }
+        double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
+        // transform the shape to follow the line direction
+        return alpha != 0
+                ? gp.createTransformedShape(AffineTransform.getRotateInstance(alpha, fx, fy))
+                : gp;
+    }
+
+    protected Shape createTriangle(float fx, float fy, float tx, float ty, boolean rot) {
+        int size = 15;
+        float dx = tx - fx;
+        float dy = ty - fy;
+        float D = (float) Math.sqrt(dx * dx + dy * dy);
+        float z = (dx <= 0) ? fx - D : fx + D;
+        float mid = (dx <= 0) ? fx - D / 2 : fx + D / 2;
+        float dec = (dx <= 0) ? size : -size;
+
+        GeneralPath gp = new GeneralPath();
+        gp.moveTo(z, fy);
+        //gp.lineTo(z, fy);
+        gp.lineTo(z + dec, fy - size / 2);
+        gp.moveTo(z, fy);
+        gp.lineTo(z + dec, fy + size / 2);
+        gp.lineTo(z + dec, fy - size / 2);
 
         if (rot) {
             gp.moveTo(mid + dec, fy - size / 2);
