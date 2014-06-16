@@ -194,6 +194,25 @@ public class Edge {
         return closestPoint;
     }
 
+    public double distanceFirstNode(Point p) {
+        double distance1 = 0;
+        Point p1, p2;
+
+        for (int i = 0; i < points.size() - 1; i++) {
+            p1 = points.get(i);
+            p2 = points.get(i + 1);
+
+            Point closePoint = getClosestPointOnSegment(p1.x, p1.y, p2.x, p2.y, p.x, p.y);
+            if (closePoint.distance(p) < 5) {
+                distance1 += p1.distance(p);
+                break;
+            } else {
+                distance1 += p1.distance(p2);
+            }
+        }
+        return distance1;
+    }
+
     public double distance(Point p) {
         double distance1 = 0;
         double distance2 = 0;
@@ -250,7 +269,7 @@ public class Edge {
 
             }
         } else {
-            for (int i = getPoints().size()-1; i > 0; i--) {
+            for (int i = getPoints().size() - 1; i > 0; i--) {
                 p1 = getPoints().get(i);
                 p2 = getPoints().get(i - 1);
                 distance += p1.distance(p2);
@@ -263,7 +282,7 @@ public class Edge {
 
             }
         }
-        
+
         return null;
     }
 

@@ -510,45 +510,46 @@ public class Model {
         }
 
         boolean onUbend = false;
-
         ArrayList<Point> splitPoints = new ArrayList<>();
+        Point oldSplit = null;
+        double precision = 0;
         for (Edge edge : edges) {
-            double totalLength, elem, distance;
+            double totalLength, elemLine, elemUbend, elem, distance, distance2;
             int numNodes;
 
             distance = 0;
+            distance2 = 0;
             totalLength = edge.getLength();
-            if (onUbend) {
-                numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
-            } else {
-                numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
-            }
-            elem = totalLength / (numNodes - 1);
-
+            
+            numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
+            elemUbend = totalLength / (numNodes);
+            
+            numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
+            elemLine = totalLength / (numNodes);
+            
+            elem = elemLine;
             for (int i = 0; i < edge.getPoints().size() - 1; i++) {
                 Point p1 = edge.getPoints().get(i);
                 Point p2 = edge.getPoints().get(i + 1);
+                if (oldSplit == null) {
+                    oldSplit = p1;
+                }
                 distance += p1.distance(p2);
+                distance2 += p1.distance(p2);
 
                 if (p1.equals(startUbend)) {
-                    onUbend = true;
-                    totalLength = edge.getLength() - distance;
-                    numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
-                    elem = totalLength / (numNodes - 1);
+                    elem = elemUbend;
                 }
-
-                if (p1.equals(endUbend)) {
-                    onUbend = false;
-                    totalLength = edge.getLength() - distance;
-                    numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
-                    elem = totalLength / (numNodes - 1);
-                }
-
-                while ((distance - 1) > elem) {
+                while ((distance) > elem) {
                     int dist = (int) (elem - (distance - p1.distance(p2)));
                     Point split = interpolationByDistance(p1, p2, dist);
                     distance -= elem;
                     splitPoints.add(split);
+
+                    oldSplit = split;
+                    if (p1.equals(endUbend)) {
+                        elem = elemLine;
+                    }
                 }
 
             }
