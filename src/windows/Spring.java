@@ -118,6 +118,8 @@ public class Spring extends javax.swing.JDialog {
                 .addComponent(z, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {x, y});
+
         valueLabel.setText("Value");
 
         valueField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);

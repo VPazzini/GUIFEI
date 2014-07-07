@@ -113,10 +113,10 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="x" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="x" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="xLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="yLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="y" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="y" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="zLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="z" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
