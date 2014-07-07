@@ -1,6 +1,7 @@
 package gui2;
 
 import elements.Edge;
+import elements.Force;
 import elements.Node;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -100,6 +101,8 @@ public class FileManager {
         generateInputFile();
         generateElemFile();
         generateNodeFile();
+        generateConfFile();
+        generatePressureFile();
     }
 
     private void generateNodeFile() {
@@ -122,11 +125,11 @@ public class FileManager {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(4);
 
-        File file = new File(this.nodeFile);
+        File nodeFile = new File(this.nodeFile);
         try {
-            BufferedWriter output = new BufferedWriter(new FileWriter(file));
+            BufferedWriter nodeOutput = new BufferedWriter(new FileWriter(nodeFile));
+            String line;
             for (Node n : nodes) {
-                String line;
                 line = n.getNumber() + " "
                         + (n.isX() ? "1" : "0") + " "
                         + (n.isY() ? "1" : "0") + " "
@@ -136,9 +139,33 @@ public class FileManager {
                         + (n.isRz() ? "1" : "0") + " "
                         + df.format(n.getPos().getX() - lowerX) + " "
                         + df.format(n.getPos().getY() - lowerY) + " 0.0\n";
-                output.write(line);
+                nodeOutput.write(line);
             }
-            output.close();
+            nodeOutput.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void generateConfFile() {
+        ArrayList<Node> nodes = modelo.getNodes();
+        if (nodes.isEmpty()) {
+            return;
+        }
+        File confFile = new File(this.confFile);
+        try {
+            BufferedWriter confOutput = new BufferedWriter(new FileWriter(confFile));
+            String line;
+            for (Node n : nodes) {
+                for (Force f : n.getForces()) {
+                    line = n.getNumber() + " "
+                            + f.getAxisNumber() + " "
+                            + f.getValue() + "\n";
+                    confOutput.write(line);
+                }
+
+            }
+            confOutput.close();
         } catch (IOException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -155,6 +182,29 @@ public class FileManager {
                         + e.getNode1().getNumber() + " "
                         + e.getNode2().getNumber() + "\n";
                 output.write(line);
+            }
+            output.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void generatePressureFile() {
+        File file = new File(this.pressFile);
+        ArrayList<Edge> edges = modelo.getEdges();
+        try {
+            BufferedWriter output = new BufferedWriter(new FileWriter(file));
+            for (Edge e : edges) {
+                String line;
+                int i = 1;
+                for (int vec : e.getFlowUnitVector()) {
+                    if (vec != 0) {
+                        line = e.getNumber() + " "
+                                + i + " " + vec + "\n";
+                        output.write(line);
+                    }
+                    i++;
+                }
             }
             output.close();
         } catch (IOException ex) {
