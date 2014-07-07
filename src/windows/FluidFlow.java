@@ -13,6 +13,7 @@ public class FluidFlow extends javax.swing.JDialog {
     private ArrayList<Edge> listEdges = new ArrayList<>();
 
     public FluidFlow(ArrayList<Edge> list) {
+        initComponents();
         this.setLocationRelativeTo(null);
         this.setModal(true);
         this.setTitle(list.size() + " Elements");
@@ -43,7 +44,6 @@ public class FluidFlow extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         OKButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -57,8 +57,6 @@ public class FluidFlow extends javax.swing.JDialog {
         flowDensityLabel = new javax.swing.JLabel();
         flowVelocityField = new javax.swing.JTextField();
         flowVelocityLabel = new javax.swing.JLabel();
-
-        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -241,7 +239,6 @@ public class FluidFlow extends javax.swing.JDialog {
     private javax.swing.JLabel flowDensityLabel;
     private javax.swing.JTextField flowVelocityField;
     private javax.swing.JLabel flowVelocityLabel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField x;
