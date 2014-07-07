@@ -10,7 +10,6 @@ import java.awt.geom.FlatteningPathIterator;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
-import javax.swing.JDialog;
 import windows.Constraint;
 import windows.FluidFlow;
 import windows.ForcesWindow;
@@ -101,7 +100,7 @@ public class Model {
         }
 
         startUbend = edge.getPoints().get(1);
-        endUbend = edge.getPoints().get(edge.getPoints().size() - 2);
+        endUbend = (Point) edge.getPoints().get(edge.getPoints().size() - 2).clone();
     }
 
     public Point interpolationByDistance(Point p1, Point p2, double d) {
@@ -509,25 +508,30 @@ public class Model {
             splitEdge(p, true);
         }
 
-        boolean onUbend = false;
         ArrayList<Point> splitPoints = new ArrayList<>();
         Point oldSplit = null;
-        double precision = 0;
+
+        boolean onUbend = false;
         for (Edge edge : edges) {
-            double totalLength, elemLine, elemUbend, elem, distance, distance2;
+            double totalLength, elemLine, elemUbend, distance;
+            double elem = 0;
             int numNodes;
 
             distance = 0;
-            distance2 = 0;
             totalLength = edge.getLength();
-            
+
             numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
             elemUbend = totalLength / (numNodes);
-            
+
             numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
             elemLine = totalLength / (numNodes);
-            
-            elem = elemLine;
+
+            if (onUbend) {
+                elem = elemUbend;
+            } else {
+                elem = elemLine;
+            }
+
             for (int i = 0; i < edge.getPoints().size() - 1; i++) {
                 Point p1 = edge.getPoints().get(i);
                 Point p2 = edge.getPoints().get(i + 1);
@@ -535,12 +539,11 @@ public class Model {
                     oldSplit = p1;
                 }
                 distance += p1.distance(p2);
-                distance2 += p1.distance(p2);
-
                 if (p1.equals(startUbend)) {
                     elem = elemUbend;
+                    onUbend = true;
                 }
-                while ((distance) > elem) {
+                while ((distance - 1) > elem) {
                     int dist = (int) (elem - (distance - p1.distance(p2)));
                     Point split = interpolationByDistance(p1, p2, dist);
                     distance -= elem;
@@ -549,7 +552,14 @@ public class Model {
                     oldSplit = split;
                     if (p1.equals(endUbend)) {
                         elem = elemLine;
+                        onUbend = false;
                     }
+                }
+
+                if (onUbend) {
+                    elem = elemUbend;
+                } else {
+                    elem = elemLine;
                 }
 
             }
