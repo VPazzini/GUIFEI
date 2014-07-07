@@ -14,6 +14,25 @@ public class Force implements Cloneable{
     public String getAxis() {
         return axis;
     }
+    
+    public int getAxisNumber(){
+        switch(axis){
+            case("X"):
+                return 1;
+            case("Y"):
+                return 2;
+            case("Z"):
+                return 3;
+            case("RX"):
+                return 4;
+            case("RY"):
+                return 5;
+            case("RZ"):
+                return 6;
+            default:
+                return 0;
+        }
+    }
 
     public float getValue() {
         return forceValue;
