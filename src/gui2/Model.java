@@ -571,11 +571,11 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
-    public boolean isMeshed() {
+    public Boolean isMeshed() {
         return meshed;
     }
 
-    public boolean isFei() {
+    public Boolean isFei() {
         return fei;
     }
 
@@ -583,7 +583,7 @@ public class Model {
         this.fei = fei;
     }
 
-    public boolean isTurbulence() {
+    public Boolean isTurbulence() {
         return turbulence;
     }
 
@@ -591,7 +591,7 @@ public class Model {
         this.turbulence = turbulence;
     }
 
-    public boolean isFluidFlow() {
+    public Boolean isFluidFlow() {
         return fluidFlow;
     }
 

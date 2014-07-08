@@ -8,12 +8,7 @@
             <file>file:/home/pazzini/NetBeansProjects/GUI2/src/windows/Turbulence.java</file>
         </group>
         <group name="TrendsProject">
-            <file>file:/D:/Documents/GUIFEI/src/windows/FEI.java</file>
-            <file>file:/D:/Documents/GUIFEI/src/gui2/MainWindow.java</file>
-            <file>file:/D:/Documents/GUIFEI/src/gui2/Model.java</file>
-            <file>file:/D:/Documents/GUIFEI/src/windows/Pressure.java</file>
-            <file>file:/D:/Documents/GUIFEI/src/elements/Edge.java</file>
-            <file>file:/D:/Documents/GUIFEI/src/windows/Spring.java</file>
+            <file>file:/D:/Documents/GUIFEI/src/gui2/FileManager.java</file>
         </group>
     </open-files>
 </project-private>

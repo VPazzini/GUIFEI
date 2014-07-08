@@ -11,6 +11,18 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class FileManager {
 
@@ -96,6 +108,192 @@ public class FileManager {
         fortranPath = new File(new File(".").getAbsolutePath());
     }
 
+    public void generateXMLFile() {
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            Document doc = docBuilder.newDocument();
+
+            Element rootElement = doc.createElement("Model");
+            doc.appendChild(rootElement);
+
+            generateInputXMLFile(doc, rootElement);
+            generateNodeXMLFile(doc, rootElement);
+            generateElemXMLFile(doc, rootElement);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File("file.xml"));
+
+            transformer.transform(source, result);
+
+            System.out.println("File saved!");
+
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void generateNodeXMLFile(Document doc, Element elem) {
+        ArrayList<Node> nodes = modelo.getNodes();
+        if (nodes.isEmpty()) {
+            return;
+        }
+        double lowerX = nodes.get(0).getPos().x;
+        double lowerY = nodes.get(0).getPos().y;
+
+        for (Node n : nodes) {
+            if (n.getPos().x < lowerX) {
+                lowerX = n.getPos().getX();
+            }
+            if (n.getPos().y < lowerY) {
+                lowerY = n.getPos().getY();
+            }
+        }
+
+        Element allNodes = doc.createElement("Nodes");
+        elem.appendChild(allNodes);
+
+        for (Node n : nodes) {
+            Element node = doc.createElement("Node");
+            allNodes.appendChild(node);
+
+            Attr attr = doc.createAttribute("id");
+            attr.setValue(n.getNumber() + "");
+            node.setAttributeNode(attr);
+
+            Element constraint = doc.createElement("Constaint");
+            node.appendChild(constraint);
+
+            Element consX = doc.createElement("X");
+            consX.appendChild(doc.createTextNode(n.isX().toString()));
+            constraint.appendChild(consX);
+
+            Element consY = doc.createElement("Y");
+            consY.appendChild(doc.createTextNode(n.isY().toString()));
+            constraint.appendChild(consY);
+
+            Element consZ = doc.createElement("Z");
+            consZ.appendChild(doc.createTextNode(n.isZ().toString()));
+            constraint.appendChild(consZ);
+
+            Element consRX = doc.createElement("RX");
+            consRX.appendChild(doc.createTextNode(n.isRx().toString()));
+            constraint.appendChild(consRX);
+
+            Element consRY = doc.createElement("RY");
+            consRY.appendChild(doc.createTextNode(n.isRy().toString()));
+            constraint.appendChild(consRY);
+
+            Element consRZ = doc.createElement("RZ");
+            consRZ.appendChild(doc.createTextNode(n.isRz().toString()));
+            constraint.appendChild(consRZ);
+
+            Element position = doc.createElement("Position");
+            node.appendChild(position);
+
+            Element posX = doc.createElement("X");
+            posX.appendChild(doc.createTextNode(n.getPos().x + ""));
+            position.appendChild(posX);
+
+            Element posY = doc.createElement("Y");
+            posY.appendChild(doc.createTextNode(n.getPos().y + ""));
+            position.appendChild(posY);
+
+            Element posZ = doc.createElement("Z");
+            posZ.appendChild(doc.createTextNode("0.0"));
+            position.appendChild(posZ);
+
+            Element conforces = null;
+            if (!n.getForces().isEmpty()) {
+                conforces = doc.createElement("Conforces");
+                node.appendChild(conforces);
+            }
+
+            for (Force f : n.getForces()) {
+                Element axis = doc.createElement(f.getAxis());
+                axis.appendChild(doc.createTextNode(f.getValue() + ""));
+                conforces.appendChild(axis);
+            }
+
+        }
+
+    }
+
+    private void generateElemXMLFile(Document doc, Element elem) {
+
+        Element elements = doc.createElement("Elements");
+        elem.appendChild(elements);
+
+        ArrayList<Edge> edges = modelo.getEdges();
+
+        for (Edge e : edges) {
+            Element element = doc.createElement("Element");
+            elements.appendChild(element);
+
+            Attr attr = doc.createAttribute("id");
+            attr.setValue(e.getNumber() + "");
+            element.setAttributeNode(attr);
+
+            Element nodes = doc.createElement("Nodes");
+            element.appendChild(nodes);
+
+            Element node1 = doc.createElement("Node1");
+            node1.appendChild(doc.createTextNode(e.getNode1().getNumber() + ""));
+            nodes.appendChild(node1);
+
+            Element node2 = doc.createElement("Node2");
+            node2.appendChild(doc.createTextNode(e.getNode2().getNumber() + ""));
+            nodes.appendChild(node2);
+
+            if (e.getPressureValue() != 0) {
+                int i = 0;
+                String[] axis = {"X", "Y", "Z"};
+                Element pressure = doc.createElement("Pressure");
+                element.appendChild(pressure);
+
+                Element value = doc.createElement("Value");
+                value.appendChild(doc.createTextNode(e.getPressureValue() + ""));
+                element.appendChild(value);
+
+                for (int vec : e.getPressureUnitVector()) {
+                    Element unit = doc.createElement(axis[i]);
+                    unit.appendChild(doc.createTextNode(vec + ""));
+                    pressure.appendChild(unit);
+                    i++;
+                }
+            }
+            if (e.getFlowVelocity() != 0) {
+                int i = 0;
+                String[] axis = {"X", "Y", "Z"};
+                Element fluid = doc.createElement("Fluid");
+                element.appendChild(fluid);
+
+                Element flow = doc.createElement("Velocity");
+                flow.appendChild(doc.createTextNode(e.getFlowVelocity() + ""));
+                element.appendChild(flow);
+
+                Element density = doc.createElement("Density");
+                density.appendChild(doc.createTextNode(e.getFluidDensity() + ""));
+                element.appendChild(density);
+
+                for (int vec : e.getPressureUnitVector()) {
+                    Element unit = doc.createElement(axis[i]);
+                    unit.appendChild(doc.createTextNode(vec + ""));
+                    fluid.appendChild(unit);
+                    i++;
+                }
+            }
+
+        }
+    }
+
     public void generateAllFiles() {
         modelo = Model.getInstance();
         generateInputFile();
@@ -103,6 +301,7 @@ public class FileManager {
         generateNodeFile();
         generateConfFile();
         generatePressureFile();
+        generateXMLFile();
     }
 
     private void generateNodeFile() {
@@ -187,6 +386,7 @@ public class FileManager {
         } catch (IOException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     private void generatePressureFile() {
@@ -210,6 +410,207 @@ public class FileManager {
         } catch (IOException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void generateInputXMLFile(Document doc, Element elem) {
+
+        //<editor-fold defaultstate="collapsed" desc="Solution">
+        Element top = doc.createElement("Solution");
+        elem.appendChild(top);
+
+        Element temp = doc.createElement("Isolut");
+        temp.appendChild(doc.createTextNode(isolut + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Save_Limit");
+        temp.appendChild(doc.createTextNode(saveLimit + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("If_Turbulence");
+        temp.appendChild(doc.createTextNode(modelo.isTurbulence().toString()));
+        top.appendChild(temp);
+
+        temp = doc.createElement("If_Fluid");
+        temp.appendChild(doc.createTextNode(modelo.isFluidFlow().toString()));
+        top.appendChild(temp);
+
+        temp = doc.createElement("If_FEI");
+        temp.appendChild(doc.createTextNode(modelo.isFei().toString()));
+        top.appendChild(temp);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Dynamics">
+        top = doc.createElement("Dynamics");
+        elem.appendChild(top);
+
+        temp = doc.createElement("IDynamics");
+        temp.appendChild(doc.createTextNode("1"));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Damping");
+        temp.appendChild(doc.createTextNode(damping + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Method");
+        temp.appendChild(doc.createTextNode(intMethod + ""));
+        top.appendChild(temp);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Timing">
+        top = doc.createElement("Timing");
+        elem.appendChild(top);
+
+        temp = doc.createElement("Start");
+        temp.appendChild(doc.createTextNode(tStart + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Stop");
+        temp.appendChild(doc.createTextNode(tStop + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Delta_T");
+        temp.appendChild(doc.createTextNode(deltaT + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Delta_T");
+        temp.appendChild(doc.createTextNode(deltaT + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Gamma");
+        temp.appendChild(doc.createTextNode(gamma + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Beta");
+        temp.appendChild(doc.createTextNode(beta + ""));
+        top.appendChild(temp);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Node List">
+        top = doc.createElement("Node_List");
+        elem.appendChild(top);
+
+        temp = doc.createElement("NNP");
+        temp.appendChild(doc.createTextNode(modelo.getNodes().size() + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("NELG");
+        temp.appendChild(doc.createTextNode(NELG + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("NMAT");
+        temp.appendChild(doc.createTextNode(NMAT + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("D_I");
+        temp.appendChild(doc.createTextNode(dI + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("D_O");
+        temp.appendChild(doc.createTextNode(dO + ""));
+        top.appendChild(temp);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Material">
+        top = doc.createElement("Material");
+        elem.appendChild(top);
+
+        temp = doc.createElement("TEMOD");
+        temp.appendChild(doc.createTextNode(teMod + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("TDENS");
+        temp.appendChild(doc.createTextNode(tDens + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("TPOI");
+        temp.appendChild(doc.createTextNode(tPoi + ""));
+        top.appendChild(temp);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Tube Bundle">
+        top = doc.createElement("Tube_Bundle");
+        elem.appendChild(top);
+
+        temp = doc.createElement("B_Type");
+        temp.appendChild(doc.createTextNode(bType + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("P_D");
+        temp.appendChild(doc.createTextNode(p_d + ""));
+        top.appendChild(temp);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Turbulence">
+        top = doc.createElement("Turbulence");
+        elem.appendChild(top);
+
+        temp = doc.createElement("F1");
+        temp.appendChild(doc.createTextNode(turbF1 + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("F2");
+        temp.appendChild(doc.createTextNode(turbF2 + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("DF");
+        temp.appendChild(doc.createTextNode(turbDF + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Model");
+        temp.appendChild(doc.createTextNode(turbModel + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Correlation_Length");
+        temp.appendChild(doc.createTextNode(corrLen + ""));
+        top.appendChild(temp);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Fluidelastic">
+        top = doc.createElement("Fluidelastic");
+        elem.appendChild(top);
+
+        temp = doc.createElement("Model");
+        temp.appendChild(doc.createTextNode(feiModel + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("NFlex");
+        temp.appendChild(doc.createTextNode(nFlex + ""));
+        top.appendChild(temp);
+        //</editor-fold>
+
+        //<editor-fold defaultstate="collapsed" desc="Impact">
+        top = doc.createElement("Impact");
+        elem.appendChild(top);
+
+        temp = doc.createElement("Iterations");
+        temp.appendChild(doc.createTextNode(iterations + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Beta");
+        temp.appendChild(doc.createTextNode(beta + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Type_I");
+        temp.appendChild(doc.createTextNode(type_I + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Tolerance");
+        temp.appendChild(doc.createTextNode(tolerance + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Stiffness");
+        temp.appendChild(doc.createTextNode(stiffness + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("Diameter");
+        temp.appendChild(doc.createTextNode(diam + ""));
+        top.appendChild(temp);
+
+        temp = doc.createElement("DisplayScreen");
+        temp.appendChild(doc.createTextNode(displayScreen + ""));
+        top.appendChild(temp);
+        //</editor-fold>
+
     }
 
     private void generateInputFile() {
@@ -246,7 +647,7 @@ public class FileManager {
             output.write(line);
 
             output.write("&NODELIST\n");
-            line = "NNP=" + edges.size()
+            line = "NNP=" + modelo.getNodes().size()
                     + ", nodefile='" + nodeFile + "',"
                     + "NELG=" + NELG
                     + ", NMAT=" + NMAT
@@ -292,6 +693,7 @@ public class FileManager {
                             + e.getFlowUnitVector()[1] + ","
                             + e.getFlowUnitVector()[2] + "\n";
                     output.write(line);
+                    i++;
                 }
             }
             output.write("\n/\n");

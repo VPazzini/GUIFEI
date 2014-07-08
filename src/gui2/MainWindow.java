@@ -69,7 +69,9 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = 0; i < optionsTree.getRowCount(); i++) {
             optionsTree.expandRow(i);
         }
-
+        
+        
+        
     }
 
     @SuppressWarnings("unchecked")
