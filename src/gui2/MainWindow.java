@@ -24,7 +24,11 @@ public class MainWindow extends javax.swing.JFrame {
     private DrawInterface drawInterf;
     private Model model;
     Turbulence turb;
-
+    
+    /**
+     * Creator, initialize the window components, and add the
+     * key listeners to the window.
+     */
     public MainWindow() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -70,9 +74,6 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = 0; i < optionsTree.getRowCount(); i++) {
             optionsTree.expandRow(i);
         }
-        
-        
-        
     }
 
     @SuppressWarnings("unchecked")
@@ -249,6 +250,14 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    /**
+     * This method is called when a option is selected in the Tree Menu.
+     * If there is no need to select nodes or elements than a window will
+     * pop up and show the proper interface to input the data. In the other
+     * hand if there is the need to select nodes or elements, than the the
+     * method selectionMode in the drawInterface is called to allow the
+     * selection in the model.
+     */
     private void optionSelection() {
         DefaultMutableTreeNode node
                 = (DefaultMutableTreeNode) optionsTree.getLastSelectedPathComponent();
@@ -372,7 +381,12 @@ public class MainWindow extends javax.swing.JFrame {
                 break;
         }
     }
-
+    
+    /**
+     * This method is called by the DrawInterface, working as a return
+     * of the selection, when the user finish the selection process this
+     * method is called and the the proper method in the Model is called.
+     */
     public void elemSelected() {
         DefaultMutableTreeNode node
                 = (DefaultMutableTreeNode) optionsTree.getLastSelectedPathComponent();
@@ -406,14 +420,6 @@ public class MainWindow extends javax.swing.JFrame {
             case ("Add Group"):
                 model.addFluidFlow();
                 break;
-            /*case ("Turbulence"):
-                model.addGroup(turb.getStartFreq(), turb.getEndFreq(),
-                        turb.getDFreq(), turb.getMethod());
-                //turb.attList();
-                drawInterf.setSelectionNodeMode(false);
-                drawInterf.setSelectionEdgeMode(false);
-                this.infoLabel.setText("");
-                break;*/
             default:
                 System.out.println(name);
                 break;
@@ -425,37 +431,19 @@ public class MainWindow extends javax.swing.JFrame {
 
     public static void main(String args[]) {
 
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        /*try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }*/
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 mainWindow.setVisible(true);
             }
         });
     }
-
+    
+    /**
+     * This method must be used to get the MainWindow instance,
+     * because there is only one at a time.
+     * 
+     * @return The MainWindow instance.
+     */
     public static synchronized MainWindow getInstance() {
         return mainWindow;
     }

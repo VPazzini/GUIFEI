@@ -195,11 +195,9 @@ public class DrawInterface extends JPanel implements ActionListener {
             g2d.setColor(Color.blue);
 
             if (showSpring) {
-                /*if (e.getSpringValue() != 0) {
-                 for (Shape s : e.getSpringArrow()) {
-                 g2d.draw(s);
-                 }
-                 }*/
+                /*
+                None representation was decided
+                */
             }
 
             g2d.setColor(Color.black);
@@ -220,9 +218,6 @@ public class DrawInterface extends JPanel implements ActionListener {
             }
 
             if (n instanceof Support) {
-                /*g2d.draw3DRect(n.getPos().x - nodeSize / 2,
-                 n.getPos().y - nodeSize / 2,
-                 nodeSize, nodeSize, false);*/
                 g2d.draw(((Support) n).getSupportShape());
             } else {
                 g2d.drawOval(n.getPos().x - nodeSize / 2,

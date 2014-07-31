@@ -28,7 +28,13 @@ public class Node {
         this.pos = pos;
         this.number = number;
     }
-
+    
+    /**
+     *  Return the shape of an arrow representing the forces
+     * applied to the node.
+     * 
+     * @return 
+     */
     public Shape[] getForceArrows() {
         float xSum = pos.x;
         float ySum = pos.y;
@@ -103,7 +109,6 @@ public class Node {
             gp.curveTo(mid, fy - size, mid, fy + size, mid + dec, fy + size / 2);
         }
         double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
-        // transform the shape to follow the line direction
         return alpha != 0
                 ? gp.createTransformedShape(AffineTransform.getRotateInstance(alpha, fx, fy))
                 : gp;
@@ -130,37 +135,6 @@ public class Node {
             gp.moveTo(mid + dec, fy - size / 2);
             gp.curveTo(mid, fy - size, mid, fy + size, mid + dec, fy + size / 2);
         }
-        double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
-        // transform the shape to follow the line direction
-        return alpha != 0
-                ? gp.createTransformedShape(AffineTransform.getRotateInstance(alpha, fx, fy))
-                : gp;
-    }
-
-    protected Shape createArrowStroke(float fx, float fy, float tx, float ty, boolean rot) {
-        int size = 7;
-        float dx = tx - fx;
-        float dy = ty - fy;
-        float D = (float) Math.sqrt(dx * dx + dy * dy);
-        float z = (dx <= 0) ? fx - D : fx + D;
-        float mid = (dx <= 0) ? fx - D / 2 : fx + D / 2;
-        float dec = (dx <= 0) ? size : -size;
-        GeneralPath gp = new GeneralPath();
-        // the shape on an horizontal line
-        gp.moveTo(fx, fy - size / 2);
-        gp.lineTo(z + dec, fy - size / 2);
-        gp.lineTo(z + dec, fy - size);
-        gp.lineTo(z, fy);
-        gp.lineTo(z + dec, fy + size);
-        gp.lineTo(z + dec, fy + size / 2);
-        gp.lineTo(fx, fy + size / 2);
-        gp.closePath();
-
-        if (rot) {
-            gp.moveTo(mid + dec, fy - size);
-            gp.curveTo(mid, fy - 1.5 * size, mid, fy + 1.5 * size, mid + dec, fy + size);
-        }
-
         double alpha = (dx > 0) ? Math.asin(dy / D) : -Math.asin(dy / D);
         // transform the shape to follow the line direction
         return alpha != 0
@@ -255,18 +229,26 @@ public class Node {
     public void setRz(Boolean Rz) {
         this.Rz = Rz;
     }
-
-    public boolean[] getRest() {
-        boolean[] rest = new boolean[6];
-        rest[0] = x;
-        rest[1] = y;
-        rest[2] = z;
-        rest[3] = Rx;
-        rest[4] = Ry;
-        rest[5] = Rz;
-        return rest;
+    
+    /**
+     * Returns a boolean vector with the constraints.
+     * @return 
+     */
+    public boolean[] getConst() {
+        boolean[] constraint = new boolean[6];
+        constraint[0] = x;
+        constraint[1] = y;
+        constraint[2] = z;
+        constraint[3] = Rx;
+        constraint[4] = Ry;
+        constraint[5] = Rz;
+        return constraint;
     }
-
+    
+    /**
+     * Set the Constraint of the Node.
+     * @param rest boolean vector representing the constraint
+     */
     public void setRest(boolean[] rest) {
         x = rest[0];
         y = rest[1];

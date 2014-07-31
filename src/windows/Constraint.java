@@ -25,7 +25,7 @@ public class Constraint extends javax.swing.JDialog {
 
         listNodes.add(n);
 
-        boolean[] rest = n.getRest();
+        boolean[] rest = n.getConst();
         this.jCheckBoxX.setSelected(rest[0]);
         this.jCheckBoxY.setSelected(rest[1]);
         this.jCheckBoxZ.setSelected(rest[2]);

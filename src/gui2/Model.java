@@ -42,6 +42,8 @@ public class Model {
     //Model
     private boolean line = false;
     private boolean uBend = false;
+    private int length;
+    private double totalLength;
     //Model
 
     private boolean fei = false;
@@ -67,12 +69,14 @@ public class Model {
 
     public void drawLine(int length) {
         drawLine(length, 100, 50);
+        this.length = length;
     }
 
     public void drawUbend(int length, int radius) {
         line = false;
         uBend = true;
         meshed = false;
+        this.length = length;
 
         Path2D.Double path = new Path2D.Double();
         int ix = 100;
@@ -98,6 +102,8 @@ public class Model {
             edge.insertPoint(new Point(x, y));
             f.next();
         }
+
+        this.totalLength = edge.getLength();
 
         startUbend = edge.getPoints().get(1);
         endUbend = (Point) edge.getPoints().get(edge.getPoints().size() - 2).clone();
@@ -160,6 +166,13 @@ public class Model {
         return null;
     }
 
+    /**
+     * Returns a Support which contains the given point, or null if there is
+     * nono.
+     *
+     * @param p the point used to find the Support
+     * @return Closest Node to the given point, considering a limit boundary
+     */
     public Support getSupport(Point p) {
         for (Node n : nodes) {
             if (isInside(n, p)) {
@@ -171,11 +184,25 @@ public class Model {
         return null;
     }
 
+    /**
+     * Return whether the given point is inside the given node.
+     *
+     * @param n The node
+     * @param p The point
+     * @return True if the point is inside the node
+     */
     private boolean isInside(Node n, Point p) {
         Point temp = (Point) n.getPos().clone();
         return p.distance(temp) <= (nodeSize / 1.6);
     }
 
+    /**
+     * Create a new edge between the nodes n1 and n2, and returns the edge.
+     *
+     * @param n1 First node
+     * @param n2 Second Node
+     * @return The edge created
+     */
     private Edge newEdge(Node n1, Node n2) {
         Edge newEdge1 = new Edge(n1, n2, edgeNumber);
         Edge newEdge2 = new Edge(n2, n1, edgeNumber);
@@ -192,6 +219,9 @@ public class Model {
         return newEdge1;
     }
 
+    /**
+     * Clean the model nodes and edges.
+     */
     public void deleteAll() {
         this.nodes = new ArrayList<>();
         this.edges = new ArrayList<>();
@@ -227,6 +257,12 @@ public class Model {
         this.selectedEdges = selectedEdges;
     }
 
+    /**
+     * Select all nodes contained in the rectangle defined by p1 and p2.
+     *
+     * @param p1 First Ponint
+     * @param p2 Second Point
+     */
     public void selectNodes(Point p1, Point p2) {
         Rectangle rect = new Rectangle(p1);
         rect.add(p2);
@@ -240,6 +276,13 @@ public class Model {
         }
     }
 
+    /**
+     * Select edges that are contained in the rectangle defined by point 1 and
+     * point 2.
+     *
+     * @param p1
+     * @param p2
+     */
     public void selectEdges(Point p1, Point p2) {
         Rectangle rect = new Rectangle(p1);
         rect.add(p2);
@@ -257,10 +300,19 @@ public class Model {
         }
     }
 
+    /**
+     * Returns the model instance. It should be only one instance at a time
+     *
+     * @return The model instance.
+     */
     public static synchronized Model getInstance() {
         return model;
     }
 
+    /**
+     * Open the constraint window and wait for user input. If the input is valid
+     * the changes are saved in the Nodes that are selected.
+     */
     public void addConstraint() {
         if (selectedNodes.size() == 1) {
             new Constraint(selectedNodes.get(0));
@@ -273,6 +325,10 @@ public class Model {
 
     }
 
+    /**
+     * Open the force window and wait for user input. If the input is valid the
+     * changes are saved in the Nodes that are selected.
+     */
     public void addForce() {
         if (selectedNodes.size() == 1) {
             new ForcesWindow(selectedNodes.get(0));
@@ -284,10 +340,12 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    /**
+     * Open the support window and wait for user input. If the input is valid
+     * the changes are saved in the Nodes that are selected.
+     */
     public void addSupport() {
-
         ArrayList<Support> supports = new ArrayList<>();
-
         for (Node n : selectedNodes) {
             if (n instanceof Support) {
                 supports.add((Support) n);
@@ -304,6 +362,10 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    /**
+     * Open the spring window and wait for user input. If the input is valid the
+     * changes are saved in the Nodes that are selected.
+     */
     public void addSpring() {
         if (selectedNodes.size() == 1) {
             new Spring(selectedNodes.get(0));
@@ -314,6 +376,10 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    /**
+     * Open the pressure window and wait for user input. If the input is valid
+     * the changes are saved in the elements that are selected.
+     */
     public void addPressure() {
         if (selectedEdges.size() == 1) {
             new Pressure(selectedEdges.get(0));
@@ -325,6 +391,10 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    /**
+     * Open the fluid window and wait for user input. If the input is valid the
+     * changes are saved in the elements that are selected.
+     */
     public void addFluidFlow() {
 
         if (selectedEdges.size() == 1) {
@@ -337,6 +407,13 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    /**
+     * Create a new node in the given position if the position is over an
+     * element and split the element. If there is a node in that position the
+     * node will be selected.
+     *
+     * @param p1 position
+     */
     public void newNode(Point p1) {
         Node n = getNode(p1);
         if (n == null) {
@@ -358,6 +435,12 @@ public class Model {
         }
     }
 
+    /**
+     * Create a new support in the given position if the position is over an
+     * element. If there is a node in that position the node will be selected.
+     *
+     * @param p1 position
+     */
     public void newSupport(Point p1) {
         Support s = getSupport(p1);
         if (s == null) {
@@ -379,6 +462,12 @@ public class Model {
         }
     }
 
+    /**
+     * Create a new edge between the first two selected nodes. Or selected the
+     * element if the point is over one.
+     *
+     * @param p position
+     */
     public void newEdge(Point p) {
 
         for (Edge e : edges) {
@@ -407,6 +496,9 @@ public class Model {
         }
     }
 
+    /**
+     * Delete the selected nodes.
+     */
     public void deleteNode() {
         if (!selectedNodes.isEmpty()) {
             for (Node n : selectedNodes) {
@@ -418,6 +510,11 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    /**
+     * Delete the given node and merge the elements that were connected to it.
+     *
+     * @param n Node that is being deleted
+     */
     private void joinEdges(Node n) {
         if (n.edgesSize() > 1) {
             ArrayList<Edge> delete = new ArrayList<>();
@@ -443,6 +540,9 @@ public class Model {
         }
     }
 
+    /**
+     * Delete the selected element if it is on one of the tube ending.
+     */
     public void deleteEdge() {
         if (!selectedEdges.isEmpty()) {
             int con = 0;
@@ -488,14 +588,30 @@ public class Model {
         DrawInterface.getInstance().repaint();
     }
 
+    /**
+     * Returns the size used to paint the node in the screen
+     *
+     * @return the size of the node
+     */
     public int getNodeSize() {
         return nodeSize;
     }
 
+    /**
+     * Change the node size
+     *
+     * @param nodeSize
+     */
     public void setNodeSize(int nodeSize) {
         this.nodeSize = nodeSize;
     }
 
+    /**
+     * Mesh the whole model.
+     *
+     * @param maxElemLengthLine max size of elements on Line
+     * @param maxElemLengthUbend max size of elements on UBend
+     */
     public void mesh(double maxElemLengthLine, double maxElemLengthUbend) {
         meshed = true;
         ArrayList<Point> suppPoints = new ArrayList<>();
@@ -512,20 +628,27 @@ public class Model {
         Point oldSplit = null;
 
         boolean onUbend = false;
+        double elemLine, elemUbend;
+        int numNodes;
+
+        numNodes = ((int) Math.floor((totalLength - (2 * length)) / maxElemLengthUbend)) + 1;
+        elemUbend = (totalLength - (2 * length)) / (numNodes);
+
+        numNodes = ((int) Math.floor(length * 2 / maxElemLengthLine)) + 1;
+        elemLine = length*2 / (numNodes);
+
         for (Edge edge : edges) {
-            double totalLength, elemLine, elemUbend, distance;
+            double totalLength, distance;
             double elem = 0;
-            int numNodes;
 
             distance = 0;
-            totalLength = edge.getLength();
+            //totalLength = edge.getLength();
 
-            numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
-            elemUbend = totalLength / (numNodes);
+            /*numNodes = ((int) Math.floor(totalLength / maxElemLengthUbend)) + 1;
+             elemUbend = totalLength / (numNodes);
 
-            numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
-            elemLine = totalLength / (numNodes);
-
+             numNodes = ((int) Math.floor(totalLength / maxElemLengthLine)) + 1;
+             elemLine = totalLength / (numNodes);*/
             if (onUbend) {
                 elem = elemUbend;
             } else {

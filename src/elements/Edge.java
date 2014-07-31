@@ -43,13 +43,22 @@ public class Edge {
     public int getNumber() {
         return number;
     }
-
+    
+    /**
+     * Returns an ArrayLIst of Points, the points are an ordered list
+     * of all point that form the element.
+     * @return 
+     */
     public ArrayList<Point> getPoints() {
         this.points.set(0, node1.getPos());
         this.points.set(points.size() - 1, node2.getPos());
         return points;
     }
-
+    
+    /**
+     * Return the total length of the element.
+     * @return 
+     */
     public double getLength() {
         double length = 0;
         double elem_length;
@@ -59,13 +68,22 @@ public class Edge {
         }
         return length;
     }
-
+    
+    /**
+     * Insert a new point at the end of the element.
+     * @param p 
+     */
     public void insertPoint(Point p) {
         if (p != null && !points.contains(p)) {
             points.add(points.size() - 1, p);
         }
     }
-
+    
+    /**
+     * Return whether the element contain or no the given Point
+     * @param p
+     * @return 
+     */
     public boolean contains(Point p) {
         Point p1 = new Point();
         Point p2 = new Point();
@@ -85,6 +103,12 @@ public class Edge {
         return false;
     }
 
+    /**
+     * Return the two point that define the segment that contain
+     * the given point.
+     * @param p
+     * @return 
+     */
     public Point[] getSegment(Point p) {
         Point p1 = new Point();
         Point p2 = new Point();
@@ -106,11 +130,15 @@ public class Edge {
         }
         return null;
     }
-
+    
+    /**
+     * Return the closest point to the given point.
+     * @param p
+     * @return 
+     */
     public Point getClosestPointOnSegment(Point p) {
         Point p1, p2;
-
-        int div = 0;
+        
         int closeDist = 10;
         Point closestPoint = null;
 
@@ -122,19 +150,31 @@ public class Edge {
 
             if (closePoint.distance(p) < closeDist) {
                 closeDist = (int) closePoint.distance(p);
-                div = i;
                 closestPoint = closePoint;
             }
         }
         return closestPoint;
     }
 
+    /**
+     * Set the position of the given support to be over the
+     * element.
+     * @param p
+     * @param supp 
+     */
     public void addSupport(Point p, Support supp) {
         Point closestPoint = getClosestPointOnSegment(p);
-
         supp.setPos(closestPoint);
     }
-
+    
+    /**
+     * Divide the element in the given point and update
+     * the created node, and create a new edge.
+     * @param p
+     * @param newNode
+     * @param edgeNumber The new Element's ID
+     * @return 
+     */
     public Edge splitEdge(Point p, Node newNode, int edgeNumber) {
         Point p1, p2;
 
@@ -171,7 +211,18 @@ public class Edge {
 
         return newEdge;
     }
-
+    
+    /**
+     * Returns the closest point on the segment defined by s1 and s2, to
+     * the point p.
+     * @param sx1
+     * @param sy1
+     * @param sx2
+     * @param sy2
+     * @param px
+     * @param py
+     * @return 
+     */
     public Point getClosestPointOnSegment(int sx1, int sy1, int sx2, int sy2, int px, int py) {
         double xDelta = sx2 - sx1;
         double yDelta = sy2 - sy1;
@@ -193,7 +244,13 @@ public class Edge {
 
         return closestPoint;
     }
-
+    
+    /**
+     * Return the distance over the element between the closest
+     * point of p till the closest element's ending.
+     * @param p
+     * @return 
+     */
     public double distanceFirstNode(Point p) {
         double distance1 = 0;
         Point p1, p2;
@@ -212,7 +269,13 @@ public class Edge {
         }
         return distance1;
     }
-
+    
+    /**
+     * Return the distance between the first point of the element
+     * to the point P.
+     * @param p
+     * @return 
+     */
     public double distance(Point p) {
         double distance1 = 0;
         double distance2 = 0;
@@ -247,7 +310,14 @@ public class Edge {
 
         return Math.min(distance1, distance2);
     }
-
+    
+    /**
+     * Return the point that is at a distance Length to the Point p.
+     * @param length the wanted distance between the point p and the
+     * returned point.
+     * @param p
+     * @return 
+     */
     public Point distance(double length, Point p) {
         double elem = length;
         double distance = 0;
@@ -333,7 +403,11 @@ public class Edge {
     public void setPressureValue(float pressureValue) {
         this.pressureValue = pressureValue;
     }
-
+    
+    /**
+     * Return the point in the middle of the element.
+     * @return 
+     */
     public Point middlePoint() {
 
         double totalLength = getLength();
