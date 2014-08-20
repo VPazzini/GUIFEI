@@ -27,13 +27,13 @@ public class StraightLine extends javax.swing.JFrame {
         jButtonDone = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Line Parameters");
+        setTitle("Line Parameters (m)");
         setResizable(false);
 
         jLabel1.setText("Length");
 
         jTextLength.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextLength.setText("800");
+        jTextLength.setText("8");
 
         jButtonTry.setText("Try");
         jButtonTry.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +107,7 @@ public class StraightLine extends javax.swing.JFrame {
 
     private boolean tryButton() {
         this.model.deleteAll();
-        int length = 100;
+        int length = 1;
         try {
             jLabel1.setForeground(Color.black);
             length = Integer.parseInt(this.jTextLength.getText());

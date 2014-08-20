@@ -32,17 +32,22 @@ public class UBend extends javax.swing.JDialog {
         jButtonOk = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Parameters");
+        setTitle("Parameters (m)");
 
         jLabel1.setText("Length");
 
         jTextLength.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextLength.setText("500");
+        jTextLength.setText("5");
+        jTextLength.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextLengthActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Width");
 
         jTextWidth.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextWidth.setText("500");
+        jTextWidth.setText("5");
 
         jButtonTry.setText("Try it");
         jButtonTry.addActionListener(new java.awt.event.ActionListener() {
@@ -126,14 +131,18 @@ public class UBend extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButtonOkActionPerformed
 
+    private void jTextLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextLengthActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextLengthActionPerformed
+
     private void tryButton(){
         model.deleteAll();
-        int length = 100;
-        int radius = 100;
+        float length = 1;
+        float radius = 1;
 
         try {
-            length = Integer.parseInt(jTextLength.getText());
-            radius = Integer.parseInt(jTextWidth.getText());
+            length = Float.parseFloat(jTextLength.getText());
+            radius = Float.parseFloat(jTextWidth.getText());
         } catch (NumberFormatException e) {
             System.out.println(e);
         }

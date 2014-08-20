@@ -67,23 +67,25 @@ public class Model {
         return n2;
     }
 
-    public void drawLine(int length) {
-        drawLine(length, 100, 50);
-        this.length = length;
+    public void drawLine(float len) {
+        drawLine((int)len * 100, 100, 50);
+        this.length = (int)len * 100;
     }
 
-    public void drawUbend(int length, int radius) {
+    public void drawUbend(float l, float r) {
         line = false;
         uBend = true;
         meshed = false;
-        this.length = length;
+        int len = (int) l * 100;
+        int radius = (int) r * 100;
+        this.length = len;
 
         Path2D.Double path = new Path2D.Double();
         int ix = 100;
         int iy = 50;
-        path.moveTo(ix + length, iy);
-        path.curveTo(ix + length + radius, iy, ix + length + radius,
-                iy + radius, ix + length, iy + radius);
+        path.moveTo(ix + len, iy);
+        path.curveTo(ix + len + radius, iy, ix + len + radius,
+                iy + radius, ix + len, iy + radius);
         FlatteningPathIterator f = new FlatteningPathIterator(
                 path.getPathIterator(new AffineTransform()), 1);
 
@@ -635,7 +637,7 @@ public class Model {
         elemUbend = (totalLength - (2 * length)) / (numNodes);
 
         numNodes = ((int) Math.floor(length * 2 / maxElemLengthLine)) + 1;
-        elemLine = length*2 / (numNodes);
+        elemLine = length * 2 / (numNodes);
 
         for (Edge edge : edges) {
             double totalLength, distance;
